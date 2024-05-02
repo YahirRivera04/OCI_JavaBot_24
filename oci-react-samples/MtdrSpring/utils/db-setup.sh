@@ -267,17 +267,17 @@ INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Description change', 'A t
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Start date change', 'A sprint is updated to reflect a change in its start date.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('End date change', 'A sprint is updated to reflect a change in its end date.');
 
-INSERT INTO $U.USERTYPE (Name, Description) VALUES('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.'),
-INSERT INTO $U.USERTYPE ('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES ('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
 
-INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Development', 'Teams in charge of writing code.'),
-INSERT INTO $U.TEAMTYPE ('Deployment', 'Teams in charge of deploying finished code to final environments.'),
-INSERT INTO $U.TEAMTYPE ('Testing', 'Teams in charge of testing code created by development teams.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Development', 'Teams in charge of writing code.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Deployment', 'Teams in charge of deploying finished code to final environments.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Testing', 'Teams in charge of testing code created by development teams.');
 
-INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have not been started but have been created.'),
-INSERT INTO $U.TASKSTATUS ('In Progress', 'Tasks that users have begun to work on.'),
-INSERT INTO $U.TASKSTATUS ('Committed', 'Tasks that are completed and awaiting integration into the main branch.'),
-INSERT INTO $U.TASKSTATUS ('Done', 'Tasks that are integrated into the final project and have been tested.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have not been started but have been created.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('In Progress', 'Tasks that users have begun to work on.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Committed', 'Tasks that are completed and awaiting integration into the main branch.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Done', 'Tasks that are integrated into the final project and have been tested.');
 
 commit;
 
