@@ -8,6 +8,9 @@ import java.time.OffsetDateTime;
     representation of the TODOITEM table that exists already
     in the autonomous database
  */
+// CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
+//CREATE TABLE TODOUSER.TASKSTATUS ( TaskStatusId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200)); */
+
 @Entity
 @Table(name = "TODOITEM")
 public class ToDoItem {
@@ -60,7 +63,8 @@ public class ToDoItem {
 
     public void setDone(boolean done) {
         this.done = done;
-    }
+    }  
+
 
     @Override
     public String toString() {
