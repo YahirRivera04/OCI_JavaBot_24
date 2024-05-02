@@ -250,12 +250,39 @@ CREATE TABLE $U.BOTMENU (
     Description NVARCHAR2(200),
     UserTypeId NUMBER REFERENCES $U.USERTYPE(UserTypeId)
 );
+
 CREATE TABLE $U.BOTOPTION (
     BotOptionId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Text NVARCHAR2(100),
     Description NVARCHAR2(200),
     BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
 );
+
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES
+('Status change', 'A task is updated with a status change.'),
+('Deletion', 'A task or sprint is deleted.'),
+('Name change', 'A task or status has its name updated.'),
+('Priority change', 'A task is updated to reflect a change in priority.'),
+('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.'),
+('Description change', 'A task or sprint is updated to reflect a change in its description.'),
+('Start date change', 'A sprint is updated to reflect a change in its start date.'),
+('End date change', 'A sprint is updated to reflect a change in its end date.');
+
+INSERT INTO $U.USERTYPE (Name, Description) VALUES
+('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.'),
+('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
+
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES
+('Development', 'Teams in charge of writing code.'),
+('Deployment', 'Teams in charge of deploying finished code to final environments.'),
+('Testing', 'Teams in charge of testing code created by development teams.');
+
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES
+('To Do', 'Tasks that have not been started but have been created.'),
+('In Progress', 'Tasks that users have begun to work on.'),
+('Committed', 'Tasks that are completed and awaiting integration into the main branch.'),
+('Done', 'Tasks that are integrated into the final project and have been tested.');
+
 commit;
 
 exit
