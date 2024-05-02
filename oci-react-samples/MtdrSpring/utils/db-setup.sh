@@ -135,28 +135,153 @@ while ! state_done TODO_USER; do
   SVC=$MTDR_DB_SVC
   sqlplus /nolog <<!
 WHENEVER SQLERROR EXIT 1
+WHENEVER OSERROR EXIT 9
 connect admin/"$DB_PASSWORD"@$SVC
 CREATE USER $U IDENTIFIED BY "$DB_PASSWORD" DEFAULT TABLESPACE data QUOTA UNLIMITED ON data;
 GRANT CREATE SESSION, CREATE VIEW, CREATE SEQUENCE, CREATE PROCEDURE TO $U;
 GRANT CREATE TABLE, CREATE TRIGGER, CREATE TYPE, CREATE MATERIALIZED VIEW TO $U;
 GRANT CONNECT, RESOURCE, pdb_dba, SODA_APP to $U;
-CREATE TABLE TODOUSER.TASKSTATUS (TaskStatusId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-CREATE TABLE TODOUSER.TASK (TaskId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), EstimatedHours FLOAT, Priority NUMBER, UserId NUMBER REFERENCES USER(UserId), SprintId NUMBER REFERENCES SPRINT(SprintId), TaskStatusId NUMBER REFERENCES TASKSTATUS(TaskStatusId), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId), UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId));
-CREATE TABLE TODOUSER.SPRINT (SprintId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(500), StartDate DATE, EndDate DATE, ProjectId NUMBER REFERENCES PROJECT(ProjectId));
-CREATE TABLE TODOUSER.PROJECT (ProjectId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(500));
-CREATE TABLE TODOUSER.USER (UserId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Email NVARCHAR2(100), PhoneNumber NVARCHAR2(15), TelegramName NVARCHAR2(100), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId), UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId));
-CREATE TABLE TODOUSER.USERTYPE (UserTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-CREATE TABLE TODOUSER.USERTEAM (UserTeamId NUMBER PRIMARY KEY, UserId NUMBER REFERENCES USER(UserId), TeamId NUMBER REFERENCES TEAM(TeamId));
-CREATE TABLE TODOUSER.TEAM (TeamId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), TeamTypeId NUMBER REFERENCES TEAMTYPE(TeamTypeId));
-CREATE TABLE TODOUSER.TEAMTYPE (TeamTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-CREATE TABLE TODOUSER.TASKUPDATE (TaskUpdateId NUMBER PRIMARY KEY, TimeStamp TIMESTAMP, UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId), TaskId NUMBER REFERENCES TASK(TaskId), UserId NUMBER REFERENCES USER(UserId));
-CREATE TABLE TODOUSER.UPDATETYPE (UpdateTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-CREATE TABLE TODOUSER.SPRINTUPDATE (SprintUpdateId NUMBER PRIMARY KEY, TimeStamp TIMESTAMP, UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId), SprintId NUMBER REFERENCES SPRINT(SprintId), UserId NUMBER REFERENCES USER(UserId));
-CREATE TABLE TODOUSER.CONVERSATION (ConversationId NUMBER PRIMARY KEY, StartTime TIMESTAMP, EndTime TIMESTAMP);
-CREATE TABLE TODOUSER.MESSAGE (MessageId NUMBER PRIMARY KEY, Content NVARCHAR2(100), UserId NUMBER REFERENCES USER(UserId), ConversationId NUMBER REFERENCES CONVERSATION(ConversationId));
-CREATE TABLE TODOUSER.BOTMENU (BotMenuId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId));
-CREATE TABLE TODOUSER.BOTOPTION (BotOptionId NUMBER PRIMARY KEY, Text NVARCHAR2(100), Description NVARCHAR2(200), BotMenuId NUMBER REFERENCES BOTMENU(BotMenuId));
+
+CREATE TABLE $U.TASKSTATUS (
+    TaskStatusId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE $U.CONVERSATION (
+    ConversationId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    StartTime TIMESTAMP,
+    EndTime TIMESTAMP
+);
+
+CREATE TABLE $U.PROJECT (
+    ProjectId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(500)
+);
+
+CREATE TABLE $U.UPDATETYPE (
+    UpdateTypeId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE $U.USERTYPE (
+    UserTypeId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE $U.TEAMTYPE (
+    TeamTypeId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE $U.TEAM (
+    TeamId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    TeamTypeId NUMBER REFERENCES $U.TEAMTYPE(TeamTypeId)
+);
+
+CREATE TABLE $U.TELEGRAMUSER (
+    TelegramUserId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Email NVARCHAR2(100),
+    PhoneNumber NVARCHAR2(15),
+    TelegramName NVARCHAR2(100),
+    UserTypeId NUMBER REFERENCES $U.USERTYPE(UserTypeId)
+    );
+
+CREATE TABLE $U.USERTEAM (
+    UserTeamId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TelegramUserId NUMBER REFERENCES $U.TELEGRAMUSER(TelegramUserId),
+    TeamId NUMBER REFERENCES $U.TEAM (TeamId)
+);
+
+CREATE TABLE $U.SPRINT (
+    SprintId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(500),
+    StartDate DATE,
+    EndDate DATE,
+    ProjectId NUMBER REFERENCES $U.PROJECT(ProjectId)
+);
+
+CREATE TABLE $U.TASK (
+    TaskId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    EstimatedHours FLOAT,
+    Priority NUMBER,
+    TelegramUserId NUMBER REFERENCES $U.TELEGRAMUSER(TelegramUserId),
+    SprintId NUMBER REFERENCES $U.SPRINT(SprintId),
+    TaskStatusId NUMBER REFERENCES $U.TASKSTATUS(TaskStatusId),
+    UserTeamId NUMBER REFERENCES $U.USERTEAM(UserTeamId)
+);
+
+CREATE TABLE $U.TASKUPDATE (
+    TaskUpdateId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TimeStamp TIMESTAMP,
+    UpdateTypeId NUMBER REFERENCES $U.UPDATETYPE(UpdateTypeId),
+    TaskId NUMBER REFERENCES $U.TASK(TaskId),
+    TelegramUserId NUMBER REFERENCES $U.TELEGRAMUSER(TelegramUserId)
+);
+
+CREATE TABLE $U.SPRINTUPDATE (
+    SprintUpdateId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    TimeStamp TIMESTAMP,
+    UpdateTypeId NUMBER REFERENCES $U.UPDATETYPE(UpdateTypeId),
+    SprintId NUMBER REFERENCES $U.SPRINT(SprintId),
+    TelegramUserId NUMBER REFERENCES $U.TELEGRAMUSER(TelegramUserId)
+);
+
+CREATE TABLE $U.MESSAGE (
+    MessageId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Content NVARCHAR2(100),
+    TelegramUserId NUMBER REFERENCES $U.TELEGRAMUSER (TelegramUserId),
+    ConversationId NUMBER REFERENCES $U.CONVERSATION(ConversationId)
+);
+
+CREATE TABLE $U.BOTMENU (
+    BotMenuId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    UserTypeId NUMBER REFERENCES $U.USERTYPE(UserTypeId)
+);
+
+CREATE TABLE $U.BOTOPTION (
+    BotOptionId NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Text NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
+);
+
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Description change', 'A task or sprint is updated to reflect a change in its description.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Start date change', 'A sprint is updated to reflect a change in its start date.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('End date change', 'A sprint is updated to reflect a change in its end date.');
+
+INSERT INTO $U.USERTYPE (Name, Description) VALUES('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES ('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
+
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Development', 'Teams in charge of writing code.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Deployment', 'Teams in charge of deploying finished code to final environments.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Testing', 'Teams in charge of testing code created by development teams.');
+
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have not been started but have been created.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('In Progress', 'Tasks that users have begun to work on.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Committed', 'Tasks that are completed and awaiting integration into the main branch.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Done', 'Tasks that are integrated into the final project and have been tested.');
+
 commit;
+
+exit
 !
   state_set_done TODO_USER
   echo "finished connecting to database and creating attributes"
@@ -167,3 +292,20 @@ state_set_done DB_SETUP
 
 # CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
 # insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
+
+#drop TABLE PROJECT;
+#drop TABLE CONVERSATION;
+#drop TABLE TASKSTATUS;
+#DROP TABLE TEAMTYPE;
+#DROP TABLE UPDATETYPE;
+#DROP TABLE TEAM;
+#DROP TABLE TEAMTYPE;
+#DROP TABLE BOTMENU;
+#DROP TABLE BOTOPTION;
+#DROP TABLE USERTEAM;
+#DROP TABLE USERTYPE;
+#drop table TELEGRAMUSER;
+#DROP TABLE MESSAGE;
+#DROP TABLE SPRINT;
+#DROP TABLE TASK;
+#DROP TABLE SPRINTUPDATE;
