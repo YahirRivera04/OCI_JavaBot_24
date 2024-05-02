@@ -140,8 +140,131 @@ CREATE USER $U IDENTIFIED BY "$DB_PASSWORD" DEFAULT TABLESPACE data QUOTA UNLIMI
 GRANT CREATE SESSION, CREATE VIEW, CREATE SEQUENCE, CREATE PROCEDURE TO $U;
 GRANT CREATE TABLE, CREATE TRIGGER, CREATE TYPE, CREATE MATERIALIZED VIEW TO $U;
 GRANT CONNECT, RESOURCE, pdb_dba, SODA_APP to $U;
-CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
-insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
+################## Generate Db tables and propperties ######################
+#CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
+#insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
+
+CREATE TABLE TASKSTATUS (
+    TaskStatusId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE TASK (
+    TaskId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    EstimatedHours FLOAT,
+    Priority NUMBER,
+    UserId NUMBER REFERENCES USER(UserId),
+    SprintId NUMBER REFERENCES SPRINT(SprintId),
+    TaskStatusId NUMBER REFERENCES TASKSTATUS(TaskStatusId),
+    UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId),
+    UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId)
+);
+
+CREATE TABLE SPRINT (
+    SprintId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(500),
+    StartDate DATE,
+    EndDate DATE,
+    ProjectId NUMBER REFERENCES PROJECT(ProjectId)
+);
+
+CREATE TABLE PROJECT (
+    ProjectId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(500)
+);
+
+CREATE TABLE USER (
+    UserId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Email NVARCHAR2(100),
+    PhoneNumber NVARCHAR2(15),
+    TelegramName NVARCHAR2(100),
+    UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId),
+    UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId)
+);
+
+CREATE TABLE USERTYPE (
+    UserTypeId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE USERTEAM (
+    UserTeamId NUMBER PRIMARY KEY,
+    UserId NUMBER REFERENCES USER(UserId),
+    TeamId NUMBER REFERENCES TEAM(TeamId)
+);
+
+CREATE TABLE TEAM (
+    TeamId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    TeamTypeId NUMBER REFERENCES TEAMTYPE(TeamTypeId)
+);
+
+CREATE TABLE TEAMTYPE (
+    TeamTypeId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE TASKUPDATE (
+    TaskUpdateId NUMBER PRIMARY KEY,
+    TimeStamp TIMESTAMP,
+    UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId),
+    TaskId NUMBER REFERENCES TASK(TaskId),
+    UserId NUMBER REFERENCES USER(UserId)
+);
+
+CREATE TABLE UPDATETYPE (
+    UpdateTypeId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200)
+);
+
+CREATE TABLE SPRINTUPDATE (
+    SprintUpdateId NUMBER PRIMARY KEY,
+    TimeStamp TIMESTAMP,
+    UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId),
+    SprintId NUMBER REFERENCES SPRINT(SprintId),
+    UserId NUMBER REFERENCES USER(UserId)
+);
+
+CREATE TABLE CONVERSATION (
+    ConversationId NUMBER PRIMARY KEY,
+    StartTime TIMESTAMP,
+    EndTime TIMESTAMP
+);
+
+CREATE TABLE MESSAGE (
+    MessageId NUMBER PRIMARY KEY,
+    Content NVARCHAR2(100),
+    UserId NUMBER REFERENCES USER(UserId),
+    ConversationId NUMBER REFERENCES CONVERSATION(ConversationId)
+);
+
+CREATE TABLE BOTMENU (
+    BotMenuId NUMBER PRIMARY KEY,
+    Name NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId)
+);
+
+CREATE TABLE BOTOPTION (
+    BotOptionId NUMBER PRIMARY KEY,
+    Text NVARCHAR2(100),
+    Description NVARCHAR2(200),
+    BotMenuId NUMBER REFERENCES BOTMENU(BotMenuId)
+);
+
+
+
+#############################################################################
 commit;
 !
   state_set_done TODO_USER
