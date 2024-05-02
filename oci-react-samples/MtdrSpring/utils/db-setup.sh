@@ -158,6 +158,7 @@ CREATE TABLE TODOUSER.MESSAGE (MessageId NUMBER PRIMARY KEY, Content NVARCHAR2(1
 CREATE TABLE TODOUSER.BOTMENU (BotMenuId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId));
 CREATE TABLE TODOUSER.BOTOPTION (BotOptionId NUMBER PRIMARY KEY, Text NVARCHAR2(100), Description NVARCHAR2(200), BotMenuId NUMBER REFERENCES BOTMENU(BotMenuId));
 insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
+insert into TDOUSER.TASKSTATUS (TaskStatusId, Name, Description) values (1, 'To Do', 'Task is not started');
 commit;
 !
   state_set_done TODO_USER
