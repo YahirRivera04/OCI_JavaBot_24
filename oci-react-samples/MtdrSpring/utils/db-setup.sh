@@ -258,30 +258,26 @@ CREATE TABLE $U.BOTOPTION (
     BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
 );
 
-INSERT INTO $U.UPDATETYPE (Name, Description) VALUES
-('Status change', 'A task is updated with a status change.'),
-('Deletion', 'A task or sprint is deleted.'),
-('Name change', 'A task or status has its name updated.'),
-('Priority change', 'A task is updated to reflect a change in priority.'),
-('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.'),
-('Description change', 'A task or sprint is updated to reflect a change in its description.'),
-('Start date change', 'A sprint is updated to reflect a change in its start date.'),
-('End date change', 'A sprint is updated to reflect a change in its end date.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Description change', 'A task or sprint is updated to reflect a change in its description.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Start date change', 'A sprint is updated to reflect a change in its start date.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('End date change', 'A sprint is updated to reflect a change in its end date.');
 
-INSERT INTO $U.USERTYPE (Name, Description) VALUES
-('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.'),
-('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.'),
+INSERT INTO $U.USERTYPE ('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
 
-INSERT INTO $U.TEAMTYPE (Name, Description) VALUES
-('Development', 'Teams in charge of writing code.'),
-('Deployment', 'Teams in charge of deploying finished code to final environments.'),
-('Testing', 'Teams in charge of testing code created by development teams.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Development', 'Teams in charge of writing code.'),
+INSERT INTO $U.TEAMTYPE ('Deployment', 'Teams in charge of deploying finished code to final environments.'),
+INSERT INTO $U.TEAMTYPE ('Testing', 'Teams in charge of testing code created by development teams.');
 
-INSERT INTO $U.TASKSTATUS (Name, Description) VALUES
-('To Do', 'Tasks that have not been started but have been created.'),
-('In Progress', 'Tasks that users have begun to work on.'),
-('Committed', 'Tasks that are completed and awaiting integration into the main branch.'),
-('Done', 'Tasks that are integrated into the final project and have been tested.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have not been started but have been created.'),
+INSERT INTO $U.TASKSTATUS ('In Progress', 'Tasks that users have begun to work on.'),
+INSERT INTO $U.TASKSTATUS ('Committed', 'Tasks that are completed and awaiting integration into the main branch.'),
+INSERT INTO $U.TASKSTATUS ('Done', 'Tasks that are integrated into the final project and have been tested.');
 
 commit;
 
