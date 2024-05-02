@@ -135,6 +135,7 @@ while ! state_done TODO_USER; do
   SVC=$MTDR_DB_SVC
   sqlplus /nolog <<!
 WHENEVER SQLERROR EXIT 1
+WHENEVER OSERROR EXIT 9
 connect admin/"$DB_PASSWORD"@$SVC
 CREATE USER $U IDENTIFIED BY "$DB_PASSWORD" DEFAULT TABLESPACE data QUOTA UNLIMITED ON data;
 GRANT CREATE SESSION, CREATE VIEW, CREATE SEQUENCE, CREATE PROCEDURE TO $U;
@@ -243,6 +244,8 @@ CREATE TABLE BOTOPTION (
     Foreign Key (BotMenuId) REFERENCES BOTMENU(BotMenuId)
 );
 commit;
+
+exit
 !
   state_set_done TODO_USER
   echo "finished connecting to database and creating attributes"
