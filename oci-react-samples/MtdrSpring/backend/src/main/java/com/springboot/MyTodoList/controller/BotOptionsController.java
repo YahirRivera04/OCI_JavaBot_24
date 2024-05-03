@@ -30,7 +30,7 @@ public class BotOptionsController {
 
     // ## Update ##
     @PutMapping(value = "botoption/{id}")
-    public ResponseEntity<BotOption> updateBotOption(@PathVariable int id, @RequestBody BotOption td){
+    public ResponseEntity updateBotOption(@PathVariable int id, @RequestBody BotOption td){
         try{
             BotOption botOptionItem = botOptionService.updateBotOption(id, td);
             System.out.println(botOptionItem.toString());

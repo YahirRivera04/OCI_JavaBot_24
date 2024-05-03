@@ -18,7 +18,7 @@ public class TaskController {
     //@CrossOrigin
     // ## Post ##
     @PostMapping(value = "/task")
-    public ResponseEntity<Task> addTask(@RequestBody Task taskItem) throws Exception{
+    public ResponseEntity addTask(@RequestBody Task taskItem) throws Exception{
         Task td = TaskService.addTask(taskItem);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("location",""+td.getID());
@@ -42,7 +42,7 @@ public class TaskController {
 
     // ## Update ##
     @PutMapping(value = "tasks/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody Task td){
+    public ResponseEntity updateTask(@PathVariable int id, @RequestBody Task td){
         try{
             Task taskItem = TaskService.updateTask(id, td);
             System.out.println(taskItem.toString());

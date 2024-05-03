@@ -30,7 +30,7 @@ public class BotMenuController {
 
     // ## Update ##
     @PutMapping(value = "botmenu/{id}")
-    public ResponseEntity<BotMenu> updateBotMenu(@PathVariable int id, @RequestBody BotMenu td){
+    public ResponseEntity updateBotMenu(@PathVariable int id, @RequestBody BotMenu td){
         try{
             BotMenu botMenuItem = botMenuService.updateBotMenu(id, td);
             System.out.println(botMenuItem.toString());
