@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.Conversation;
-import com.springboot.MyTodoList.repository.ConversationRepository;
+import com.springboot.MyTodoList.model.UserType;
+import com.springboot.MyTodoList.repository.UserTypeRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class ConversationService {
+public class UserTypeService {
     @Autowired
-    private ConversationRepository ConversationRepository;
+    private UserTypeRepository UserTypeRepository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<Conversation> getItemById(int id){
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public ResponseEntity<UserType> getItemById(int id){
+        Optional<UserType> data = UserTypeRepository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class ConversationService {
 
     // --------------------- Update Method ---------------------
 
-    public Conversation updateConversation(int id, Conversation td) {
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public UserType updateProject(int id, UserType td) {
+        Optional<UserType> data = UserTypeRepository.findById(id);
         if(data.isPresent()){
-            Conversation conversation = data.get();
-            // conversation.setID(id);
-            // conversation.setCreation_ts(td.getCreation_ts());
-            // conversation.setDescription(td.getDescription());
-            // conversation.setDone(td.isDone());
-            return ConversationRepository.save(conversation);
+            UserType project = data.get();
+            // project.setID(id);
+            // project.setCreation_ts(td.getCreation_ts());
+            // project.setDescription(td.getDescription());
+            // project.setDone(td.isDone());
+            return UserTypeRepository.save(project);
         }else{
             return null;
         }

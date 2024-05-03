@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.Conversation;
-import com.springboot.MyTodoList.repository.ConversationRepository;
+import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.repository.SprintRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class ConversationService {
+public class SprintService {
     @Autowired
-    private ConversationRepository ConversationRepository;
+    private SprintRepository sprintRepository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<Conversation> getItemById(int id){
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public ResponseEntity<Sprint> getItemById(int id){
+        Optional<Sprint> data = sprintRepository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class ConversationService {
 
     // --------------------- Update Method ---------------------
 
-    public Conversation updateConversation(int id, Conversation td) {
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public Sprint updateSprint(int id, Sprint td) {
+        Optional<Sprint> data = sprintRepository.findById(id);
         if(data.isPresent()){
-            Conversation conversation = data.get();
-            // conversation.setID(id);
-            // conversation.setCreation_ts(td.getCreation_ts());
-            // conversation.setDescription(td.getDescription());
-            // conversation.setDone(td.isDone());
-            return ConversationRepository.save(conversation);
+            Sprint sprint = data.get();
+            // sprint.setID(id);
+            // sprint.setCreation_ts(td.getCreation_ts());
+            // sprint.setDescription(td.getDescription());
+            // sprint.setDone(td.isDone());
+            return sprintRepository.save(sprint);
         }else{
             return null;
         }

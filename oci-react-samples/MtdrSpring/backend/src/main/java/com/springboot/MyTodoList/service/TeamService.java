@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.Conversation;
-import com.springboot.MyTodoList.repository.ConversationRepository;
+import com.springboot.MyTodoList.model.Team;
+import com.springboot.MyTodoList.repository.TeamRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class ConversationService {
+public class TeamService {
     @Autowired
-    private ConversationRepository ConversationRepository;
+    private TeamRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<Conversation> getItemById(int id){
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public ResponseEntity<Team> getItemById(int id){
+        Optional<Team> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class ConversationService {
 
     // --------------------- Update Method ---------------------
 
-    public Conversation updateConversation(int id, Conversation td) {
-        Optional<Conversation> data = ConversationRepository.findById(id);
+    public Team updateTeam(int id, Team td) {
+        Optional<Team> data = repository.findById(id);
         if(data.isPresent()){
-            Conversation conversation = data.get();
-            // conversation.setID(id);
-            // conversation.setCreation_ts(td.getCreation_ts());
-            // conversation.setDescription(td.getDescription());
-            // conversation.setDone(td.isDone());
-            return ConversationRepository.save(conversation);
+            Team team = data.get();
+            // team.setID(id);
+            // team.setCreation_ts(td.getCreation_ts());
+            // team.setDescription(td.getDescription());
+            // team.setDone(td.isDone());
+            return repository.save(team);
         }else{
             return null;
         }
