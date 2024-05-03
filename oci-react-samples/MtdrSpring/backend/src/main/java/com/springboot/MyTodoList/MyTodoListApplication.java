@@ -15,6 +15,21 @@ import com.springboot.MyTodoList.controller.ToDoItemBotController;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotMessages;
 
+import com.springboot.MyTodoList.service.BotMenuService;
+import com.springboot.MyTodoList.service.BotOptionService;
+import com.springboot.MyTodoList.service.ConversationService;
+import com.springboot.MyTodoList.service.MessageService;
+import com.springboot.MyTodoList.service.ProjectService;
+import com.springboot.MyTodoList.service.SprintService;
+import com.springboot.MyTodoList.service.SprintUpdateService;
+import com.springboot.MyTodoList.service.TaskService;
+import com.springboot.MyTodoList.service.TaskStatusService;
+import com.springboot.MyTodoList.service.TaskUpdateService;
+import com.springboot.MyTodoList.service.TeamService;
+import com.springboot.MyTodoList.service.TeamTypeService;
+import com.springboot.MyTodoList.service.UpdateTypeService;
+import com.springboot.MyTodoList.service.UserTypeService;
+
 @SpringBootApplication
 public class MyTodoListApplication implements CommandLineRunner {
 
@@ -22,6 +37,48 @@ public class MyTodoListApplication implements CommandLineRunner {
 
 	@Autowired
 	private ToDoItemService toDoItemService;
+
+	@Autowired
+	private BotMenuService botMenuService;
+
+	@Autowired
+	private BotOptionService botOptionService;
+
+	@Autowired
+	private ConversationService conversationService;
+
+	@Autowired
+	private MessageService messageService;
+
+	@Autowired
+	private ProjectService projectService;
+
+	@Autowired
+	private SprintService sprintService;
+
+	@Autowired
+	private SprintUpdateService sprintUpdateService;
+
+	@Autowired
+	private TaskService taskService;
+
+	@Autowired
+	private TaskStatusService taskStatusService;
+
+	@Autowired
+	private TaskUpdateService taskUpdateService;
+
+	@Autowired
+	private TeamService teamService;
+
+	@Autowired
+	private TeamTypeService teamTypeService;
+
+	@Autowired
+	private UpdateTypeService updateTypeService;
+
+	@Autowired
+	private UserTypeService userTypeService;
 
 	@Value("${telegram.bot.token}")
 	private String telegramBotToken;
