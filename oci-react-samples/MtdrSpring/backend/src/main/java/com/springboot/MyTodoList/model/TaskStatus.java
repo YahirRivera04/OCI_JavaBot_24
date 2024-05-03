@@ -2,11 +2,10 @@ package com.springboot.MyTodoList.model;
 
 import javax.persistence.*;
 
-import org.hibernate.usertype.UserType;
 
 @Entity
 @Table(name = "TASKSTATUS")
-public class TASKSTATUS{
+public class TaskStatus{
     @Id
     int TaskId;
     @Column(name = "Name")
@@ -17,30 +16,8 @@ public class TASKSTATUS{
     float EstimatedHours;
     @Column(name = "Priority")
     int Priority;
-    //i 
-    int UserId;
-    @ManyToOne
-    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
-    private int user;
 
-    @ManyToOne
-    @JoinColumn(name = "SprintId", referencedColumnName = "SprintId")
-    private int sprint;
-
-    @ManyToOne
-    @JoinColumn(name = "TaskStatusId", referencedColumnName = "TaskStatusId")
-    private int taskStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "UserTypeId", referencedColumnName = "UserTypeId")
-    private UserType userType;
-
-    @ManyToOne
-    @JoinColumn(name = "UserTeamId", referencedColumnName = "UserTeamId")
-    private int userTeam;
-    
-
- public TASKSTATUS(int TaskId, String Name, String Description, float EstimatedHours, int Priority) {
+ public TaskStatus(int TaskId, String Name, String Description, float EstimatedHours, int Priority) {
      this.TaskId = TaskId;
      this.Name = Name;
      this.Description = Description;
