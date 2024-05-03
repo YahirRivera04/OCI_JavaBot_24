@@ -12,7 +12,7 @@ public enum BotMessages {
 	NEW_ITEM_ADDED("New item added! Select /todolist to return to the list of todo items, or /start to go to the main screen."),
 	BYE("Bye! Select /start to resume!"),
 	READ_ACTIVITY("-"),
-	WHRITE_ACTIVITY("-"),
+	WRITE_ACTIVITY("-"),
 	UPDATE_ACTIVITY("-");
 
 	private String message;

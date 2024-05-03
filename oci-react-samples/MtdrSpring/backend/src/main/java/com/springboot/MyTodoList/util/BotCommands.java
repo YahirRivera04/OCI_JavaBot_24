@@ -7,7 +7,7 @@ public enum BotCommands {
 	TODO_LIST("/todolist"),
 	ADD_ITEM("/additem"),
 	READ_ACTIVITY("/activity"),
-	WHRITE_ACTIVITY("/addactivity"),
+	WRITE_ACTIVITY("/addactivity"),
 	UPDATE_ACTIVITY("/updateactivity");
 
 	private String command;
