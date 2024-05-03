@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.BotOption;
@@ -37,10 +36,9 @@ public class BotOptionService {
         Optional<BotOption> data = repository.findById(id);
         if(data.isPresent()){
             BotOption botOption = data.get();
-            // botOption.setID(id);
-            // botOption.setCreation_ts(td.getCreation_ts());
-            // botOption.setDescription(td.getDescription());
-            // botOption.setDone(td.isDone());
+            botOption.setID(id);
+            botOption.setText(td.getText());
+            botOption.setDescription(td.getDescription());
             return repository.save(botOption);
         }else{
             return null;

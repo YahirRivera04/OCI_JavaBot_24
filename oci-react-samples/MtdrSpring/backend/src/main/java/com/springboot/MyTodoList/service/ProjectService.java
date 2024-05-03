@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.Project;
@@ -37,10 +36,9 @@ public class ProjectService {
         Optional<Project> data = ProjectRepository.findById(id);
         if(data.isPresent()){
             Project project = data.get();
-            // project.setID(id);
-            // project.setCreation_ts(td.getCreation_ts());
-            // project.setDescription(td.getDescription());
-            // project.setDone(td.isDone());
+            project.setID(id);
+            project.setName(td.getName());
+            project.setDescription(td.getDescription());
             return ProjectRepository.save(project);
         }else{
             return null;

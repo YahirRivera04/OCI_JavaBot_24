@@ -37,10 +37,10 @@ public class SprintService {
         Optional<Sprint> data = sprintRepository.findById(id);
         if(data.isPresent()){
             Sprint sprint = data.get();
-            // sprint.setID(id);
-            // sprint.setCreation_ts(td.getCreation_ts());
-            // sprint.setDescription(td.getDescription());
-            // sprint.setDone(td.isDone());
+            sprint.setID(id);
+            sprint.setName(td.getName());
+            sprint.setDescription(td.getDescription());
+            sprint.setDone(td.isDone());
             return sprintRepository.save(sprint);
         }else{
             return null;

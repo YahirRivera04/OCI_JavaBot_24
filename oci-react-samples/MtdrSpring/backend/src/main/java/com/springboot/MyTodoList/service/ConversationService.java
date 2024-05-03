@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.Conversation;
@@ -37,10 +36,10 @@ public class ConversationService {
         Optional<Conversation> data = ConversationRepository.findById(id);
         if(data.isPresent()){
             Conversation conversation = data.get();
-            // conversation.setID(id);
-            // conversation.setCreation_ts(td.getCreation_ts());
-            // conversation.setDescription(td.getDescription());
-            // conversation.setDone(td.isDone());
+            //conversation.setID(id);
+            //conversation.startTime(td.startTime());
+            //conversation.endTime(td.endTime());
+            //conversation.setDone(td.isDone());
             return ConversationRepository.save(conversation);
         }else{
             return null;

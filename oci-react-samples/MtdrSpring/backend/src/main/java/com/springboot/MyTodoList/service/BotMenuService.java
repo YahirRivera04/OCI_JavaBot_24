@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.BotMenu;
@@ -37,10 +36,10 @@ public class BotMenuService {
         Optional<BotMenu> data = repository.findById(id);
         if(data.isPresent()){
             BotMenu updateBot = data.get();
-            // updateBot.setID(id);
-            // updateBot.setCreation_ts(td.getCreation_ts());
-            // updateBot.setDescription(td.getDescription());
-            // updateBot.setDone(td.isDone());
+            updateBot.setID(id);
+            updateBot.setName(td.getName());
+            updateBot.setDescription(td.getDescription());
+            updateBot.setUserType(td.getUserType());
             return repository.save(updateBot);
         }else{
             return null;

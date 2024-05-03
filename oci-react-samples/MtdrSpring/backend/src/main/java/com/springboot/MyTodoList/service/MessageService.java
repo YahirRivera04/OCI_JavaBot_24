@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.Message;
@@ -37,10 +36,10 @@ public class MessageService {
         Optional<Message> data = repository.findById(id);
         if(data.isPresent()){
             Message message = data.get();
-            // message.setID(id);
-            // message.setCreation_ts(td.getCreation_ts());
-            // message.setDescription(td.getDescription());
-            // message.setDone(td.isDone());
+            message.setID(id);
+            message.setContent(td.getContent());
+            message.setTelegramUser(td.getTelegramUser());
+            message.setConversation(td.getConversation());
             return repository.save(message);
         }else{
             return null;
