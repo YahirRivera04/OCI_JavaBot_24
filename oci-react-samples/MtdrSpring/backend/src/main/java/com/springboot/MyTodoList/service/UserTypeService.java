@@ -33,7 +33,7 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateProject(int id, UserType td) {
+    public UserType updateUserType(int id, UserType td) {
         Optional<UserType> data = UserTypeRepository.findById(id);
         if(data.isPresent()){
             UserType project = data.get();
