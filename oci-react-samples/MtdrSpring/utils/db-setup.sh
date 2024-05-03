@@ -258,30 +258,26 @@ CREATE TABLE $U.BOTOPTION (
     BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
 );
 
-INSERT INTO $U.UPDATETYPE (Name, Description) VALUES
-('Status change', 'A task is updated with a status change.'),
-('Deletion', 'A task or sprint is deleted.'),
-('Name change', 'A task or status has its name updated.'),
-('Priority change', 'A task is updated to reflect a change in priority.'),
-('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.'),
-('Description change', 'A task or sprint is updated to reflect a change in its description.'),
-('Start date change', 'A sprint is updated to reflect a change in its start date.'),
-('End date change', 'A sprint is updated to reflect a change in its end date.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Description change', 'A task or sprint is updated to reflect a change in its description.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Start date change', 'A sprint is updated to reflect a change in its start date.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('End date change', 'A sprint is updated to reflect a change in its end date.');
 
-INSERT INTO $U.USERTYPE (Name, Description) VALUES
-('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.'),
-('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES('Manager', 'User in charge of a team, can view tasks from team members, create, edit, and delete sprints and projects.');
+INSERT INTO $U.USERTYPE (Name, Description) VALUES ('Developer', 'User who is part of a team, can view, edit, create, and delete their own tasks.');
 
-INSERT INTO $U.TEAMTYPE (Name, Description) VALUES
-('Development', 'Teams in charge of writing code.'),
-('Deployment', 'Teams in charge of deploying finished code to final environments.'),
-('Testing', 'Teams in charge of testing code created by development teams.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Development', 'Teams in charge of writing code.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Deployment', 'Teams in charge of deploying finished code to final environments.');
+INSERT INTO $U.TEAMTYPE (Name, Description) VALUES ('Testing', 'Teams in charge of testing code created by development teams.');
 
-INSERT INTO $U.TASKSTATUS (Name, Description) VALUES
-('To Do', 'Tasks that have not been started but have been created.'),
-('In Progress', 'Tasks that users have begun to work on.'),
-('Committed', 'Tasks that are completed and awaiting integration into the main branch.'),
-('Done', 'Tasks that are integrated into the final project and have been tested.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have not been started but have been created.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('In Progress', 'Tasks that users have begun to work on.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Committed', 'Tasks that are completed and awaiting integration into the main branch.');
+INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Done', 'Tasks that are integrated into the final project and have been tested.');
 
 commit;
 
@@ -296,23 +292,6 @@ state_set_done DB_SETUP
 
 # CREATE TABLE TODOUSER.todoitem (id NUMBER GENERATED ALWAYS AS IDENTITY, description VARCHAR2(4000), creation_ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, done NUMBER(1,0) , PRIMARY KEY (id));
 # insert into TODOUSER.todoitem  (description, done) values ('Manual item insert', 0);
-
-#CREATE TABLE TASKSTATUS (TaskStatusId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-#CREATE TABLE TASK (TaskId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), EstimatedHours FLOAT, Priority NUMBER, UserId NUMBER REFERENCES USER(UserId), SprintId NUMBER REFERENCES SPRINT(SprintId), TaskStatusId NUMBER REFERENCES TASKSTATUS(TaskStatusId), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId), UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId));
-#CREATE TABLE SPRINT (SprintId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(500), StartDate DATE, EndDate DATE, ProjectId NUMBER REFERENCES PROJECT(ProjectId));
-#CREATE TABLE PROJECT (ProjectId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(500));
-#CREATE TABLE USER (UserId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Email NVARCHAR2(100), PhoneNumber NVARCHAR2(15), TelegramName NVARCHAR2(100), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId), UserTeamId NUMBER REFERENCES USERTEAM(UserTeamId));
-#CREATE TABLE USERTYPE (UserTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-#CREATE TABLE USERTEAM (UserTeamId NUMBER PRIMARY KEY, UserId NUMBER REFERENCES USER(UserId), TeamId NUMBER REFERENCES TEAM(TeamId));
-#CREATE TABLE TEAM (TeamId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), TeamTypeId NUMBER REFERENCES TEAMTYPE(TeamTypeId));
-#CREATE TABLE TEAMTYPE (TeamTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-#CREATE TABLE TASKUPDATE (TaskUpdateId NUMBER PRIMARY KEY, TimeStamp TIMESTAMP, UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId), TaskId NUMBER REFERENCES TASK(TaskId), UserId NUMBER REFERENCES USER(UserId));
-#CREATE TABLE UPDATETYPE (UpdateTypeId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200));
-#CREATE TABLE SPRINTUPDATE (SprintUpdateId NUMBER PRIMARY KEY, TimeStamp TIMESTAMP, UpdateTypeId NUMBER REFERENCES UPDATETYPE(UpdateTypeId), SprintId NUMBER REFERENCES SPRINT(SprintId), UserId NUMBER REFERENCES USER(UserId));
-#CREATE TABLE CONVERSATION (ConversationId NUMBER PRIMARY KEY, StartTime TIMESTAMP, EndTime TIMESTAMP);
-#CREATE TABLE MESSAGE (MessageId NUMBER PRIMARY KEY, Content NVARCHAR2(100), UserId NUMBER REFERENCES USER(UserId), ConversationId NUMBER REFERENCES CONVERSATION(ConversationId));
-#CREATE TABLE BOTMENU (BotMenuId NUMBER PRIMARY KEY, Name NVARCHAR2(100), Description NVARCHAR2(200), UserTypeId NUMBER REFERENCES USERTYPE(UserTypeId));
-#CREATE TABLE BOTOPTION (BotOptionId NUMBER PRIMARY KEY, Text NVARCHAR2(100), Description NVARCHAR2(200), BotMenuId NUMBER REFERENCES BOTMENU(BotMenuId));
 
 #drop TABLE PROJECT;
 #drop TABLE CONVERSATION;
