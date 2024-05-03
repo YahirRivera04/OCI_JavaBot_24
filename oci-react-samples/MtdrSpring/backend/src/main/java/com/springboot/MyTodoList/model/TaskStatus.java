@@ -1,102 +1,64 @@
 package com.springboot.MyTodoList.model;
 
+
+import java.util.List;
+
 import javax.persistence.*;
-
-import org.hibernate.usertype.UserType;
-
 @Entity
 @Table(name = "TASKSTATUS")
-public class TASKSTATUS{
+public class TaskStatus {
     @Id
-    int TaskId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TaskStatusId")
+    int ID;
     @Column(name = "Name")
-    String Name;
+    String name;
     @Column(name = "Description")
-    String Description;
-    @Column(name = "EstimatedHours")
-    float EstimatedHours;
-    @Column(name = "Priority")
-    int Priority;
-    //i 
-    int UserId;
-    @ManyToOne
-    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
-    private int user;
+    String description;
+    @OneToMany(mappedBy = "TaskStatusId", cascade = CascadeType.ALL)
+    List<Task> tasks;
 
-    @ManyToOne
-    @JoinColumn(name = "SprintId", referencedColumnName = "SprintId")
-    private int sprint;
+    public TaskStatus(){
+    }
+    public TaskStatus(int ID, String name ,String description) {
+        this.ID = ID;
+        this.name = name;
+        this.description = description;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "TaskStatusId", referencedColumnName = "TaskStatusId")
-    private int taskStatus;
+    public int getID() {
+        return ID;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "UserTypeId", referencedColumnName = "UserTypeId")
-    private UserType userType;
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+    public String getName() {
+        return name;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "UserTeamId", referencedColumnName = "UserTeamId")
-    private int userTeam;
-    
+    public void setName(String name) {
+        this.name = name;
+    }
 
- public TASKSTATUS(int TaskId, String Name, String Description, float EstimatedHours, int Priority) {
-     this.TaskId = TaskId;
-     this.Name = Name;
-     this.Description = Description;
-     this.EstimatedHours = EstimatedHours;
- }
- 
- public int getTaskId() {
-     return TaskId;
- }
- 
- public void setTaskId(int TaskId) {
-     this.TaskId = TaskId;
- }
- 
- public String getName() {
-     return Name;
- }
- 
- public void setName(String Name) {
-     this.Name = Name;
- }
- 
- public String getDescription() {
-     return Description;
- }
- 
- public void setDescription(String Description) {
-     this.Description = Description;
- }
- 
- public float getEstimatedHours() {
-     return EstimatedHours;
- }
- 
- public void setEstimatedHours(float EstimatedHours) {
-     this.EstimatedHours = EstimatedHours;
- }
- 
- public int getPriority() {
-     return Priority;
- }
- 
- public void setPriority(int Priority) {
-     this.Priority = Priority;
- }
- 
- @Override
- public String toString() {
-     return "TASKSTATUS{" +
-             "TaskId=" + TaskId +
-             ", Name='" + Name + '\'' +
-             ", Description='" + Description + '\'' +
-             ", EstimatedHours=" + EstimatedHours +
-             ", Priority=" + Priority +
-             '}';
- }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Task> getTasks(){
+        return tasks;
+    }
+
+    @Override
+    public String toString() {
+        return "Task Status{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
-
-
