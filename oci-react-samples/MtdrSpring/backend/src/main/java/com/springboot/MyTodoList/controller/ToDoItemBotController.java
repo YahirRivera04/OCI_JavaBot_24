@@ -22,10 +22,44 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.ToDoItemService;
+
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotHelper;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import com.springboot.MyTodoList.model.BotMenu;
+import com.springboot.MyTodoList.model.BotOption;
+import com.springboot.MyTodoList.model.Conversation;
+import com.springboot.MyTodoList.model.Message;
+import com.springboot.MyTodoList.model.Project;
+import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.model.SprintUpdate;
+import com.springboot.MyTodoList.model.Task;
+import com.springboot.MyTodoList.model.TaskStatus;
+import com.springboot.MyTodoList.model.TaskUpdate;
+import com.springboot.MyTodoList.model.Team;
+import com.springboot.MyTodoList.model.TeamType;
+import com.springboot.MyTodoList.model.TelegramUser;
+import com.springboot.MyTodoList.model.UpdateType;
+import com.springboot.MyTodoList.model.UserType	;
+
+
+import com.springboot.MyTodoList.service.BotMenuService;
+import com.springboot.MyTodoList.service.BotOptionService;
+import com.springboot.MyTodoList.service.ConversationService;
+import com.springboot.MyTodoList.service.MessageService;
+import com.springboot.MyTodoList.service.ProjectService;
+import com.springboot.MyTodoList.service.SprintService;
+import com.springboot.MyTodoList.service.SprintUpdateService;
+import com.springboot.MyTodoList.service.TaskService;
+import com.springboot.MyTodoList.service.TaskStatusService;
+import com.springboot.MyTodoList.service.TaskUpdateService;
+import com.springboot.MyTodoList.service.TeamService;
+import com.springboot.MyTodoList.service.TeamTypeService;
+import com.springboot.MyTodoList.service.UpdateTypeService;
+import com.springboot.MyTodoList.service.UserTypeService;
+
 
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
