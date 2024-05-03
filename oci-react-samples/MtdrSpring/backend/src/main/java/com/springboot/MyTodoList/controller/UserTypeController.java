@@ -31,7 +31,7 @@ public class UserTypeController {
 
     // ## Update ##
     @PutMapping(value = "usertype/{id}")
-    public ResponseEntity<UserType> updateUserType(@PathVariable int id, @RequestBody UserType td){
+    public ResponseEntity updateUserType(@PathVariable int id, @RequestBody UserType td){
         try{
             UserType userTypeItem = UserTypeService.updateUserType(id, td);
             System.out.println(userTypeItem.toString());
