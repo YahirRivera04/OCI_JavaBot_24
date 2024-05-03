@@ -30,7 +30,7 @@ public class UpdateTypeController {
 
     // ## Update ##
     @PutMapping(value = "taskstatus/{id}")
-    public ResponseEntity<UpdateType> updateUpdateType(@PathVariable int id, @RequestBody UpdateType td){
+    public ResponseEntity updateUpdateType(@PathVariable int id, @RequestBody UpdateType td){
         try{
             UpdateType updateItem = UpdateTypeService.updateUpdateType(id, td);
             System.out.println(updateItem.toString());

@@ -30,7 +30,7 @@ public class ConversationController {
 
     // ## Update ##
     @PutMapping(value = "conversation/{id}")
-    public ResponseEntity<Conversation> updateConversation(@PathVariable int id, @RequestBody Conversation td){
+    public ResponseEntity updateConversation(@PathVariable int id, @RequestBody Conversation td){
         try{
             Conversation conversationItem = ConversationService.updateConversation(id, td);
             System.out.println(conversationItem.toString());

@@ -30,7 +30,7 @@ public class MessageController {
 
     // ## Update ##
     @PutMapping(value = "message/{id}")
-    public ResponseEntity<Message> updateMessage(@PathVariable int id, @RequestBody Message td){
+    public ResponseEntity updateMessage(@PathVariable int id, @RequestBody Message td){
         try{
             Message messageItem = messageService.updateMessage(id, td);
             System.out.println(messageItem.toString());
