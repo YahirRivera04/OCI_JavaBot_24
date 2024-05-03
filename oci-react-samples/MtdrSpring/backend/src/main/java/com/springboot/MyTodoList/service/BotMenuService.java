@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
+import com.springboot.MyTodoList.model.BotMenu;
+import com.springboot.MyTodoList.repository.BotMenuRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class UserTypeService {
+public class BotMenuService {
     @Autowired
-    private UserTypeRepository repository;
+    private BotMenuRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<UserType> getItemById(int id){
-        Optional<UserType> data = repository.findById(id);
+    public ResponseEntity<BotMenu> getItemById(int id){
+        Optional<BotMenu> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateUserType(int id, UserType td) {
-        Optional<UserType> data = repository.findById(id);
+    public BotMenu updateBotMenu(int id, BotMenu td) {
+        Optional<BotMenu> data = repository.findById(id);
         if(data.isPresent()){
-            UserType userType = data.get();
-            // userType.setID(id);
-            // userType.setCreation_ts(td.getCreation_ts());
-            // userType.setDescription(td.getDescription());
-            // userType.setDone(td.isDone());
-            return repository.save(userType);
+            BotMenu updateBot = data.get();
+            // updateBot.setID(id);
+            // updateBot.setCreation_ts(td.getCreation_ts());
+            // updateBot.setDescription(td.getDescription());
+            // updateBot.setDone(td.isDone());
+            return repository.save(updateBot);
         }else{
             return null;
         }
