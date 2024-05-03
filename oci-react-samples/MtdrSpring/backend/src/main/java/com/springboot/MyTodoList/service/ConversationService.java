@@ -16,14 +16,14 @@ import com.springboot.MyTodoList.repository.ConversationRepository;
 // during component scanning.
 
 @Service
-public class TaskStatusService {
+public class ConversationService {
     @Autowired
-    private TaskStatusRepository taskStatusRepository;
+    private ConversationRepository ConversationRepository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<TaskStatus> getItemById(int id){
-        Optional<TaskStatus> data = taskStatusRepository.findById(id);
+    public ResponseEntity<Conversation> getItemById(int id){
+        Optional<Conversation> data = ConversationRepository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class TaskStatusService {
 
     // --------------------- Update Method ---------------------
 
-    public TaskStatus updateTaskStatus(int id, TaskStatus td) {
-        Optional<TaskStatus> data = taskStatusRepository.findById(id);
+    public Conversation updateConversation(int id, Conversation td) {
+        Optional<Conversation> data = ConversationRepository.findById(id);
         if(data.isPresent()){
-            TaskStatus taskStatus = data.get();
-            // taskStatus.setID(id);
-            // taskStatus.setCreation_ts(td.getCreation_ts());
-            // taskStatus.setDescription(td.getDescription());
-            // taskStatus.setDone(td.isDone());
-            return taskStatusRepository.save(taskStatus);
+            Conversation conversation = data.get();
+            // conversation.setID(id);
+            // conversation.setCreation_ts(td.getCreation_ts());
+            // conversation.setDescription(td.getDescription());
+            // conversation.setDone(td.isDone());
+            return ConversationRepository.save(conversation);
         }else{
             return null;
         }
