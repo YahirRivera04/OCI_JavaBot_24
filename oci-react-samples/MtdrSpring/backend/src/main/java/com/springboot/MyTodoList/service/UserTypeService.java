@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.Project;
-import com.springboot.MyTodoList.repository.ProjectRepository;
+import com.springboot.MyTodoList.model.UserType;
+import com.springboot.MyTodoList.repository.UserTypeRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class ProjectService {
+public class UserTypeService {
     @Autowired
-    private ProjectRepository ProjectRepository;
+    private UserTypeRepository UserTypeRepository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<Project> getItemById(int id){
-        Optional<Project> data = ProjectRepository.findById(id);
+    public ResponseEntity<UserType> getItemById(int id){
+        Optional<UserType> data = UserTypeRepository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class ProjectService {
 
     // --------------------- Update Method ---------------------
 
-    public Project updateProject(int id, Project td) {
-        Optional<Project> data = ProjectRepository.findById(id);
+    public UserType updateProject(int id, UserType td) {
+        Optional<UserType> data = UserTypeRepository.findById(id);
         if(data.isPresent()){
-            Project project = data.get();
+            UserType project = data.get();
             // project.setID(id);
             // project.setCreation_ts(td.getCreation_ts());
             // project.setDescription(td.getDescription());
             // project.setDone(td.isDone());
-            return ProjectRepository.save(project);
+            return UserTypeRepository.save(project);
         }else{
             return null;
         }

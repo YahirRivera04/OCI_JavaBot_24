@@ -33,7 +33,7 @@ public class UpdateTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UpdateType updateTaskStatus(int id, UpdateType td) {
+    public UpdateType updateTypeStatus(int id, UpdateType td) {
         Optional<UpdateType> data = UpdateTypeRepository.findById(id);
         if(data.isPresent()){
             UpdateType updateType = data.get();
