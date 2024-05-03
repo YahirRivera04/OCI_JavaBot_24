@@ -1,6 +1,6 @@
 package com.springboot.MyTodoList.controller;
-import com.springboot.MyTodoList.model.TaskStatus;
-import com.springboot.MyTodoList.service.TaskStatusService;
+import com.springboot.MyTodoList.model.;
+import com.springboot.MyTodoList.service.;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class TaskStatusController {
+public class UserTypeController {
     @Autowired
     private TaskStatusService TaskStatusService;
     //@CrossOrigin
@@ -40,12 +40,5 @@ public class TaskStatusController {
         }
     }
 
-
-
-
-
-
-    
-    
 
 }

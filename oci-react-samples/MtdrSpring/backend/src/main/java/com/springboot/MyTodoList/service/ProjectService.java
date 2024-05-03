@@ -33,7 +33,7 @@ public class ProjectService {
 
     // --------------------- Update Method ---------------------
 
-    public Project updateTaskStatus(int id, Project td) {
+    public Project updateProject(int id, Project td) {
         Optional<Project> data = ProjectRepository.findById(id);
         if(data.isPresent()){
             Project project = data.get();

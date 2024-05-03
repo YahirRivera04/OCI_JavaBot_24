@@ -1,6 +1,6 @@
 package com.springboot.MyTodoList.controller;
-import com.springboot.MyTodoList.model.TaskStatus;
-import com.springboot.MyTodoList.service.TaskStatusService;
+import com.springboot.MyTodoList.model.UpdateType;
+import com.springboot.MyTodoList.service.UpdateTypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,17 +12,17 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class TaskStatusController {
+public class UpdateTypeController {
     @Autowired
-    private TaskStatusService TaskStatusService;
+    private UpdateTypeService UpdateTypeService;
     //@CrossOrigin
 
     // ## Get ##
     @GetMapping(value = "/taskstatus/{id}")
-    public ResponseEntity<TaskStatus> getItemById(@PathVariable int id){
+    public ResponseEntity<UpdateType> getItemById(@PathVariable int id){
         try{
-            ResponseEntity<TaskStatus> responseEntity = TaskStatusService.getItemById(id);
-            return new ResponseEntity<TaskStatus>(responseEntity.getBody(), HttpStatus.OK);
+            ResponseEntity<UpdateType> responseEntity = UpdateTypeService.getItemById(id);
+            return new ResponseEntity<UpdateType>(responseEntity.getBody(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -30,22 +30,14 @@ public class TaskStatusController {
 
     // ## Update ##
     @PutMapping(value = "taskstatus/{id}")
-    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable int id, @RequestBody TaskStatus td){
+    public ResponseEntity<UpdateType> updateUpdateType(@PathVariable int id, @RequestBody UpdateType td){
         try{
-            TaskStatus taskItem = TaskStatusService.updateTaskStatus(id, td);
-            System.out.println(taskItem.toString());
-            return new ResponseEntity<>(taskItem,HttpStatus.OK);
+            UpdateType updateItem = UpdateTypeService.updateUpdateType(id, td);
+            System.out.println(updateItem.toString());
+            return new ResponseEntity<>(updateItem,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-
-
-
-
-
-    
-    
 
 }
