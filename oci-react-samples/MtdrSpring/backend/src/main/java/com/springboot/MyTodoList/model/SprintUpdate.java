@@ -22,7 +22,6 @@ public class SprintUpdate {
     @ManyToOne
     @JoinColumn(name = "TelegramUserId")
     TelegramUser telegramUser;
-
     public SprintUpdate(){
 
     }

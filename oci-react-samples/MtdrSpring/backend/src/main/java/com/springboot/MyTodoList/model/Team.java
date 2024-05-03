@@ -16,7 +16,7 @@ public class Team {
     @Column(name = "Description")
     String description;
     @ManyToOne
-    @JoinColumn(name = "TeamtypeId")
+    @JoinColumn(name = "TeamTypeId")
     TeamType teamType;
     @ManyToMany
     @JoinTable(

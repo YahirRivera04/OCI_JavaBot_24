@@ -13,7 +13,7 @@ public class TeamType {
     String name;
     @Column(name = "Description")
     String description;
-    @OneToMany(mappedBy = "TeamTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teamType", cascade = CascadeType.ALL)
     List<Team> teams;  
     public TeamType(){
     }

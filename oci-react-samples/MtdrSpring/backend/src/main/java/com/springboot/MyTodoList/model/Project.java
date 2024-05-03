@@ -15,7 +15,7 @@ public class Project {
     String name;
     @Column(name = "Description")
     String description;
-    @OneToMany(mappedBy = "ProjectId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     List<Sprint> sprints;  
 
     public Project(){

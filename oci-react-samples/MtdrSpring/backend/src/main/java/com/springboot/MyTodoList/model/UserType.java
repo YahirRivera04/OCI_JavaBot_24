@@ -15,9 +15,9 @@ public class UserType {
     String name;
     @Column(name = "Description")
     String description;
-    @OneToMany(mappedBy = "UserTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
     List<TelegramUser> telegramUsers; 
-    @OneToMany(mappedBy = "UserTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
     List<BotMenu> botMenus; 
     public UserType(){
     }

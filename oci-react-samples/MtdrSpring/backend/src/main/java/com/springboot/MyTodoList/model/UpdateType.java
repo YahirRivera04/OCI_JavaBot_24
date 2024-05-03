@@ -15,10 +15,12 @@ public class UpdateType {
     String name;
     @Column(name = "Description")
     String description;
-    @OneToMany(mappedBy = "UpdateTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "updateType", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
-    @OneToMany(mappedBy = "UpdateTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "updateType", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdates;
+    
+
     public UpdateType(){
     }
     public UpdateType(int ID, String name ,String description) {

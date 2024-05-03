@@ -19,7 +19,7 @@ public class BotMenu {
     @ManyToOne
     @JoinColumn(name = "UserTypeId")
     UserType userType;
-    @OneToMany(mappedBy = "BotMenuId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "botMenu", cascade = CascadeType.ALL)
     List<BotOption> botOptions;
     public BotMenu(){
 

@@ -30,13 +30,13 @@ public class TelegramUser {
         inverseJoinColumns = @JoinColumn(name = "TeamId")
     )
     private Set<Team> teams; 
-    @OneToMany(mappedBy = "TelegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<Task> tasks;
-    @OneToMany(mappedBy = "TelegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
-    @OneToMany(mappedBy = "TelegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdates;
-    @OneToMany(mappedBy = "TelegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<Message> messages;
     public TelegramUser() {
     }
