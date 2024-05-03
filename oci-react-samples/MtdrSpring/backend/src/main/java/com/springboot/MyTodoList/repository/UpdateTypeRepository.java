@@ -1,6 +1,6 @@
 package com.springboot.MyTodoList.repository;
 
-import com.springboot.MyTodoList.model.Task;
+import com.springboot.MyTodoList.model.UpdateType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 @Transactional
 @EnableTransactionManagement
 
-public interface TaskRepository extends JpaRepository<Task,Integer> {
+public interface UpdateTypeRepository extends JpaRepository<UpdateType,Integer> {
 
 
 }
