@@ -32,9 +32,9 @@ public class TeamController {
     @PutMapping(value = "team/{id}")
     public ResponseEntity<Team> updateTeam(@PathVariable int id, @RequestBody Team td){
         try{
-            Team taskItem = TeamService.updateTeam(id, td);
-            System.out.println(taskItem.toString());
-            return new ResponseEntity<>(taskItem,HttpStatus.OK);
+            Team teamItem = TeamService.updateTeam(id, td);
+            System.out.println(teamItem.toString());
+            return new ResponseEntity<>(teamItem,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

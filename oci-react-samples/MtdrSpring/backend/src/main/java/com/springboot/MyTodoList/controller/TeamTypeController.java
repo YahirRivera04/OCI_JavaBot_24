@@ -33,9 +33,9 @@ public class TeamTypeController {
     @PutMapping(value = "taskstatus/{id}")
     public ResponseEntity<TeamType> updateTeamType(@PathVariable int id, @RequestBody TeamType td){
         try{
-            TeamType taskItem = TeamTypeService.updateTeamType(id, td);
-            System.out.println(taskItem.toString());
-            return new ResponseEntity<>(taskItem,HttpStatus.OK);
+            TeamType teamTypeItem = TeamTypeService.updateTeamType(id, td);
+            System.out.println(teamTypeItem.toString());
+            return new ResponseEntity<>(teamTypeItem,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

@@ -29,7 +29,7 @@ public class SprintController {
     }
 
     // ## Update ##
-    @PutMapping(value = "/sprint/{id}")
+    @PutMapping(value = "sprint/{id}")
     public ResponseEntity<Sprint> updateSprint(@PathVariable int id, @RequestBody Sprint td){
         try{
             Sprint sprintItem = SprintService.updateSprint(id, td);

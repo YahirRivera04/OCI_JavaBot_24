@@ -33,7 +33,7 @@ public class SprintUpdateService {
 
     // --------------------- Update Method ---------------------
 
-    public SprintUpdate updateTaskUpdate(int id, SprintUpdate td) {
+    public SprintUpdate updateSprintUpdate(int id, SprintUpdate td) {
         Optional<SprintUpdate> data = repository.findById(id);
         if(data.isPresent()){
             SprintUpdate sprintUpdate = data.get();
