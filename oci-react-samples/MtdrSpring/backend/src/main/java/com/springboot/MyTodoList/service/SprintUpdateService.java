@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
+import com.springboot.MyTodoList.model.SprintUpdate;
+import com.springboot.MyTodoList.repository.SprintUpdateRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class UserTypeService {
+public class SprintUpdateService {
     @Autowired
-    private UserTypeRepository repository;
+    private SprintUpdateRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<UserType> getItemById(int id){
-        Optional<UserType> data = repository.findById(id);
+    public ResponseEntity<SprintUpdate> getItemById(int id){
+        Optional<SprintUpdate> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateUserType(int id, UserType td) {
-        Optional<UserType> data = repository.findById(id);
+    public SprintUpdate updateTaskUpdate(int id, SprintUpdate td) {
+        Optional<SprintUpdate> data = repository.findById(id);
         if(data.isPresent()){
-            UserType userType = data.get();
-            // userType.setID(id);
-            // userType.setCreation_ts(td.getCreation_ts());
-            // userType.setDescription(td.getDescription());
-            // userType.setDone(td.isDone());
-            return repository.save(userType);
+            SprintUpdate sprintUpdate = data.get();
+            // sprintUpdate.setID(id);
+            // sprintUpdate.setCreation_ts(td.getCreation_ts());
+            // sprintUpdate.setDescription(td.getDescription());
+            // sprintUpdate.setDone(td.isDone());
+            return repository.save(sprintUpdate);
         }else{
             return null;
         }

@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
+import com.springboot.MyTodoList.model.TaskUpdate;
+import com.springboot.MyTodoList.repository.TaskUpdateRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class UserTypeService {
+public class TaskUpdateService {
     @Autowired
-    private UserTypeRepository repository;
+    private TaskUpdateRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<UserType> getItemById(int id){
-        Optional<UserType> data = repository.findById(id);
+    public ResponseEntity<TaskUpdate> getItemById(int id){
+        Optional<TaskUpdate> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateUserType(int id, UserType td) {
-        Optional<UserType> data = repository.findById(id);
+    public TaskUpdate updateTaskUpdate(int id, TaskUpdate td) {
+        Optional<TaskUpdate> data = repository.findById(id);
         if(data.isPresent()){
-            UserType userType = data.get();
-            // userType.setID(id);
-            // userType.setCreation_ts(td.getCreation_ts());
-            // userType.setDescription(td.getDescription());
-            // userType.setDone(td.isDone());
-            return repository.save(userType);
+            TaskUpdate taskUpdate = data.get();
+            // taskUpdate.setID(id);
+            // taskUpdate.setCreation_ts(td.getCreation_ts());
+            // taskUpdate.setDescription(td.getDescription());
+            // taskUpdate.setDone(td.isDone());
+            return repository.save(taskUpdate);
         }else{
             return null;
         }

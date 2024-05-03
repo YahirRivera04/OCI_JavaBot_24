@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
+import com.springboot.MyTodoList.model.BotOption;
+import com.springboot.MyTodoList.repository.BotOptionRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class UserTypeService {
+public class BotOptionService {
     @Autowired
-    private UserTypeRepository repository;
+    private BotOptionRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<UserType> getItemById(int id){
-        Optional<UserType> data = repository.findById(id);
+    public ResponseEntity<BotOption> getItemById(int id){
+        Optional<BotOption> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateUserType(int id, UserType td) {
-        Optional<UserType> data = repository.findById(id);
+    public BotOption updateBotOption(int id, BotOption td) {
+        Optional<BotOption> data = repository.findById(id);
         if(data.isPresent()){
-            UserType userType = data.get();
-            // userType.setID(id);
-            // userType.setCreation_ts(td.getCreation_ts());
-            // userType.setDescription(td.getDescription());
-            // userType.setDone(td.isDone());
-            return repository.save(userType);
+            BotOption botOption = data.get();
+            // botOption.setID(id);
+            // botOption.setCreation_ts(td.getCreation_ts());
+            // botOption.setDescription(td.getDescription());
+            // botOption.setDone(td.isDone());
+            return repository.save(botOption);
         }else{
             return null;
         }

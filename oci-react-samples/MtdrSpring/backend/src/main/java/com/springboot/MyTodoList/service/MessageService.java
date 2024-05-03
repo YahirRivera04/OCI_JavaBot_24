@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
+import com.springboot.MyTodoList.model.Message;
+import com.springboot.MyTodoList.repository.MessageRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
 // during component scanning.
 
 @Service
-public class UserTypeService {
+public class MessageService {
     @Autowired
-    private UserTypeRepository repository;
+    private MessageRepository repository;
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<UserType> getItemById(int id){
-        Optional<UserType> data = repository.findById(id);
+    public ResponseEntity<Message> getItemById(int id){
+        Optional<Message> data = repository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -33,15 +33,15 @@ public class UserTypeService {
 
     // --------------------- Update Method ---------------------
 
-    public UserType updateUserType(int id, UserType td) {
-        Optional<UserType> data = repository.findById(id);
+    public Message updateMessage(int id, Message td) {
+        Optional<Message> data = repository.findById(id);
         if(data.isPresent()){
-            UserType userType = data.get();
-            // userType.setID(id);
-            // userType.setCreation_ts(td.getCreation_ts());
-            // userType.setDescription(td.getDescription());
-            // userType.setDone(td.isDone());
-            return repository.save(userType);
+            Message message = data.get();
+            // message.setID(id);
+            // message.setCreation_ts(td.getCreation_ts());
+            // message.setDescription(td.getDescription());
+            // message.setDone(td.isDone());
+            return repository.save(message);
         }else{
             return null;
         }
