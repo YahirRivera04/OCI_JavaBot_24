@@ -18,7 +18,7 @@ public class UpdateTypeController {
     //@CrossOrigin
 
     // ## Get ##
-    @GetMapping(value = "/taskstatus/{id}")
+    @GetMapping(value = "/updatetype/{id}")
     public ResponseEntity<UpdateType> getItemById(@PathVariable int id){
         try{
             ResponseEntity<UpdateType> responseEntity = UpdateTypeService.getItemById(id);
@@ -29,7 +29,7 @@ public class UpdateTypeController {
     }
 
     // ## Update ##
-    @PutMapping(value = "taskstatus/{id}")
+    @PutMapping(value = "updatetype/{id}")
     public ResponseEntity updateUpdateType(@PathVariable int id, @RequestBody UpdateType td){
         try{
             UpdateType updateItem = UpdateTypeService.updateUpdateType(id, td);

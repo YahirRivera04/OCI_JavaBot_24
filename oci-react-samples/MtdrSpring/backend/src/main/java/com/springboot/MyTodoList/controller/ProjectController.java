@@ -17,7 +17,7 @@ public class ProjectController {
     //@CrossOrigin
     
     // ## Get ##
-    @GetMapping(value = "/taskstatus/{id}")
+    @GetMapping(value = "/project/{id}")
     public ResponseEntity<Project> getItemById(@PathVariable int id){
         try{
             ResponseEntity<Project> responseEntity = projectServices.getItemById(id);
@@ -28,7 +28,7 @@ public class ProjectController {
     }
 
     // ## Update ##
-    @PutMapping(value = "taskstatus/{id}")
+    @PutMapping(value = "project/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable int id, @RequestBody Project td){
         try{
             Project projectItem = projectServices.updateProject(id, td);

@@ -30,7 +30,7 @@ public class TeamTypeController {
     }
 
     // ## Update ##
-    @PutMapping(value = "taskstatus/{id}")
+    @PutMapping(value = "teamtype/{id}")
     public ResponseEntity<TeamType> updateTeamType(@PathVariable int id, @RequestBody TeamType td){
         try{
             TeamType teamTypeItem = TeamTypeService.updateTeamType(id, td);
