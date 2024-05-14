@@ -260,7 +260,7 @@ CREATE TABLE $U.BOTOPTION (
     BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
 );
 
-#######################################################| Config |#######################################################
+#######################################################| Presets |#######################################################
 
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
@@ -282,6 +282,10 @@ INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have 
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('In Progress', 'Tasks that users have begun to work on.');
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Committed', 'Tasks that are completed and awaiting integration into the main branch.');
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Done', 'Tasks that are integrated into the final project and have been tested.');
+
+INSERT INTO $U.PROJECT (Name, Description) VALUES ('Java Bot', 'Bot developped in Java, using SpringBoot and OCI.');
+
+INSERT INTO $U.SPRINT (Name, Description, StartDate, EndDate, ProjectId) VALUES ('Sprint 3', 'Development Sprint.', TO_DATE('2024-05-06', 'YYYY-MM-DD'), TO_DATE('2024-05-17', 'YYYY-MM-DD'), 1);
 
 #######################################################| Profile Manager |#######################################################
 

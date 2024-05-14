@@ -2,7 +2,7 @@ spring:
   datasource:
     driver_class_name: oracle.jdbc.OracleDriver
     password: Cisco12341234
-    url: spring.datasource.url=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=adb.mx-queretaro-1.oraclecloud.com)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=g269731c703fe63_reacttodo2brl8_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+    url: spring.datasource.url=jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=adb.mx-queretaro-1.oraclecloud.com)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME=g269731c703fe63_reacttodovm8eb_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
     username: TODOUSER
   jpa:
     database: ORACLE
@@ -15,7 +15,7 @@ spring:
       name: Team24
       password: Cisco12341234
   Oracle:
-  Wallet-location: oci-react-samples\MtdrSpring\Wallet_reacttodo2brl8
+  Wallet-location: oci-react-samples\MtdrSpring\Wallet_reacttodovm8eb
 
 #spring:
 #  datasource:
