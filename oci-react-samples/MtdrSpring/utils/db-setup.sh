@@ -376,7 +376,7 @@ INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId)
 
 ID = SLECT USERID FROM $U.USERTYPE WHERE NAME = 'Manager';
 
-INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Samuel Garcia', '', '0000000000', '', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Samuel Garcia', 'sam.garcia.96@gmail.com', '0000000000', 'Samuel Garcia', ID);
 INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Admin Man', 'adminMan', '0000000000', 'adminMan', ID);
 
 
