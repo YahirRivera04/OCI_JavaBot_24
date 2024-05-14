@@ -47,4 +47,11 @@ public class TaskUpdateService {
         }
     }
 
+    // --------------------- Create Method ---------------------    
+    public TaskUpdate addTaskUpdate(TaskUpdate taskUpdate) {
+        return repository.save(taskUpdate);
+    }
+
+    
+
 }

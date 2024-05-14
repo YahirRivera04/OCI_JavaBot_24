@@ -47,4 +47,9 @@ public class TaskStatusService {
         }
     }
 
+    // --------------------- Create Method ---------------------    
+    public TaskStatus addTaskStatus(TaskStatus taskStatus) {
+        return taskStatusRepository.save(taskStatus);
+    }
+
 }

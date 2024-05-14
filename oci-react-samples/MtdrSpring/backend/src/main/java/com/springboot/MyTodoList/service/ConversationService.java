@@ -47,4 +47,9 @@ public class ConversationService {
         }
     }
 
+    // --------------------- Create Method ---------------------
+    public Conversation addConversation(Conversation conversation) {
+        return ConversationRepository.save(conversation);
+    }
+
 }

@@ -47,4 +47,9 @@ public class MessageService {
         }
     }
 
+    // --------------------- Create Method ---------------------            
+    public Message addMessage(Message message) {
+        return repository.save(message);
+    }
+
 }
