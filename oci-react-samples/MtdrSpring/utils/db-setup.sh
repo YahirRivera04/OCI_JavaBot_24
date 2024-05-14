@@ -259,6 +259,8 @@ CREATE TABLE $U.BOTOPTION (
     BotMenuId NUMBER REFERENCES $U.BOTMENU(BotMenuId)
 );
 
+#######################################################| Config |#######################################################
+
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
@@ -279,6 +281,144 @@ INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('To Do', 'Tasks that have 
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('In Progress', 'Tasks that users have begun to work on.');
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Committed', 'Tasks that are completed and awaiting integration into the main branch.');
 INSERT INTO $U.TASKSTATUS (Name, Description) VALUES ('Done', 'Tasks that are integrated into the final project and have been tested.');
+
+#######################################################| Profile Manager |#######################################################
+
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Main Menu Manager', 'Starting screen for the manager role.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View Projects', 'Contains all the current projects assigned to a manager.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View Projects Sprints', 'Contains all the current sprints assigned to a project.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View Project Users', 'Contains all the users working on a project.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View Sprint Users', 'Contains all the users working on a sprint.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View User Tasks', 'Contains all the tasks assigned to users.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Create Sprint', 'Create a new sprint for the assigned team.', 1);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Create Project', 'Create a new project for the assigned team.', 1);
+
+NUMBER ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Main Menu Manager';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Projects', 'Sends to view projects.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Project', 'Sends to create project.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View Projects';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Project Users', 'Sends to view project users.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Project Sprints', 'Sends to view project sprints.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Sprint', 'Sends to create sprint.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Create Project';
+
+Insert INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Project', 'Creates a project when finished sends to Main Menu.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View Project Users';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View User Tasks', 'Sends to view user tasks.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View Project Sprints';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Sprint Users', 'Sends to view sprint users.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View Sprint Users';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View User Tasks', 'Sends to view user tasks.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View User Tasks';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Task Info', 'Sends to view user task info.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Create Sprint';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Sprint', 'Creates a sprint when finished sends to View Projects.', ID);
+
+#######################################################| Profile Developer |#######################################################
+
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Main Menu Developer', 'Starting screen for the developer role.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Create Task', 'Create a new task for the user.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('View Tasks', 'View all tasks assigned to a user.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task', 'Allow the user to modify the selected task.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Delete Task', 'Allow the user to delete the selected task.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task Status', 'Allow the user to change the status of a task (to-do, in progress, committed, completed).', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task Priority', 'Allow the user to change the priority of a task (3, 2, 1).', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task Description', 'Allow the user to change the description of a task.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task Name', 'Allow the user to change the name of a task.', 2);
+INSERT INTO $U.BOTMENU (Name, Description, UserTypeId) VALUES ('Edit Task Estimated Hours', 'Allow the user to change the estimated hours of a task.', 2);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Main Menu Developer';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Task', 'Sends to create task.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('View Tasks', 'Sends to view tasks.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Create Task';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Create Task', 'Creates a task when finished sends to Main Menu.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'View Tasks';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task', 'Sends to edit task.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Delete Task', 'Sends to delete task.', ID);
+
+ID = SELECT BOTMENUID FROM $U.BOTMENU WHERE NAME = 'Edit Task';
+
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Status', 'Sends to edit task status.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Priority', 'Sends to edit task priority.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Description', 'Sends to edit task description.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Name', 'Sends to edit task name.', ID);
+INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Estimated Hours', 'Sends to edit task estimated hours.', ID);
+
+
+#######################################################| Users |#######################################################
+
+ID = SLECT USERID FROM $U.USERTYPE WHERE NAME = 'Developer';
+
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Yahir Rivera', 'A00572029@tec.mx', '0000000000', 'Yahir Rivera', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Guillermo Esquivel', 'A01625621@tec.mx', '0000000000', 'esquivel_guillermo', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Manuel Ramos', 'A00227837@tec.mx', '0000000000', 'Saiko_93', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Alfonso Ramirez', 'A01641937', '0000000000', 'Ramirez_Alfonso', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Admin Dev', 'adminDev', '0000000000', 'adminDev', ID);
+
+ID = SLECT USERID FROM $U.USERTYPE WHERE NAME = 'Manager';
+
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Samuel Garcia', '', '0000000000', '', ID);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Admin Man', 'adminMan', '0000000000', 'adminMan', ID);
+
+
+#######################################################| Teams |#######################################################
+
+ID = SELECT TEAMTYPEID FROM $U.TEAMTYPE WHERE NAME = 'Development';
+INSERT INTO $U.TEAM (Name, Description, TeamTypeId) VALUES ('Development Team', 'Team in charge of planning, structuring, and developing backend features.', ID);
+
+ID = SELECT TEAMTYPEID FROM $U.TEAMTYPE WHERE NAME = 'Deployment';
+INSERT INTO $U.TEAM (Name, Description, TeamTypeId) VALUES ('Deployment Team', 'Team in charge of deploying on OCI all the infrastructure planned by the Development Team.', ID);
+
+ID = SELECT TEAMTYPEID FROM $U.TEAMTYPE WHERE NAME = 'Testing';
+INSERT INTO $U.TEAM (Name, Description, TeamTypeId) VALUES ('Testing Team', 'Team in charge of ensuring the correct working of the service.', ID);
+
+#######################################################| Assignation  of Users to a Team |#######################################################
+
+# Deployment
+NUMBER USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Yahir Rivera';
+NUMBER TEAMID = SELECT TEAMID FROM $U.TEAM WHERE NAME = 'Deployment Team';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Manuel Ramos';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Samuel Garcia';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+#Development
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Guillermo Esquivel';
+TEAMID = SELECT TEAMID FROM $U.TEAM WHERE NAME = 'Development Team';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Samuel Garcia';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+#Testing
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Alfonso Ramirez';
+TEAMID = SELECT TEAMID FROM $U.TEAM WHERE NAME = 'Testing Team';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
+
+USERID = SELECT TELEGRAMUSERID FROM $U.TELEGRAMUSER WHERE TELEGRAMNAME = 'Samuel Garcia';
+INSERT INTO $U.USERTEAM (TelegramUserId, TeamId) VALUES (USERID, TEAMID);
 
 commit;
 

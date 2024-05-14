@@ -2,8 +2,10 @@ package com.springboot.MyTodoList.util;
 
 public enum BotCommands {
 
-	START_COMMAND("/start"), 
+	START_COMMAND("/start"),
 	HIDE_COMMAND("/hide"), 
+	CANCEL_COMMAND("/cancel"),
+
 	TODO_LIST("/todolist"),
 	ADD_ITEM("/additem"),
 	READ_ACTIVITY("/activity"),
