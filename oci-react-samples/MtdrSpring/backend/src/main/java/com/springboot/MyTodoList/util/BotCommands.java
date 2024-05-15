@@ -2,15 +2,15 @@ package com.springboot.MyTodoList.util;
 
 public enum BotCommands {
 
+	// Todo list commands (default)
 	START_COMMAND("/start"),
 	HIDE_COMMAND("/hide"), 
 	CANCEL_COMMAND("/cancel"),
-
 	TODO_LIST("/todolist"),
-	ADD_ITEM("/additem"),
-	READ_ACTIVITY("/activity"),
-	WRITE_ACTIVITY("/addactivity"),
-	UPDATE_ACTIVITY("/updateactivity");
+	ADD_ITEM("/additem");
+
+	
+
 
 	private String command;
 

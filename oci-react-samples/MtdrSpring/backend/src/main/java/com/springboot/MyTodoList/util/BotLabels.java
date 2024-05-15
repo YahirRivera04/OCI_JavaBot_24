@@ -10,16 +10,12 @@ public enum BotLabels {
 	UNDO("UNDO"),
 	DELETE("DELETE"),
 	MY_TODO_LIST("MY TODO LIST"),
-
 	DASH("-"),
-	UPDATE("UPDATE ACTIVITY DEVELOPER"),
-	READ("READ ACTIVITY DEVELOPER"),
-	WRITE("WRITE ACTIVITY DEVELOPER");
 
-
-
-
-	
+	LOG_IN("Log In"),
+	SHOW_TASK("Show Task"),
+	EDIT_TASK("Edit Task"),
+	CREATE_TASK("Create Task");
 
 	private String label;
 

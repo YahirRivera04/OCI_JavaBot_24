@@ -28,24 +28,4 @@ public class TelegramUserController {
         }
     }
 
-    // ## Update ##
-    @PutMapping(value = "telegramuser/{id}")
-    public ResponseEntity<TelegramUser> updateTelegramUser(@PathVariable int id, @RequestBody TelegramUser td){
-        try{
-            TelegramUser telegramUserItem = TelegramUserService.updateTelegramUser(id, td);
-            System.out.println(telegramUserItem.toString());
-            return new ResponseEntity<>(telegramUserItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
-
-
-
-    
-    
-
 }
