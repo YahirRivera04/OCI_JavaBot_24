@@ -29,14 +29,14 @@ public class TelegramUserController {
     }
 
     // ## Verify User by TelegramName ##
-    @GetMapping(value = "/telegramuser/{telegramname}")
+    @GetMapping(value = "/telegramuser/{TelegramName}")
     public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
             return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
         
     }
 
     // ## Get all Telegram User Info by Telegram Name ##
-    @GetMapping(value = "/telegramuser/telegramuserinfo/{telegramname}")
+    @GetMapping(value = "/telegramuser/telegramuserinfo/{TelegramName}")
     public ResponseEntity<TelegramUser> getTelegramUserInfo(@PathVariable String TelegramName){
         try{
             TelegramUser telegramUser = TelegramUserService.getTelegramUserInfo(TelegramName);
@@ -48,7 +48,7 @@ public class TelegramUserController {
 
     // ## Post ChatId ##
     //@CrossOrigin
-    @PutMapping(value = "telegramuser/{telegramuserid}")
+    @PutMapping(value = "telegramuser/{TelegramUserId}")
     public ResponseEntity updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
         try{
             TelegramUser user = TelegramUserService.updateTelegramUser(id, telegramUser);

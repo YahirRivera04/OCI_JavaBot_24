@@ -24,7 +24,7 @@ public class TelegramUser {
     @JoinColumn(name = "USERTYPEID")
     UserType userType;
     @Column(name = "CHATID")
-    Long chatId;
+    Long chatID;
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
@@ -44,21 +44,23 @@ public class TelegramUser {
     }
 
     
-    public TelegramUser(Long ID, String telegramName, UserType userType) {
+    public TelegramUser(Long ID, String telegramName, UserType userType, Long chatID) {
         this.ID = ID;
         this.name = "No name";
         this.email = "No email";
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
         this.userType = userType;
+        this.chatID = chatID;
     }
-    public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType) {
+    public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
         this.ID = ID;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
         this.userType = userType;
+        this.chatID = chatID;
     }
 
     public Long getID() {
@@ -96,7 +98,7 @@ public class TelegramUser {
     public String getTelegramName() {
         return telegramName;
     }
-
+    
     public void setTelegramName(String telegramName) {
         this.telegramName = telegramName;
     }
@@ -110,11 +112,11 @@ public class TelegramUser {
     }
 
     public Long getChatId(){
-        return chatId;
+        return chatID;
     }
 
-    public void setChatId(Long chatIds){
-        this.chatId = chatIds;
+    public void setChatId(Long chatID){
+        this.chatID = chatID;
     }
 
     public Set<Team> getTeams() {
@@ -150,7 +152,7 @@ public class TelegramUser {
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
            .append(", UserType=").append(userType != null ? userType.getName() : "None")
-           .append(", ChatId=").append(chatId);
+           .append(", ChatId=").append(chatID);
 
         if (!teams.isEmpty()) {
             sb.append(", Teams=[");

@@ -112,7 +112,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /response:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0,9).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
+			// /response:Yahir_Rivera04
+			else if(messageTextFromTelegram.substring(0, 10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 				
 				// Extracts the User name from the message
 				String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
