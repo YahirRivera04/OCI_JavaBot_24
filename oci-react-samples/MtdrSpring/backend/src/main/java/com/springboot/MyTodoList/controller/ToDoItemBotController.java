@@ -95,7 +95,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
+			TelegramUser telegramUser = new TelegramUser();
 
+			
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
 
@@ -124,7 +126,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				
 				//ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser); telegramUserExists.getBody() == true && 
 				ResponseEntity<TelegramUser> telegramUserInfo = getTelegramUserInfo(responseFromUser);
-				TelegramUser telegramUser = telegramUserInfo.getBody();
+				telegramUser = telegramUserInfo.getBody();
 				if(telegramUser != null){
 					if(telegramUser.getName().toString().equals(responseFromUser)){
 						isTelegramUser = true;
@@ -144,6 +146,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.LOG_IN_SUCCESS.getMessage());
+
+				telegramUser.setChatId(chatId);
+				updateTelegramUser(telegramUser.getID(), telegramUser);
 
 				try{
 					execute(messageToTelegram);

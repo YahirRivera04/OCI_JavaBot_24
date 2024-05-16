@@ -16,6 +16,5 @@ import javax.transaction.Transactional;
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
     Boolean existsByTelegramName(String telegramName);
-
     TelegramUser findDistinctByTelegramName(String telegramName);
 }
