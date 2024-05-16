@@ -111,7 +111,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
-			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand()+":")){
+			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand().substring(0, BotCommands.RESPONSE_COMMAND.getCommand().indexOf(':')))){
 				String responseFromUser = "";
 				int iterator = 0;
 				while(messageTextFromTelegram.charAt(iterator) != ':'){
