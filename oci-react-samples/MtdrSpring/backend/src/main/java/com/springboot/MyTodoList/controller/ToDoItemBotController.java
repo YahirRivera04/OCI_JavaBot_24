@@ -1,5 +1,7 @@
 package com.springboot.MyTodoList.controller;
 
+import static org.mockito.ArgumentMatchers.notNull;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			long chatId = update.getMessage().getChatId();
 
+			List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
+			boolean isUser = false;
+
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
 
@@ -95,21 +100,26 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.LOG_IN_MESSAGE.getMessage());
-				messageToTelegram.setText(BotMessages.LOG_IN_NAME.getMessage());
 				
 				try{
+
+					for(TelegramUser user : allTelegramUsers){
+						if(user.getTelegramName().equals(messageTextFromTelegram)){
+							isUser = true;
+						}
+					}
 					execute(messageToTelegram);
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}			
 			}
-			else if(messageTextFromTelegram.equals("Yahir_Rivera04")){
+			else if(isUser == true){
 
 				SendMessage messageToTelegram = new SendMessage();
 
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Ya entré por fin");
+				messageToTelegram.setText("Hola " + messageTextFromTelegram);
 				
 				try{
 					execute(messageToTelegram);
@@ -121,6 +131,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		}
 	}
+	
+	
 
 	@Override
 	public String getBotUsername() {		
