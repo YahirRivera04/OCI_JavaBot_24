@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.ToDoItemService;
@@ -86,10 +88,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			long chatId = update.getMessage().getChatId();
 
+			String telegram_user_name = "";
+
 
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
 
 				SendMessage messageToTelegram = new SendMessage();
+
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.LOG_IN_MESSAGE.getMessage());
 			
@@ -98,16 +103,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
-				}
-			
-				List<TelegramUser> allItems = getAllTelegramUsers();
-				String telegram_user_name = update.getMessage().getFrom().getUserName();
-				List<TelegramUser> telegramUsers = allItems.stream().filter(item -> item.getTelegramName().equals(telegram_user_name))
-						.collect(Collectors.toList());
-				
+				}			
+					
+				telegram_user_name = update.getMessage().getFrom().getUserName();
+
+			} 
+			else if(telegram_user_name == "Yahir_Rivera04"){
+
+				//List<TelegramUser> allItems = getAllTelegramUsers();
+				//List<TelegramUser> telegramUsers = allItems.stream().filter(item -> item.getTelegramName().equals(telegram_user_name)).collect(Collectors.toList());
+
+				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(telegramUsers.get(0).getUserType().toString());
+				messageToTelegram.setText("Penes locos, semen");
+				//messageToTelegram.setText(telegramUsers.get(0).toString());
 				
 				try{
 					execute(messageToTelegram);
@@ -115,7 +124,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}
-
 			}
 
 		}
