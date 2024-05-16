@@ -91,7 +91,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
-			Boolean response = false;
 
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -111,21 +110,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
-				List<TelegramUser> activeTelegramUsers = allTelegramUsers.stream().collect(Collectors.toList());
+
 				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user in system: " + responseFromUser);
 
-				
-				try{
-					for(TelegramUser User : activeTelegramUsers){
-						if(User.getTelegramName().equals(responseFromUser)){
-							isTelegramUser = true;
-							response = true;
-						}
+				for(TelegramUser User : allTelegramUsers){
+					if(User.getTelegramName().equals(responseFromUser)){
+						isTelegramUser = true;
+						break;
 					}
+				}
+
+				try{
 					execute(messageToTelegram);
 				}
 				catch(TelegramApiException e){
@@ -133,7 +132,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 			
-			if(isTelegramUser == true && response == true){
+			if(isTelegramUser == true){
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("User found");
@@ -147,9 +146,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			else {
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
+				
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(allTelegramUsers.toString());
+				messageToTelegram.setText(allTelegramUsers.getFirst().toString());
 				
 				try{
 					execute(messageToTelegram);
