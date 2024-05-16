@@ -65,25 +65,19 @@ import com.springboot.MyTodoList.service.TeamTypeService;
 import com.springboot.MyTodoList.service.UpdateTypeService;
 import com.springboot.MyTodoList.service.UserTypeService;
 
-import com.springboot.MyTodoList.controller.TelegramUserController;
-
-
-
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
 	private ToDoItemService toDoItemService;
 	private TelegramUserService telegramUserService;
-	private TelegramUserController telegramUserController;
 	private String botName;
 
-	public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, TelegramUserService telegramUserService, TelegramUserController telegramUserController) {
+	public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, TelegramUserService telegramUserService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
 		this.toDoItemService = toDoItemService;
 		this.telegramUserService = telegramUserService;
-		this.telegramUserController = telegramUserController;
 		this.botName = botName;
 	}
 
@@ -114,7 +108,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 
-				List<TelegramUser> allTelegramUsers = telegramUserController.getAllTelegramUsers();
+				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
 				
 				SendMessage messageToTelegram = new SendMessage();
@@ -164,7 +158,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 			else {
-				List<TelegramUser> allTelegramUsers = telegramUserController.getAllTelegramUsers();
+				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
