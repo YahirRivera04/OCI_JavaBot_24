@@ -70,9 +70,6 @@ import com.springboot.MyTodoList.service.TeamTypeService;
 import com.springboot.MyTodoList.service.UpdateTypeService;
 import com.springboot.MyTodoList.service.UserTypeService;
 
-import java.util.Map;
-import java.util.HashMap;
-
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
@@ -115,7 +112,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /response:"TelegramUserName"
-			// /response:Yahir_Rivera04
 			else if(messageTextFromTelegram.substring(0,9).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 				
 				// Extracts the User name from the message
@@ -125,36 +121,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 				
-
-				ResponseEntity<Boolean> responseUser = getUserByTelegramName(responseFromUser);
-				
-				ResponseEntity<TelegramUser> responseUser1 = getTelegramUserInfo(responseFromUser);
-				TelegramUser telegramUser = new TelegramUser();
-				telegramUser.setName(responseUser1.getBody().getName());				
-
-				if(responseUser.getBody() == true){
-
-					messageToTelegram.setText(telegramUser.getName().toString());					
+				ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser);
+				if(telegramUserExists.getBody() == true){
 					isTelegramUser = true;
-				}
-
-				// Verify if the user exists in the database
-				// ResponseEntity<TelegramUser> responseUser = getTelegramUserInfo(responseFromUser);
-				// TelegramUser telegramUser = responseUser.getBody();
-				// try{
-				// 	if(telegramUser.getTelegramName() == responseFromUser){
-
-				// 		// Add Data from to the user
-				// 		telegramUser.setChatId(chatId);
-				// 		updateTelegramUser(telegramUser.getID(), telegramUser);
-	
-				// 		isTelegramUser = true;
-				// 	}
-				// }
-				// catch (Exception e){
-				// 	messageToTelegram.setText(responseUser.getBody().toString());					
-				// }
-			
+				}				
+		
 				try{
 					execute(messageToTelegram);
 				}
