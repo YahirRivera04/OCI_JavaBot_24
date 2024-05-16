@@ -10,19 +10,21 @@ import java.util.List;
 public class TelegramUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TelegramUserId")
+    @Column(name = "TELEGRAMUSERID")
     int ID;
-    @Column(name = "Name")
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Email")
+    @Column(name = "EMAIL")
     String email;
-    @Column(name = "PhoneNumber")
+    @Column(name = "PHONENUMBER")
     String phoneNumber;
-    @Column(name = "TelegramName")
+    @Column(name = "TELEGRAMNAME")
     String telegramName;
     @ManyToOne
-    @JoinColumn(name = "UserTypeId")
+    @JoinColumn(name = "USERTYPEID")
     UserType userType;
+    @Column(name = "CHATID")
+    String chatId;
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
@@ -107,6 +109,14 @@ public class TelegramUser {
         this.userType = userType;
     }
 
+    public String getChatIds(){
+        return chatId;
+    }
+
+    public void setChatIds(String chatIds){
+        this.chatId = chatIds;
+    }
+
     public Set<Team> getTeams() {
         return teams;
     }
@@ -139,7 +149,8 @@ public class TelegramUser {
            .append(", Email=").append(email)
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
-           .append(", UserType=").append(userType != null ? userType.getName() : "None");
+           .append(", UserType=").append(userType != null ? userType.getName() : "None")
+           .append(", ChatId=").append(chatId);
 
         if (!teams.isEmpty()) {
             sb.append(", Teams=[");
