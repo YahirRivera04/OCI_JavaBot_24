@@ -194,6 +194,7 @@ CREATE TABLE $U.TELEGRAMUSER (
     Email NVARCHAR2(100),
     PhoneNumber NVARCHAR2(15),
     TelegramName NVARCHAR2(100),
+    ChatId LONG,
     UserTypeId NUMBER REFERENCES $U.USERTYPE(UserTypeId)
     );
 
@@ -360,10 +361,10 @@ INSERT INTO $U.BOTOPTION (Text, Description, BotMenuId) VALUES ('Edit Task Estim
 #######################################################| Users |#######################################################
 
 ## Developer ##
-INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Yahir Rivera', 'A00572029@tec.mx', '0000000000', 'Yahir Rivera', 2);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Yahir Rivera', 'A00572029@tec.mx', '0000000000', 'Yahir_Rivera04', 2);
 INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Guillermo Esquivel', 'A01625621@tec.mx', '0000000000', 'esquivel_guillermo', 2);
 INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Manuel Ramos', 'A00227837@tec.mx', '0000000000', 'Saiko_93', 2);
-INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Alfonso Ramirez', 'A01641937', '0000000000', 'Ramirez_Alfonso', 2);
+INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Alfonso Ramirez', 'A01641937@tec.mx', '0000000000', 'Ramirez_Alfonso', 2);
 INSERT INTO $U.TELEGRAMUSER (Name, Email, PhoneNumber, TelegramName, UserTypeId) VALUES ('Admin Dev', 'adminDev', '0000000000', 'adminDev', 2);
 
 ## Manager ##

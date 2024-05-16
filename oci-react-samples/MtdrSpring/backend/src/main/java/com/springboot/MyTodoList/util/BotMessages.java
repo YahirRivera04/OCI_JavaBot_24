@@ -17,6 +17,7 @@ public enum BotMessages {
 
 	// Log in messages
 	LOG_IN_MESSAGE("Welcome to your Java Bot, please wait for the authorization."),
+	LOG_IN_NAME("Enter your Telegram Username:"),
 	LOG_IN_SUCCESS("You have successfully logged in!"),
 	LOG_IN_FAIL("Login failed! Please try again!"),
 
