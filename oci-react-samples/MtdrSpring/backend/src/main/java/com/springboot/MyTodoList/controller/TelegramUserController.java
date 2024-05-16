@@ -18,21 +18,11 @@ public class TelegramUserController {
     private TelegramUserService TelegramUserService;
     
     // ## Get All ##
+    //@CrossOrigin
     @GetMapping(value = "/telegramuser")
     public List<TelegramUser> getAllTelegramUsers(){
         return TelegramUserService.findAll();
     }
-
-    // // ## Get All ##
-    // @GetMapping(value = "/telegramuser")
-    // public ResponseEntity<List<TelegramUser>> getAllItems(){
-    //     try{
-    //         ResponseEntity<List<TelegramUser>> responseEntity = TelegramUserService.getAllItems();
-    //         return new ResponseEntity<List<TelegramUser>>(responseEntity.getBody(), HttpStatus.OK);
-    //     }catch (Exception e){
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    // }
 
     // ## Get by Id ##
     @GetMapping(value = "/telegramuser/{id}")

@@ -111,14 +111,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
+				List<TelegramUser> activeTelegramUsers = allTelegramUsers.stream().collect(Collectors.toList());
 				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user in system: " + responseFromUser);
 
+				
 				try{
-					for(TelegramUser User : allTelegramUsers){
+					for(TelegramUser User : activeTelegramUsers){
 						if(User.getTelegramName().equals(responseFromUser)){
 							isTelegramUser = true;
 							response = true;
@@ -147,7 +149,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(allTelegramUsers.toString() + "\n");
+				messageToTelegram.setText(allTelegramUsers.toString());
 				
 				try{
 					execute(messageToTelegram);
