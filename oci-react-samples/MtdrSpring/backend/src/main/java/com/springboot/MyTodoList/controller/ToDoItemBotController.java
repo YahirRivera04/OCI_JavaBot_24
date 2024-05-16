@@ -122,11 +122,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 				
-				ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser);
-				if(telegramUserExists.getBody() == true){
-					isTelegramUser = true;
-				}				
-		
+				//ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser); telegramUserExists.getBody() == true && 
+				ResponseEntity<TelegramUser> telegramUserInfo = getTelegramUserInfo(responseFromUser);
+				TelegramUser telegramUser = telegramUserInfo.getBody();
+				if(telegramUser != null){
+					if(telegramUser.getName().toString().equals(responseFromUser)){
+						isTelegramUser = true;
+					}				
+				}
+				
 				try{
 					execute(messageToTelegram);
 				}
