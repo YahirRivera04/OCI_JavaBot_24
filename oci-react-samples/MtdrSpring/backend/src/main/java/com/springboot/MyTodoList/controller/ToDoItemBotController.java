@@ -87,10 +87,35 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
+			SendMessage messageToTelegramStart = new SendMessage();
 			String messageTextFromTelegram = update.getMessage().getText();
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
+			Boolean response = false;
+
+
+			ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+			List<KeyboardRow> keyboard = new ArrayList<>();
+
+			// first row
+			KeyboardRow row = new KeyboardRow();
+			row.add(BotLabels.START.getLabel());
+			// Add the first row to the keyboard
+			keyboard.add(row);
+		
+			// Set the keyboard
+			keyboardMarkup.setKeyboard(keyboard);
+
+			// Add the keyboard markup
+			messageToTelegramStart.setReplyMarkup(keyboardMarkup);
+
+			try{
+				execute(messageToTelegramStart);
+			}
+			catch(TelegramApiException e){
+				logger.error(e.getLocalizedMessage(), e);
+			}
 
 
 			// If the bot detects the start command
@@ -108,27 +133,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
-			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand().substring(0, BotCommands.RESPONSE_COMMAND.getCommand().indexOf(':')))){
+			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand().substring(0,10))){
 
-				String responseFromUser = "";
-				int iterator = 0;
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
-
-				while(messageTextFromTelegram.charAt(iterator) != ':'){
-					iterator++;
-					if(messageTextFromTelegram.charAt(iterator) == ':'){
-						responseFromUser = messageTextFromTelegram.substring(iterator,messageTextFromTelegram.length());
-					}
-				}
+				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Validando que exista el usuario: " + responseFromUser);
+				messageToTelegram.setText("Verifying the user in system: " + responseFromUser);
 
 				try{
 					for(TelegramUser User : allTelegramUsers){
 						if(User.getTelegramName().equals(responseFromUser)){
 							isTelegramUser = true;
+							response = true;
 						}
 					}
 					execute(messageToTelegram);
@@ -138,10 +156,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 			
-			if(isTelegramUser == true){
+			if(isTelegramUser == true && response == true){
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Usuario encontrado");
+				messageToTelegram.setText("User found");
 
 				try{
 					execute(messageToTelegram);
@@ -150,10 +168,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
-			else{
+			else {
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Usuario no encontrado");
+				messageToTelegram.setText("User not found");
 
 				try{
 					execute(messageToTelegram);
@@ -172,67 +190,61 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return botName;
 	}
 
-	// GET /todolist
-	public List<ToDoItem> getAllToDoItems() { 
-		return toDoItemService.findAll();
-	}
-
 	// GET all /telegramuser
 	public List<TelegramUser> getAllTelegramUsers() { 
 		return telegramUserService.findAll();
 	}
 
+	// // GET /todolist
+	// public List<ToDoItem> getAllToDoItems() { 
+	// 	return toDoItemService.findAll();
+	// }
+	// // GET BY ID /todolist/{id}
+	// public ResponseEntity<ToDoItem> getToDoItemById(@PathVariable int id) {
+	// 	try {
+	// 		ResponseEntity<ToDoItem> responseEntity = toDoItemService.getItemById(id);
+	// 		return new ResponseEntity<ToDoItem>(responseEntity.getBody(), HttpStatus.OK);
+	// 	} catch (Exception e) {
+	// 		logger.error(e.getLocalizedMessage(), e);
+	// 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	// 	}
+	// }
 
-	// GET BY ID /todolist/{id}
-	public ResponseEntity<ToDoItem> getToDoItemById(@PathVariable int id) {
-		try {
-			ResponseEntity<ToDoItem> responseEntity = toDoItemService.getItemById(id);
-			return new ResponseEntity<ToDoItem>(responseEntity.getBody(), HttpStatus.OK);
-		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+	// // PUT /todolist
+	// public ResponseEntity addToDoItem(@RequestBody ToDoItem todoItem) throws Exception {
+	// 	ToDoItem td = toDoItemService.addToDoItem(todoItem);
+	// 	HttpHeaders responseHeaders = new HttpHeaders();
+	// 	responseHeaders.set("location", "" + td.getID());
+	// 	responseHeaders.set("Access-Control-Expose-Headers", "location");
+	// 	// URI location = URI.create(""+td.getID())
 
-	// PUT /todolist
-	public ResponseEntity addToDoItem(@RequestBody ToDoItem todoItem) throws Exception {
-		ToDoItem td = toDoItemService.addToDoItem(todoItem);
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("location", "" + td.getID());
-		responseHeaders.set("Access-Control-Expose-Headers", "location");
-		// URI location = URI.create(""+td.getID())
+	// 	return ResponseEntity.ok().headers(responseHeaders).build();
+	// }
 
-		return ResponseEntity.ok().headers(responseHeaders).build();
-	}
+	// // UPDATE /todolist/{id}
+	// public ResponseEntity updateToDoItem(@RequestBody ToDoItem toDoItem, @PathVariable int id) {
+	// 	try {
+	// 		ToDoItem toDoItem1 = toDoItemService.updateToDoItem(id, toDoItem);
+	// 		System.out.println(toDoItem1.toString());
+	// 		return new ResponseEntity<>(toDoItem1, HttpStatus.OK);
+	// 	} catch (Exception e) {
+	// 		logger.error(e.getLocalizedMessage(), e);
+	// 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	// 	}
+	// }
 
-	// UPDATE /todolist/{id}
-	public ResponseEntity updateToDoItem(@RequestBody ToDoItem toDoItem, @PathVariable int id) {
-		try {
-			ToDoItem toDoItem1 = toDoItemService.updateToDoItem(id, toDoItem);
-			System.out.println(toDoItem1.toString());
-			return new ResponseEntity<>(toDoItem1, HttpStatus.OK);
-		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		}
-	}
-
-	// DELETE todolist/{id}
-	public ResponseEntity<Boolean> deleteToDoItem(@PathVariable("id") int id) {
-		Boolean flag = false;
-		try {
-			flag = toDoItemService.deleteToDoItem(id);
-			return new ResponseEntity<>(flag, HttpStatus.OK);
-		} catch (Exception e) {
-			logger.error(e.getLocalizedMessage(), e);
-			return new ResponseEntity<>(flag, HttpStatus.NOT_FOUND);
-		}
-	}
-
+	// // DELETE todolist/{id}
+	// public ResponseEntity<Boolean> deleteToDoItem(@PathVariable("id") int id) {
+	// 	Boolean flag = false;
+	// 	try {
+	// 		flag = toDoItemService.deleteToDoItem(id);
+	// 		return new ResponseEntity<>(flag, HttpStatus.OK);
+	// 	} catch (Exception e) {
+	// 		logger.error(e.getLocalizedMessage(), e);
+	// 		return new ResponseEntity<>(flag, HttpStatus.NOT_FOUND);
+	// 	}
+	// }
 }
-
-
-
 
 // if (messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())
 // 					|| messageTextFromTelegram.equals(BotLabels.SHOW_MAIN_SCREEN.getLabel())) {
