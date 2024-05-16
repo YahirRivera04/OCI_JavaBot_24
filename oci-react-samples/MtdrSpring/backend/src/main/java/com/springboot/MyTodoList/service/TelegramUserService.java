@@ -46,7 +46,7 @@ public class TelegramUserService {
 
     // --------------------- Get Telegram User Info Method ---------------------
     public TelegramUser getTelegramUserInfo(String TelegramName){
-        return telegramUserRepository.findByTelegramName(TelegramName);
+        return telegramUserRepository.findDistinctByTelegramName(TelegramName);
     }
 
 
@@ -58,7 +58,7 @@ public class TelegramUserService {
         // If data exists then update the chatIds
         if(telegramUserData.isPresent()){
             TelegramUser User = telegramUserData.get();
-            User.setChatIds(telegramUser.getChatIds());
+            User.setChatId(telegramUser.getChatId());
             return telegramUserRepository.save(User);
 
         }else{

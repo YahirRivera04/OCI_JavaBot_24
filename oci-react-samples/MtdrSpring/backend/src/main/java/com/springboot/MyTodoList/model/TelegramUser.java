@@ -109,11 +109,11 @@ public class TelegramUser {
         this.userType = userType;
     }
 
-    public Long getChatIds(){
+    public Long getChatId(){
         return chatId;
     }
 
-    public void setChatIds(Long chatIds){
+    public void setChatId(Long chatIds){
         this.chatId = chatIds;
     }
 

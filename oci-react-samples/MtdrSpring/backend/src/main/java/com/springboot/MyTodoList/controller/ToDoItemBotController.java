@@ -98,7 +98,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
-			TelegramUser telegramUser = new TelegramUser();
 
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -116,7 +115,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /response:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
+			// /response:Yahir_Rivera04
+			else if(messageTextFromTelegram.substring(0,9).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 				
 				// Extracts the User name from the message
 				String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
@@ -127,14 +127,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				// Verify if the user exists in the database
 				ResponseEntity<TelegramUser> responseUser = getTelegramUserInfo(responseFromUser);
-				telegramUser = responseUser.getBody();
+				TelegramUser telegramUser = responseUser.getBody();
 
 				if(telegramUser.getTelegramName() == responseFromUser){
 
 					// Add Data from to the user
+					telegramUser.setChatId(chatId);
 					updateTelegramUser(telegramUser.getID(), telegramUser);
-					
+
 					isTelegramUser = true;
+				}
+				else {
+					messageToTelegram.setText(responseUser.getBody().toString());					
 				}
 
 				try{
@@ -174,7 +178,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Get Telegram User Id from database
 	public ResponseEntity<TelegramUser> getTelegramUserInfo(String TelegramName){
-		return ResponseEntity.ok(telegramUserService.getTelegramUserInfo(TelegramName));
+		try{
+            TelegramUser telegramUser = telegramUserService.getTelegramUserInfo(TelegramName);
+            return new ResponseEntity<>(telegramUser, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }	
 	}
 
 	// Put Telegram User ChatId
