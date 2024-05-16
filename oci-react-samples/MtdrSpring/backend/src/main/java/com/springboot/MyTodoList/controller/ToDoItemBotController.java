@@ -124,23 +124,37 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
+				
 
-				// Verify if the user exists in the database
-				ResponseEntity<TelegramUser> responseUser = getTelegramUserInfo(responseFromUser);
-				TelegramUser telegramUser = responseUser.getBody();
+				ResponseEntity<Boolean> responseUser = getUserByTelegramName(responseFromUser);
+				
+				ResponseEntity<TelegramUser> responseUser1 = getTelegramUserInfo(responseFromUser);
+				TelegramUser telegramUser = new TelegramUser();
+				telegramUser.setName(responseUser1.getBody().getName());				
 
-				if(telegramUser.getTelegramName() == responseFromUser){
+				if(responseUser.getBody() == true){
 
-					// Add Data from to the user
-					telegramUser.setChatId(chatId);
-					updateTelegramUser(telegramUser.getID(), telegramUser);
-
+					messageToTelegram.setText(telegramUser.getName().toString());					
 					isTelegramUser = true;
 				}
-				else {
-					messageToTelegram.setText(responseUser.getBody().toString());					
-				}
 
+				// Verify if the user exists in the database
+				// ResponseEntity<TelegramUser> responseUser = getTelegramUserInfo(responseFromUser);
+				// TelegramUser telegramUser = responseUser.getBody();
+				// try{
+				// 	if(telegramUser.getTelegramName() == responseFromUser){
+
+				// 		// Add Data from to the user
+				// 		telegramUser.setChatId(chatId);
+				// 		updateTelegramUser(telegramUser.getID(), telegramUser);
+	
+				// 		isTelegramUser = true;
+				// 	}
+				// }
+				// catch (Exception e){
+				// 	messageToTelegram.setText(responseUser.getBody().toString());					
+				// }
+			
 				try{
 					execute(messageToTelegram);
 				}
