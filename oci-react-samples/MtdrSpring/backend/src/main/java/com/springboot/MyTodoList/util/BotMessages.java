@@ -16,7 +16,7 @@ public enum BotMessages {
 	BYE("Bye! Select /start to resume!"),
 
 	// Log in messages
-	LOG_IN_MESSAGE("Welcome to your Java Bot, please wait for the authorization. \n Enter your Telegram Username:"),
+	LOG_IN_MESSAGE("Welcome to your Java Bot, please wait for the authorization. \n Enter your Telegram Username (/response:TelegramUsername):"),
 	LOG_IN_SUCCESS("You have successfully logged in!"),
 	LOG_IN_FAIL("Login failed! Please try again!"),
 

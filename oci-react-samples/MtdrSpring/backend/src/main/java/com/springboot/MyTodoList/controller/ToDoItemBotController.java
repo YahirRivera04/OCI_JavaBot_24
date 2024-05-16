@@ -87,36 +87,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
-			SendMessage messageToTelegramStart = new SendMessage();
 			String messageTextFromTelegram = update.getMessage().getText();
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
 			Boolean response = false;
-
-
-			ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-			List<KeyboardRow> keyboard = new ArrayList<>();
-
-			// first row
-			KeyboardRow row = new KeyboardRow();
-			row.add(BotLabels.START.getLabel());
-			// Add the first row to the keyboard
-			keyboard.add(row);
-		
-			// Set the keyboard
-			keyboardMarkup.setKeyboard(keyboard);
-
-			// Add the keyboard markup
-			messageToTelegramStart.setReplyMarkup(keyboardMarkup);
-
-			try{
-				execute(messageToTelegramStart);
-			}
-			catch(TelegramApiException e){
-				logger.error(e.getLocalizedMessage(), e);
-			}
-
 
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -133,7 +108,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
-			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand().substring(0,10))){
+			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 
 				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
@@ -169,10 +144,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 			else {
+				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("User not found");
-
+				messageToTelegram.setText(allTelegramUsers.toString() + "\n");
+				
 				try{
 					execute(messageToTelegram);
 				}
