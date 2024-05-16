@@ -90,7 +90,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			long chatId = update.getMessage().getChatId();
 
-			List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 			Boolean isTelegramUser = false;
 
 
@@ -98,13 +97,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
 
 				SendMessage messageToTelegram = new SendMessage();
-
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.LOG_IN_MESSAGE.getMessage());
 				
 				try{
 					execute(messageToTelegram);
-					
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
@@ -112,8 +109,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand().substring(0, BotCommands.RESPONSE_COMMAND.getCommand().indexOf(':')))){
+
 				String responseFromUser = "";
 				int iterator = 0;
+				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
+
 				while(messageTextFromTelegram.charAt(iterator) != ':'){
 					iterator++;
 					if(messageTextFromTelegram.charAt(iterator) == ':'){
