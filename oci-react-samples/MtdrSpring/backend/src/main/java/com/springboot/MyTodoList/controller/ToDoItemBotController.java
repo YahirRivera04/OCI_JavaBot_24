@@ -99,23 +99,23 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setText(BotMessages.LOG_IN_MESSAGE.getMessage());
 			
 				try{
+					telegram_user_name = "Yahir_Rivera04";
 					execute(messageToTelegram);
+
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}			
-					
-				telegram_user_name = update.getMessage().getFrom().getUserName();
+
 
 			} 
-			else if(telegram_user_name == "Yahir_Rivera04"){
+			else if(telegram_user_name.equals("Yahir_Rivera04")){
 
 				//List<TelegramUser> allItems = getAllTelegramUsers();
 				//List<TelegramUser> telegramUsers = allItems.stream().filter(item -> item.getTelegramName().equals(telegram_user_name)).collect(Collectors.toList());
 
 				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram = new SendMessage();
-				messageToTelegram.setText("Penes locos, semen");
+				messageToTelegram.setText("Penes locos");
 				//messageToTelegram.setText(telegramUsers.get(0).toString());
 				
 				try{
