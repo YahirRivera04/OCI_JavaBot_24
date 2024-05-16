@@ -18,12 +18,19 @@ import com.springboot.MyTodoList.repository.TelegramUserRepository;
 @Service
 public class TelegramUserService {
     @Autowired
-    private TelegramUserRepository repository;
+    private TelegramUserRepository telegramUserRepository;
+    
+    // --------------------- Read All Method ---------------------
+
+    public List<TelegramUser> findAll(){
+        List<TelegramUser> data = telegramUserRepository.findAll();
+        return data;
+    }
     
     // --------------------- Read Method ---------------------
 
     public ResponseEntity<TelegramUser> getItemById(int id){
-        Optional<TelegramUser> data = repository.findById(id);
+        Optional<TelegramUser> data = telegramUserRepository.findById(id);
         if (data.isPresent()){
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         }else{
@@ -34,14 +41,14 @@ public class TelegramUserService {
     // --------------------- Update Method ---------------------
 
     public TelegramUser updateTelegramUser(int id, TelegramUser td) {
-        Optional<TelegramUser> data = repository.findById(id);
+        Optional<TelegramUser> data = telegramUserRepository.findById(id);
         if(data.isPresent()){
             TelegramUser telegramUser = data.get();
             // telegramUser.setID(id);
             // telegramUser.setCreation_ts(td.getCreation_ts());
             // telegramUser.setDescription(td.getDescription());
             // telegramUser.setDone(td.isDone());
-            return repository.save(telegramUser);
+            return telegramUserRepository.save(telegramUser);
         }else{
             return null;
         }

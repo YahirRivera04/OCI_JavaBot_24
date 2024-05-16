@@ -16,9 +16,7 @@ public enum BotMessages {
 	BYE("Bye! Select /start to resume!"),
 
 	// Log in messages
-	LOG_IN_MESSAGE("Welcome to your Java Bot, please enter your credentials to continue:"),
-	LOG_IN_NAME("Name:"),
-	LOG_IN_PASSWORD("Phone number:"),
+	LOG_IN_MESSAGE("Welcome to your Java Bot, please wait for the authorization."),
 	LOG_IN_SUCCESS("You have successfully logged in!"),
 	LOG_IN_FAIL("Login failed! Please try again!"),
 

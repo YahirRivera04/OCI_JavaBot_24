@@ -1,5 +1,6 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.TelegramUser;
+import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.service.TelegramUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,25 @@ import java.util.List;
 public class TelegramUserController {
     @Autowired
     private TelegramUserService TelegramUserService;
-    //@CrossOrigin
+    
+    // ## Get All ##
+    @GetMapping(value = "/telegramuser")
+    public List<TelegramUser> getAllTelegramUsers(){
+        return TelegramUserService.findAll();
+    }
 
-    // ## Get ##
+    // // ## Get All ##
+    // @GetMapping(value = "/telegramuser")
+    // public ResponseEntity<List<TelegramUser>> getAllItems(){
+    //     try{
+    //         ResponseEntity<List<TelegramUser>> responseEntity = TelegramUserService.getAllItems();
+    //         return new ResponseEntity<List<TelegramUser>>(responseEntity.getBody(), HttpStatus.OK);
+    //     }catch (Exception e){
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
+
+    // ## Get by Id ##
     @GetMapping(value = "/telegramuser/{id}")
     public ResponseEntity<TelegramUser> getItemById(@PathVariable int id){
         try{
@@ -27,5 +44,7 @@ public class TelegramUserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    
 
 }
