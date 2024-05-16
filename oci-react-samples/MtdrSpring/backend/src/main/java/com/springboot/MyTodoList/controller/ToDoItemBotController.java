@@ -129,7 +129,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				telegramUser = telegramUserInfo.getBody();
 				if(telegramUser != null){
 					if(telegramUser.getName().toString().equals(responseFromUser)){
-						isTelegramUser = true;
+						telegramUser.setChatId(chatId);
+						updateTelegramUser(telegramUser.getID(), telegramUser);
+						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage().toString(), telegramUser.getChatId());
 					}				
 				}
 				
@@ -140,32 +142,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					logger.error(e.getLocalizedMessage(), e);
 				}				
 			}
-			// If the user exists in the database
-			else if (isTelegramUser == true){
-
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(BotMessages.LOG_IN_SUCCESS.getMessage());
-
-				telegramUser.setChatId(chatId);
-				updateTelegramUser(telegramUser.getID(), telegramUser);
-
-				try{
-					execute(messageToTelegram);
-				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}
-			}	
 	}
 }
 	
-	
-
 	@Override
 	public String getBotUsername() {		
 		return botName;
 	}
+	
 	// Verify Telegram User Name from database
 	public ResponseEntity<Boolean> getUserByTelegramName(String TelegramName){
 		return ResponseEntity.ok(telegramUserService.existsByTelegramName(TelegramName));
@@ -185,6 +169,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     public ResponseEntity updateTelegramUser(Long id, TelegramUser telegramUser){
 		return ResponseEntity.ok(telegramUserService.updateTelegramUser(id, telegramUser));
     }
+
+	// Auxiliar Method to print messages
+	public void sendMessage(String message, Long chatID){
+		SendMessage messageToTelegram = new SendMessage();
+		messageToTelegram.setChatId(chatID);
+		messageToTelegram.setText(message);
+		try{
+			execute(messageToTelegram);
+		}
+		catch(TelegramApiException e){
+			logger.error(e.getLocalizedMessage(), e);
+		}
+	}
 
 
 	// // GET /todolist
