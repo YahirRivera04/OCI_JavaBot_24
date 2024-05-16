@@ -65,12 +65,18 @@ import com.springboot.MyTodoList.service.TeamTypeService;
 import com.springboot.MyTodoList.service.UpdateTypeService;
 import com.springboot.MyTodoList.service.UserTypeService;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
 	private ToDoItemService toDoItemService;
 	private TelegramUserService telegramUserService;
 	private String botName;
+
+
+	private Map<Long, TelegramUser> telegramUsers = new HashMap<>();
 
 	public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, TelegramUserService telegramUserService) {
 		super(botToken);
@@ -108,42 +114,24 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 
-				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
 				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
 				
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
+				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 
-				if(!allTelegramUsers.isEmpty()){
-
-					messageToTelegram.setText("Verifying the user: " + responseFromUser);					
-	
-					try{
-
-						for(TelegramUser User : allTelegramUsers){
-							if(User.getTelegramName().equals(responseFromUser)){
-								isTelegramUser = true;
-								break;
-							}
-						}
-
-						execute(messageToTelegram);
-					}
-					catch(TelegramApiException e){
-						logger.error(e.getLocalizedMessage(), e);
-					}
+				ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser);
+				if(telegramUserExists.getBody() == true){
+					isTelegramUser = true;
 				}
-				else{
-					messageToTelegram.setText("No users found");
 
-					try{
-						execute(messageToTelegram);
-					}
-					catch(TelegramApiException e){
-						logger.error(e.getLocalizedMessage(), e);
-					}
+
+				try{
+					execute(messageToTelegram);
 				}
-				
+				catch(TelegramApiException e){
+					logger.error(e.getLocalizedMessage(), e);
+				}				
 			}
 			else if (isTelegramUser == true){
 				SendMessage messageToTelegram = new SendMessage();
@@ -185,7 +173,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// GET all /telegramuser
 	public List<TelegramUser> getAllTelegramUsers() { 
-		return telegramUserService.findAll();
+		return telegramUserService.findAllUsers();
+	}
+
+	public ResponseEntity<Boolean> getUserByTelegramName(String TelegramName){
+		return ResponseEntity.ok(telegramUserService.existsByTelegramName(TelegramName));
 	}
 
 	// // GET /todolist

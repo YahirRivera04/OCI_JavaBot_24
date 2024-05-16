@@ -16,24 +16,43 @@ import java.util.List;
 public class TelegramUserController {
     @Autowired
     private TelegramUserService TelegramUserService;
-    
+
+
+    @GetMapping
+    public ResponseEntity<String> checkIfTableExists(){
+        try {
+            return new ResponseEntity<String>(TelegramUserService.checkIfTableExists(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<String>("Table does not exist" + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     // ## Get All ##
     //@CrossOrigin
     @GetMapping(value = "/telegramuser")
     public List<TelegramUser> getAllTelegramUsers(){
-        return TelegramUserService.findAll();
+        return TelegramUserService.findAllUsers();
     }
 
-    // ## Get by Id ##
-    @GetMapping(value = "/telegramuser/{id}")
-    public ResponseEntity<TelegramUser> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<TelegramUser> responseEntity = TelegramUserService.getItemById(id);
-            return new ResponseEntity<TelegramUser>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    // ## Get by TelegramName ##
+    @GetMapping(value = "/telegramuser/{TelegramName}")
+    public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
+            return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
+        
     }
+
+    // // ## Get by Id ##
+    // @GetMapping(value = "/telegramuser/{id}")
+    // public ResponseEntity<TelegramUser> getItemById(@PathVariable int id){
+    //     try{
+    //         ResponseEntity<TelegramUser> responseEntity = TelegramUserService.getItemById(id);
+    //         return new ResponseEntity<TelegramUser>(responseEntity.getBody(), HttpStatus.OK);
+    //     }catch (Exception e){
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
     
 

@@ -18,40 +18,66 @@ import com.springboot.MyTodoList.repository.TelegramUserRepository;
 @Service
 public class TelegramUserService {
     @Autowired
-    private TelegramUserRepository telegramUserRepository;
+    private final TelegramUserRepository telegramUserRepository;
+
+
+    public TelegramUserService(TelegramUserRepository telegramUserRepository) {
+        this.telegramUserRepository = telegramUserRepository;
+    }
+
+    public String checkIfTableExists(){
+        try {
+            return "TelegramUser Table Exists and is accesible";
+        }
+        catch (Exception e){
+            return "Table does not exist" + e.getMessage();
+        }
+    }
     
     // --------------------- Read All Method ---------------------
 
-    public List<TelegramUser> findAll(){
+    public List<TelegramUser> findAllUsers(){
         List<TelegramUser> data = telegramUserRepository.findAll();
         return data;
     }
     
     // --------------------- Read Method ---------------------
 
-    public ResponseEntity<TelegramUser> getItemById(int id){
-        Optional<TelegramUser> data = telegramUserRepository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Boolean existsByTelegramName(String TelegramName){
+        return telegramUserRepository.existsByTelegramName(TelegramName);
     }
 
-    // --------------------- Update Method ---------------------
 
-    public TelegramUser updateTelegramUser(int id, TelegramUser td) {
-        Optional<TelegramUser> data = telegramUserRepository.findById(id);
-        if(data.isPresent()){
-            TelegramUser telegramUser = data.get();
-            // telegramUser.setID(id);
-            // telegramUser.setCreation_ts(td.getCreation_ts());
-            // telegramUser.setDescription(td.getDescription());
-            // telegramUser.setDone(td.isDone());
-            return telegramUserRepository.save(telegramUser);
-        }else{
-            return null;
-        }
+    public Optional<TelegramUser> getUserByTelegramName (String TelegramName){
+        return telegramUserRepository.findByTelegramName(TelegramName).stream().findFirst(); 
     }
+
+
+    // // --------------------- Read Method ---------------------
+
+    // public ResponseEntity<TelegramUser> getItemById(int id){
+    //     Optional<TelegramUser> data = telegramUserRepository.findById(id);
+    //     if (data.isPresent()){
+    //         return new ResponseEntity<>(data.get(), HttpStatus.OK);
+    //     }else{
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
+
+    // // --------------------- Update Method ---------------------
+
+    // public TelegramUser updateTelegramUser(int id, TelegramUser td) {
+    //     Optional<TelegramUser> data = telegramUserRepository.findById(id);
+    //     if(data.isPresent()){
+    //         TelegramUser telegramUser = data.get();
+    //         // telegramUser.setID(id);
+    //         // telegramUser.setCreation_ts(td.getCreation_ts());
+    //         // telegramUser.setDescription(td.getDescription());
+    //         // telegramUser.setDone(td.isDone());
+    //         return telegramUserRepository.save(telegramUser);
+    //     }else{
+    //         return null;
+    //     }
+    // }
 
 }
