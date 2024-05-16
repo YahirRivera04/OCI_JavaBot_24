@@ -7,10 +7,8 @@ public enum BotCommands {
 	HIDE_COMMAND("/hide"), 
 	CANCEL_COMMAND("/cancel"),
 	TODO_LIST("/todolist"),
-	ADD_ITEM("/additem");
-
-	
-
+	ADD_ITEM("/additem"),
+	RESPONSE_COMMAND("/response");
 
 	private String command;
 

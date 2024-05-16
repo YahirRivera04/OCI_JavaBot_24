@@ -91,7 +91,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
-			boolean isUser = false;
+			Boolean isTelegramUser = false;
+
 
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -102,32 +103,64 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setText(BotMessages.LOG_IN_MESSAGE.getMessage());
 				
 				try{
+					execute(messageToTelegram);
+					
+				}
+				catch(TelegramApiException e){
+					logger.error(e.getLocalizedMessage(), e);
+				}
 
-					for(TelegramUser user : allTelegramUsers){
-						if(user.getTelegramName().equals(messageTextFromTelegram)){
-							isUser = true;
+			}
+			else if(messageTextFromTelegram.equals(BotCommands.RESPONSE_COMMAND.getCommand()+":")){
+				String responseFromUser = "";
+				int iterator = 0;
+				while(messageTextFromTelegram.charAt(iterator) != ':'){
+					iterator++;
+					if(messageTextFromTelegram.charAt(iterator) == ':'){
+						responseFromUser = messageTextFromTelegram.substring(iterator,messageTextFromTelegram.length());
+					}
+				}
+
+				SendMessage messageToTelegram = new SendMessage();
+				messageToTelegram.setChatId(chatId);
+				messageToTelegram.setText("Validando que exista el usuario: " + responseFromUser);
+
+				try{
+					for(TelegramUser User : allTelegramUsers){
+						if(User.getTelegramName().equals(responseFromUser)){
+							isTelegramUser = true;
 						}
 					}
 					execute(messageToTelegram);
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
-				}			
+				}
 			}
-			else if(isUser == true){
-
+			
+			if(isTelegramUser == true){
 				SendMessage messageToTelegram = new SendMessage();
-
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Hola " + messageTextFromTelegram);
-				
+				messageToTelegram.setText("Usuario encontrado");
+
 				try{
 					execute(messageToTelegram);
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}
+			}
+			else{
+				SendMessage messageToTelegram = new SendMessage();
+				messageToTelegram.setChatId(chatId);
+				messageToTelegram.setText("Usuario no encontrado");
 
+				try{
+					execute(messageToTelegram);
+				}
+				catch(TelegramApiException e){
+					logger.error(e.getLocalizedMessage(), e);
+				}
 			}
 		}
 	}
