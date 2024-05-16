@@ -11,7 +11,7 @@ public class TelegramUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TELEGRAMUSERID")
-    int ID;
+    Long ID;
     @Column(name = "NAME")
     String name;
     @Column(name = "EMAIL")
@@ -24,7 +24,7 @@ public class TelegramUser {
     @JoinColumn(name = "USERTYPEID")
     UserType userType;
     @Column(name = "CHATID")
-    String chatId;
+    Long chatId;
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
@@ -44,7 +44,7 @@ public class TelegramUser {
     }
 
     
-    public TelegramUser(int ID, String telegramName, UserType userType) {
+    public TelegramUser(Long ID, String telegramName, UserType userType) {
         this.ID = ID;
         this.name = "No name";
         this.email = "No email";
@@ -52,7 +52,7 @@ public class TelegramUser {
         this.telegramName = telegramName;
         this.userType = userType;
     }
-    public TelegramUser(int ID, String name ,String email, String phoneNumber, String telegramName, UserType userType) {
+    public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType) {
         this.ID = ID;
         this.name = name;
         this.email = email;
@@ -61,11 +61,11 @@ public class TelegramUser {
         this.userType = userType;
     }
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 
@@ -109,11 +109,11 @@ public class TelegramUser {
         this.userType = userType;
     }
 
-    public String getChatIds(){
+    public Long getChatIds(){
         return chatId;
     }
 
-    public void setChatIds(String chatIds){
+    public void setChatIds(Long chatIds){
         this.chatId = chatIds;
     }
 

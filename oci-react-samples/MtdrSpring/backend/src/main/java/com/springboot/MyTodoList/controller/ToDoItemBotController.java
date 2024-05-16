@@ -12,10 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -31,6 +34,8 @@ import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotHelper;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import io.swagger.models.Response;
 
 import com.springboot.MyTodoList.model.BotMenu;
 import com.springboot.MyTodoList.model.BotOption;
@@ -75,9 +80,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TelegramUserService telegramUserService;
 	private String botName;
 
-
-	private Map<Long, TelegramUser> telegramUsers = new HashMap<>();
-
 	public ToDoItemBotController(String botToken, String botName, ToDoItemService toDoItemService, TelegramUserService telegramUserService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
@@ -96,6 +98,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			Boolean isTelegramUser = false;
+			TelegramUser telegramUser = new TelegramUser();
 
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -112,19 +115,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
+			// If the bot detects the command /response:"TelegramUserName"
 			else if(messageTextFromTelegram.substring(0,10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
-
-				String responseFromUser = messageTextFromTelegram.substring(11,messageTextFromTelegram.length());
+				
+				// Extracts the User name from the message
+				String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
 				
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 
-				ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser);
-				if(telegramUserExists.getBody() == true){
+				// Verify if the user exists in the database
+				ResponseEntity<TelegramUser> responseUser = getTelegramUserInfo(responseFromUser);
+				telegramUser = responseUser.getBody();
+
+				if(telegramUser.getTelegramName() == responseFromUser){
+
+					// Add Data from to the user
+					updateTelegramUser(telegramUser.getID(), telegramUser);
+					
 					isTelegramUser = true;
 				}
-
 
 				try{
 					execute(messageToTelegram);
@@ -133,36 +144,22 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					logger.error(e.getLocalizedMessage(), e);
 				}				
 			}
+			// If the user exists in the database
 			else if (isTelegramUser == true){
+
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.LOG_IN_SUCCESS.getMessage());
-				
+
 				try{
 					execute(messageToTelegram);
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}
-			}
-			else {
-				List<TelegramUser> allTelegramUsers = getAllTelegramUsers();
-				
-				for(TelegramUser User : allTelegramUsers){
-					SendMessage messageToTelegram = new SendMessage();
-					messageToTelegram.setChatId(chatId);
-					messageToTelegram.setText(User.getTelegramName().toString());
-					
-					try{
-						execute(messageToTelegram);
-					}
-					catch(TelegramApiException e){
-						logger.error(e.getLocalizedMessage(), e);
-					}
-				}		
-			}
-		}
+			}	
 	}
+}
 	
 	
 
@@ -170,15 +167,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	public String getBotUsername() {		
 		return botName;
 	}
-
-	// GET all /telegramuser
-	public List<TelegramUser> getAllTelegramUsers() { 
-		return telegramUserService.findAllUsers();
-	}
-
+	// Verify Telegram User Name from database
 	public ResponseEntity<Boolean> getUserByTelegramName(String TelegramName){
 		return ResponseEntity.ok(telegramUserService.existsByTelegramName(TelegramName));
 	}
+
+	// Get Telegram User Id from database
+	public ResponseEntity<TelegramUser> getTelegramUserInfo(String TelegramName){
+		return ResponseEntity.ok(telegramUserService.getTelegramUserInfo(TelegramName));
+	}
+
+	// Put Telegram User ChatId
+    public ResponseEntity updateTelegramUser(Long id, TelegramUser telegramUser){
+		return ResponseEntity.ok(telegramUserService.updateTelegramUser(id, telegramUser));
+    }
+
 
 	// // GET /todolist
 	// public List<ToDoItem> getAllToDoItems() { 

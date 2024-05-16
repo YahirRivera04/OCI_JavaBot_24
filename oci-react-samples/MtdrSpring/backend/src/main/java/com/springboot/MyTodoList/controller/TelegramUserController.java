@@ -17,7 +17,7 @@ public class TelegramUserController {
     @Autowired
     private TelegramUserService TelegramUserService;
 
-
+    // ## Check Table Exists ##
     @GetMapping
     public ResponseEntity<String> checkIfTableExists(){
         try {
@@ -28,32 +28,35 @@ public class TelegramUserController {
         }
     }
 
-
-    // ## Get All ##
-    //@CrossOrigin
-    @GetMapping(value = "/telegramuser")
-    public List<TelegramUser> getAllTelegramUsers(){
-        return TelegramUserService.findAllUsers();
-    }
-
-    // ## Get by TelegramName ##
-    @GetMapping(value = "/telegramuser/{TelegramName}")
+    // ## Verify User by TelegramName ##
+    @GetMapping(value = "/telegramuser/{telegramname}")
     public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
             return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
         
     }
 
-    // // ## Get by Id ##
-    // @GetMapping(value = "/telegramuser/{id}")
-    // public ResponseEntity<TelegramUser> getItemById(@PathVariable int id){
-    //     try{
-    //         ResponseEntity<TelegramUser> responseEntity = TelegramUserService.getItemById(id);
-    //         return new ResponseEntity<TelegramUser>(responseEntity.getBody(), HttpStatus.OK);
-    //     }catch (Exception e){
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    // }
+    // ## Get all Telegram User Info by Telegram Name ##
+    @GetMapping(value = "/telegramuser/telegramuserinfo/{telegramname}")
+    public ResponseEntity<TelegramUser> getTelegramUserInfo(@PathVariable String TelegramName){
+        try{
+            TelegramUser telegramUser = TelegramUserService.getTelegramUserInfo(TelegramName);
+            return new ResponseEntity<>(telegramUser, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 
-    
+    // ## Post ChatId ##
+    //@CrossOrigin
+    @PutMapping(value = "telegramuser/{telegramuserid}")
+    public ResponseEntity updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
+        try{
+            TelegramUser user = TelegramUserService.updateTelegramUser(id, telegramUser);
+            System.out.println(user.toString());
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
 
+    }
 }

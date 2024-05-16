@@ -5,10 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static org.mockito.Mockito.timeout;
+
 import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.TelegramUser;
+import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.repository.TelegramUserRepository;
 
 // Marks the class as a Spring service component, 
@@ -25,6 +28,7 @@ public class TelegramUserService {
         this.telegramUserRepository = telegramUserRepository;
     }
 
+    // --------------------- Check Table Exists Method ---------------------
     public String checkIfTableExists(){
         try {
             return "TelegramUser Table Exists and is accesible";
@@ -34,22 +38,33 @@ public class TelegramUserService {
         }
     }
     
-    // --------------------- Read All Method ---------------------
-
-    public List<TelegramUser> findAllUsers(){
-        List<TelegramUser> data = telegramUserRepository.findAll();
-        return data;
-    }
-    
-    // --------------------- Read Method ---------------------
+    // --------------------- Read by Telegram User Method ---------------------
 
     public Boolean existsByTelegramName(String TelegramName){
         return telegramUserRepository.existsByTelegramName(TelegramName);
     }
 
+    // --------------------- Get Telegram User Info Method ---------------------
+    public TelegramUser getTelegramUserInfo(String TelegramName){
+        return telegramUserRepository.findByTelegramName(TelegramName);
+    }
 
-    public Optional<TelegramUser> getUserByTelegramName (String TelegramName){
-        return telegramUserRepository.findByTelegramName(TelegramName).stream().findFirst(); 
+
+    // --------------------- Update ChatId Method ---------------------
+
+    public TelegramUser updateTelegramUser(Long id, TelegramUser telegramUser) {
+        // Get all the data by id
+        Optional<TelegramUser> telegramUserData = telegramUserRepository.findById(id);
+        // If data exists then update the chatIds
+        if(telegramUserData.isPresent()){
+            TelegramUser User = telegramUserData.get();
+            User.setChatIds(telegramUser.getChatIds());
+            return telegramUserRepository.save(User);
+
+        }else{
+
+            return null;
+        }
     }
 
 

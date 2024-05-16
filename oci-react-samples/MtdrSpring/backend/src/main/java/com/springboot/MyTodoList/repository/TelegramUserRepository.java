@@ -15,11 +15,8 @@ import javax.transaction.Transactional;
 @EnableTransactionManagement
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
-    Boolean existsByTelegramName(String account);
+    Boolean existsByTelegramName(String telegramName);
 
-    @Query(value = "SELECT* FROM TODOUSER.TELEGRAMUSER WHERE TelegramName = ?1", nativeQuery = true)
-    List<TelegramUser> findByTelegramName(String account);
-
-
-
+    @Query("SELECT * FROM TODOUSER.TELEGRAMUSER WHERE t.telegramName = ?1")
+    TelegramUser findByTelegramName(String telegramName);
 }
