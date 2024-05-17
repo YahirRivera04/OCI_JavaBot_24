@@ -56,13 +56,13 @@ public class TelegramUserService {
 
     // --------------------- Get Caht ID by Telegram User Id  ---------------------
 
-    public Long fndChatIdByTelegramUserId(Long id){
+    public Long fndChatIdByTelegramUserId(Integer id){
         return telegramUserRepository.fndChatIdByTelegramUserId(id);
     }
 
     // --------------------- Update ChatId Method ---------------------
 
-    public String updateChatId(Long id, TelegramUser telegramUser) {
+    public String updateChatId(Integer id, TelegramUser telegramUser) {
         Long chatId = telegramUser.getChatId();
         try{
             telegramUserRepository.updateChatIdByTelegramUserId(id, chatId);

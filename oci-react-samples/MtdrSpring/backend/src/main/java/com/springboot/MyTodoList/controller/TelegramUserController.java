@@ -45,14 +45,14 @@ public class TelegramUserController {
     // ## Get Chat Id by Telegram User Id ##
 
     @GetMapping(value = "/telegramuser/telegramchatid/{TelegramName}")
-    public ResponseEntity<Long> findChatId(@PathVariable Long id){
+    public ResponseEntity<Long> findChatId(@PathVariable Integer id){
         return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
     }
 
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
-    public ResponseEntity<String> updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
+    public ResponseEntity<String> updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Integer id){
         return ResponseEntity.ok(TelegramUserService.updateChatId(id, telegramUser));
     }
 }
