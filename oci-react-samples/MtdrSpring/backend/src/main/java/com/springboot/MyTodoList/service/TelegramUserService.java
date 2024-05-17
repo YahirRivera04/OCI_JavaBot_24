@@ -46,7 +46,7 @@ public class TelegramUserService {
 
     // --------------------- Get Telegram ID by Telegram User name  ---------------------
 
-    public Integer findTelegramUserId(String TelegramName){
+    public int findTelegramUserId(String TelegramName){
         return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
     }
 
