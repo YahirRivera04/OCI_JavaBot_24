@@ -124,24 +124,26 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 				
-				//ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser); telegramUserExists.getBody() == true && 
 				ResponseEntity<TelegramUser> telegramUserInfo = getTelegramUserInfo(responseFromUser);
 				telegramUser = telegramUserInfo.getBody();
 				
-				if(telegramUser != null){
-					if(telegramUser.getName().toString().equals(responseFromUser)){
-						telegramUser.setChatId(chatId);
-						updateTelegramUser(telegramUser.getID(), telegramUser);
-					}				
-				}
-				else{
-					sendMessage(BotMessages.LOG_IN_FAIL.getMessage().toString(), telegramUser.getChatId());
+				sendMessage(telegramUserInfo.getHeaders().toString(), chatId);
 
-				}
+				// if(telegramUser != null){
+				// 	if(telegramUser.getName().toString().equals(responseFromUser)){
+				// 		telegramUser.setChatId(chatId);
+				// 		updateTelegramUser(telegramUser.getID(), telegramUser);
+				// 		sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage().toString(), telegramUser.getChatId());
+
+				// 	}				
+				// }
+				// else{
+				// 	sendMessage(telegramUserInfo.getBody().toString(), chatId);
+
+				// }
 				
 				try{
 					execute(messageToTelegram);
-					sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage().toString(), telegramUser.getChatId());
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
