@@ -52,7 +52,7 @@ public class TelegramUserController {
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
-    public ResponseEntity<String> updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
-        return ResponseEntity.ok(TelegramUserService.updateChatId(id, telegramUser));
+    public ResponseEntity<String> updateTelegramUser( @PathVariable Long id, @RequestBody Long chatId){
+        return ResponseEntity.ok(TelegramUserService.updateChatId(id, chatId));
     }
 }

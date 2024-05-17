@@ -62,8 +62,7 @@ public class TelegramUserService {
 
     // --------------------- Update ChatId Method ---------------------
 
-    public String updateChatId(Long id, TelegramUser telegramUser) {
-        Long chatId = telegramUser.getChatId();
+    public String updateChatId(Long id, Long chatId) {
         String idString = id.toString();
         String chatIdString = chatId.toString();
         try{

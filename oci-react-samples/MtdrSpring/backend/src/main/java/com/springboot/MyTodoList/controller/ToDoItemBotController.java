@@ -77,7 +77,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				telegramUser.setChatId(chatId);
 				telegramUser.setID(id.getBody());
-				
+
 				// Static transform from Integer to Long
 				UserId = telegramUser.getID().longValue();
 
@@ -87,7 +87,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
 						
 						// Update Telegram User ChatId
-						ResponseEntity<String> response = updateTelegramUser(UserId, telegramUser);
+						sendMessage(UserId.toString() + " " + chatId + " " + telegramUser.getChatId().toString(), telegramUser.getChatId());
+						ResponseEntity<String> response = updateTelegramUser(UserId, chatId);
 						sendMessage(response.getBody(), telegramUser.getChatId());
 					}
 					else{
@@ -122,8 +123,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     }
 
 	// Put Telegram User ChatId
-    public ResponseEntity<String> updateTelegramUser(Long id, TelegramUser telegramUser){
-		return ResponseEntity.ok(telegramUserService.updateChatId(id, telegramUser));
+    public ResponseEntity<String> updateTelegramUser(Long id, Long chatId){
+		return ResponseEntity.ok(telegramUserService.updateChatId(id, chatId));
     }
 
 	// Auxiliar Method to print messages
