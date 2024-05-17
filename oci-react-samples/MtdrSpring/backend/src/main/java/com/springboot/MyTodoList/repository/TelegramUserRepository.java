@@ -16,6 +16,10 @@ import javax.transaction.Transactional;
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
     
+    // Check if table exists
+    @Query(value = "SELECT * FROM TODOUSER.TELEGRAMUSER", nativeQuery = true)
+    List<TelegramUser> findTable();
+
     // Verify if user exists by telegram name
     Boolean existsByTelegramName(String telegramName);
 
@@ -26,4 +30,9 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     // get chat id by telegram user id
     @Query(value = "SELECT chatId FROM TODOUSER.TELEGRAMUSER WHERE telegramUserId = ?1", nativeQuery = true)
     Long fndChatIdByTelegramUserId(Long id);
+
+    // post chat id by telegram user id
+    @Query(value = "UPDATE TODOUSER.TELEGRAMUSER SET chatId = ?2 WHERE telegramUserId = ?1", nativeQuery = true)
+    void updateChatIdByTelegramUserId(Long id, Long chatId);
+
 }

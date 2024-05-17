@@ -52,14 +52,7 @@ public class TelegramUserController {
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
-    public ResponseEntity updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
-        try{
-            TelegramUser user = TelegramUserService.updateTelegramUser(id, telegramUser);
-            System.out.println(user.toString());
-            return new ResponseEntity<>(user,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
+    public ResponseEntity<String> updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
+        return ResponseEntity.ok(TelegramUserService.updateChatId(id, telegramUser));
     }
 }

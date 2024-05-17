@@ -1,74 +1,19 @@
 package com.springboot.MyTodoList.controller;
 
-import static org.mockito.ArgumentMatchers.notNull;
-
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import com.springboot.MyTodoList.model.ToDoItem;
-import com.springboot.MyTodoList.service.ToDoItemService;
-
-import com.springboot.MyTodoList.util.BotCommands;
-import com.springboot.MyTodoList.util.BotHelper;
-import com.springboot.MyTodoList.util.BotLabels;
-import com.springboot.MyTodoList.util.BotMessages;
-
-import io.swagger.models.Response;
-
-import com.springboot.MyTodoList.model.BotMenu;
-import com.springboot.MyTodoList.model.BotOption;
-import com.springboot.MyTodoList.model.Conversation;
-import com.springboot.MyTodoList.model.Message;
-import com.springboot.MyTodoList.model.Project;
-import com.springboot.MyTodoList.model.Sprint;
-import com.springboot.MyTodoList.model.SprintUpdate;
-import com.springboot.MyTodoList.model.Task;
-import com.springboot.MyTodoList.model.TaskStatus;
-import com.springboot.MyTodoList.model.TaskUpdate;
-import com.springboot.MyTodoList.model.Team;
-import com.springboot.MyTodoList.model.TeamType;
 import com.springboot.MyTodoList.model.TelegramUser;
-import com.springboot.MyTodoList.model.UpdateType;
-import com.springboot.MyTodoList.model.UserType	;
-
-
-import com.springboot.MyTodoList.service.BotMenuService;
-import com.springboot.MyTodoList.service.BotOptionService;
-import com.springboot.MyTodoList.service.ConversationService;
-import com.springboot.MyTodoList.service.MessageService;
-import com.springboot.MyTodoList.service.ProjectService;
-import com.springboot.MyTodoList.service.SprintService;
-import com.springboot.MyTodoList.service.SprintUpdateService;
-import com.springboot.MyTodoList.service.TaskService;
-import com.springboot.MyTodoList.service.TaskStatusService;
-import com.springboot.MyTodoList.service.TaskUpdateService;
-import com.springboot.MyTodoList.service.TeamService;
 import com.springboot.MyTodoList.service.TelegramUserService;
-import com.springboot.MyTodoList.service.TeamTypeService;
-import com.springboot.MyTodoList.service.UpdateTypeService;
-import com.springboot.MyTodoList.service.UserTypeService;
+import com.springboot.MyTodoList.service.ToDoItemService;
+import com.springboot.MyTodoList.util.BotCommands;
+import com.springboot.MyTodoList.util.BotMessages;
 
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
@@ -95,6 +40,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			TelegramUser telegramUser = new TelegramUser();
+			Long UserId = null;
 
 			
 			// If the bot detects the start command
@@ -128,14 +74,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				telegramUser.setChatId(chatId);
 				telegramUser.setID(userId.getBody());
 				// Static transform from Integer to Long
-				Long tempId = telegramUser.getID().longValue();
+				UserId = telegramUser.getID().longValue();
 
 				try{
 					execute(messageToTelegram);
 					if(telegramUser.getID() != null){
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
-						telegramUserService.updateTelegramUser(tempId, telegramUser);
-						sendMessage("Id Updated" + telegramUser.getChatId().toString(), telegramUser.getChatId());
+						
+						// Update Telegram User ChatId
+						ResponseEntity<String> response = updateTelegramUser(UserId, telegramUser);
+						sendMessage(response.getBody(), telegramUser.getChatId());
 					}
 					else{
 						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), telegramUser.getChatId());
@@ -167,10 +115,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
     public ResponseEntity<Long> findChatId(@PathVariable Long id){
         return ResponseEntity.ok(telegramUserService.fndChatIdByTelegramUserId(id));
     }
-	
+
 	// Put Telegram User ChatId
-    public ResponseEntity updateTelegramUser(Long id, TelegramUser telegramUser){
-		return ResponseEntity.ok(telegramUserService.updateTelegramUser(id, telegramUser));
+    public ResponseEntity<String> updateTelegramUser(Long id, TelegramUser telegramUser){
+		return ResponseEntity.ok(telegramUserService.updateChatId(id, telegramUser));
     }
 
 	// Auxiliar Method to print messages

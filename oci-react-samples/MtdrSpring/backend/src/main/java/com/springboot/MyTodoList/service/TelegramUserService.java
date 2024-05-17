@@ -31,6 +31,10 @@ public class TelegramUserService {
     // --------------------- Check Table Exists Method ---------------------
     public String checkIfTableExists(){
         try {
+            telegramUserRepository.findTable();
+            if(telegramUserRepository.findTable().isEmpty()){
+                return "Table does not exist";
+            }
             return "TelegramUser Table Exists and is accesible";
         }
         catch (Exception e){
@@ -58,18 +62,14 @@ public class TelegramUserService {
 
     // --------------------- Update ChatId Method ---------------------
 
-    public TelegramUser updateTelegramUser(Long id, TelegramUser telegramUser) {
-        // Get all the data by id
-        Optional<TelegramUser> telegramUserData = telegramUserRepository.findById(id);
-        // If data exists then update the chatIds
-        if(telegramUserData.isPresent()){
-            TelegramUser User = telegramUserData.get();
-            User.setChatId(telegramUser.getChatId());
-            return telegramUserRepository.save(User);
-
-        }else{
-
-            return null;
+    public String updateChatId(Long id, TelegramUser telegramUser) {
+        Long chatId = telegramUser.getChatId();
+        try{
+            telegramUserRepository.updateChatIdByTelegramUserId(id, chatId);
+            return "ChatId updated successfully";
+        }
+        catch (Exception e){
+            return "ChatId update failed";
         }
     }
 }
