@@ -44,11 +44,17 @@ public class TelegramUserService {
         return telegramUserRepository.existsByTelegramName(TelegramName);
     }
 
+    // --------------------- Get Telegram ID by Telegram User name  ---------------------
+
+    public Integer findTelegramUserId(String TelegramName){
+        return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
+    }
+
     // --------------------- Get Telegram User Info Method ---------------------
 
-    public TelegramUser getTelegramUserInfo(String TelegramName){
-        return telegramUserRepository.findByTelegramNameIs(TelegramName);
-    }
+    // public TelegramUser getTelegramUserInfo(String TelegramName){
+    //     return telegramUserRepository.findByTelegramNameIs(TelegramName);
+    // }
 
     // --------------------- Update ChatId Method ---------------------
 

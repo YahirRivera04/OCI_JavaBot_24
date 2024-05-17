@@ -17,7 +17,8 @@ import javax.transaction.Transactional;
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
     
     Boolean existsByTelegramName(String telegramName);
-    TelegramUser findByTelegramNameIs(String telegramName);
-
-
+    
+    //TelegramUser findByTelegramNameIs(String telegramName);
+    // Get telegram id by telegram user name
+    Integer findTelegramUserIdByTelegramName(String telegramName);
 }
