@@ -126,10 +126,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				ResponseEntity<Integer> userId = getTelegramUserId(responseFromUser);
 				telegramUser.setChatId(chatId);
 				
-				Integer temp = userId.getBody();
-				telegramUser.setID(temp != null ? temp : 0);
+				telegramUser.setID(userId.getBody());
 
-				if(telegramUser.getID() != 0){
+				if(telegramUser.getID() != null){
 					sendMessage("User found", chatId);
 				}
 				else{
