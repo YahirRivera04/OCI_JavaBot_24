@@ -30,14 +30,9 @@ public class TaskController {
     }
 
     // ## Get ##
-    @GetMapping(value = "/task/{id}")
-    public ResponseEntity<Task> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<Task> responseEntity = TaskService.getItemById(id);
-            return new ResponseEntity<Task>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(value = "/task/tasklist/{id}")
+    public ResponseEntity<List<String>> findTaskList(@PathVariable int TelegramUserId){
+        return ResponseEntity.ok(TaskService.findTaskList(TelegramUserId));
     }
 
     // ## Update ##
