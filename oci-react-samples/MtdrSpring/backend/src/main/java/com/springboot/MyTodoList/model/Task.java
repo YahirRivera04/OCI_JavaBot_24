@@ -9,24 +9,24 @@ import javax.persistence.*;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TaskId")
+    @Column(name = "TASKID")
     int ID;
-    @Column(name = "Name")
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
-    @Column(name = "EstimatedHours")
+    @Column(name = "ESTIMATEDHOURS")
     float estimatedHours;
-    @Column(name = "Priority")
+    @Column(name = "PRIORITY")
     int priority;
     @ManyToOne
-    @JoinColumn(name = "TelegramUserId")
+    @JoinColumn(name = "TELEGRAMUSERID")
     TelegramUser telegramUser;
     @ManyToOne
-    @JoinColumn(name = "SprintId")
+    @JoinColumn(name = "SPRINTID")
     Sprint sprint;
     @ManyToOne
-    @JoinColumn(name = "TaskStatusId")
+    @JoinColumn(name = "TASKSTATUSID")
     TaskStatus taskStatus;
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
