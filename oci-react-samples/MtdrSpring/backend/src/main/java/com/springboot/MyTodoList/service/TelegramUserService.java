@@ -45,8 +45,9 @@ public class TelegramUserService {
     }
 
     // --------------------- Get Telegram User Info Method ---------------------
-    public TelegramUser getTelegramUserInfo(String TelegramName){
-        return telegramUserRepository.findDistinctByTelegramName(TelegramName);
+
+    public List<TelegramUser> getTelegramUserInfo(String TelegramName){
+        return telegramUserRepository.findByTelegramName(TelegramName);
     }
 
     // --------------------- Update ChatId Method ---------------------

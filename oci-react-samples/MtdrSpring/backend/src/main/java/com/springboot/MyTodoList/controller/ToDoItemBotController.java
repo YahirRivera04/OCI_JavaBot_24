@@ -126,8 +126,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				
 				ResponseEntity<TelegramUser> telegramUserInfo = getTelegramUserInfo(responseFromUser);
 				telegramUser = telegramUserInfo.getBody();
+
+				sendMessage(telegramUserInfo.getBody().toString(), chatId);
 				
-				sendMessage(telegramUserInfo.getHeaders().toString(), chatId);
 
 				// if(telegramUser != null){
 				// 	if(telegramUser.getName().toString().equals(responseFromUser)){
@@ -165,8 +166,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	// Get Telegram User Id from database
 	public ResponseEntity<TelegramUser> getTelegramUserInfo(String TelegramName){
 		try{
-            TelegramUser telegramUser = telegramUserService.getTelegramUserInfo(TelegramName);
-            return new ResponseEntity<>(telegramUser, HttpStatus.OK);
+            return new ResponseEntity<>(telegramUserService.getTelegramUserInfo(TelegramName).getFirst(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }	

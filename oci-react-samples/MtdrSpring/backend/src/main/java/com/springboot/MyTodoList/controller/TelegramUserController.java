@@ -38,8 +38,7 @@ public class TelegramUserController {
     @GetMapping(value = "/telegramuser/telegramuserinfo/{TelegramName}")
     public ResponseEntity<TelegramUser> getTelegramUserInfo(@PathVariable String TelegramName){
         try{
-            TelegramUser telegramUser = TelegramUserService.getTelegramUserInfo(TelegramName);
-            return new ResponseEntity<>(telegramUser, HttpStatus.OK);
+            return new ResponseEntity<>(TelegramUserService.getTelegramUserInfo(TelegramName).getFirst(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

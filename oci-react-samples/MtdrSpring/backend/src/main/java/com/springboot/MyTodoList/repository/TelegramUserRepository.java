@@ -18,5 +18,5 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     
     Boolean existsByTelegramName(String telegramName);
 
-    TelegramUser findDistinctByTelegramName(String telegramName);
+    List<TelegramUser> findByTelegramName(String telegramName);
 }
