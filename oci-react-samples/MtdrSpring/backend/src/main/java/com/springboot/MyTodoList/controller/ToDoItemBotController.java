@@ -127,16 +127,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				//ResponseEntity<Boolean> telegramUserExists = getUserByTelegramName(responseFromUser); telegramUserExists.getBody() == true && 
 				ResponseEntity<TelegramUser> telegramUserInfo = getTelegramUserInfo(responseFromUser);
 				telegramUser = telegramUserInfo.getBody();
+				
 				if(telegramUser != null){
 					if(telegramUser.getName().toString().equals(responseFromUser)){
 						telegramUser.setChatId(chatId);
 						updateTelegramUser(telegramUser.getID(), telegramUser);
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage().toString(), telegramUser.getChatId());
 					}				
+				}
+				else{
+					sendMessage(BotMessages.LOG_IN_FAIL.getMessage().toString(), telegramUser.getChatId());
+
 				}
 				
 				try{
 					execute(messageToTelegram);
+					sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage().toString(), telegramUser.getChatId());
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
@@ -149,7 +154,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	public String getBotUsername() {		
 		return botName;
 	}
-	
+
 	// Verify Telegram User Name from database
 	public ResponseEntity<Boolean> getUserByTelegramName(String TelegramName){
 		return ResponseEntity.ok(telegramUserService.existsByTelegramName(TelegramName));
