@@ -29,16 +29,20 @@ public class TelegramUserController {
     }
 
     // ## Verify User by TelegramName ##
-    @GetMapping(value = "/telegramuser/{TelegramName}")
+    @GetMapping(value = "/telegramuser/telegramuserexist/{TelegramName}")
     public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
             return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
     }
 
     // ## Get all Telegram User Info by Telegram Name ##
     @GetMapping(value = "/telegramuser/telegramuserinfo/{TelegramName}")
-    public ResponseEntity<TelegramUser> getTelegramUserInfo(@PathVariable String TelegramName){
+    public ResponseEntity<List<TelegramUser>> getTelegramUserInfo(@PathVariable String TelegramName){
         try{
-            return new ResponseEntity<>(TelegramUserService.getTelegramUserInfo(TelegramName).getFirst(), HttpStatus.OK);
+            List<TelegramUser> user = TelegramUserService.getTelegramUserInfo(TelegramName);
+            if(user.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -46,7 +50,7 @@ public class TelegramUserController {
 
     // ## Post ChatId ##
     //@CrossOrigin
-    @PutMapping(value = "telegramuser/{TelegramUserId}")
+    @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
     public ResponseEntity updateTelegramUser(@RequestBody TelegramUser telegramUser, @PathVariable Long id){
         try{
             TelegramUser user = TelegramUserService.updateTelegramUser(id, telegramUser);
