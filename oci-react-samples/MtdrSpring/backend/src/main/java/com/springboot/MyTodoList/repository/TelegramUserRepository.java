@@ -16,10 +16,7 @@ import javax.transaction.Transactional;
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
     
-    //Boolean existsByTelegramName(String telegramName);
-    @Query(value = "SELECT CASE WHEN EXISTS (SELECT 1 FROM TODOUSER.TELEGRAMUSER WHERE TelegramName = ?1) THEN 'true' ELSE 'false' END AS ValueExists FROM DUAL", nativeQuery = true)
-    TelegramUser existsByTelegramName(String telegramName);
-
+    Boolean existsByTelegramName(String telegramName);
 
     TelegramUser findDistinctByTelegramName(String telegramName);
 }

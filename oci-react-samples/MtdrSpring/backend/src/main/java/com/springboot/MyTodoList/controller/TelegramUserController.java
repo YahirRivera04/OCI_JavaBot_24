@@ -32,7 +32,6 @@ public class TelegramUserController {
     @GetMapping(value = "/telegramuser/{TelegramName}")
     public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
             return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
-        
     }
 
     // ## Get all Telegram User Info by Telegram Name ##
