@@ -18,5 +18,8 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     
     Boolean existsByTelegramName(String telegramName);
 
+    @Query(value = "SELECT * FROM TODOUSER.TELEGRAUSER WHERE TelegramName = ?1", nativeQuery = true)
     List<TelegramUser> findByTelegramName(String telegramName);
+
+
 }
