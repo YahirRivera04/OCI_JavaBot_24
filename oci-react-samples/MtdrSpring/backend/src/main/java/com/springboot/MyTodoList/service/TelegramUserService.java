@@ -68,10 +68,10 @@ public class TelegramUserService {
         String chatIdString = chatId.toString();
         try{
             telegramUserRepository.updateChatIdByTelegramUserId(id, chatId);
-            return "ChatId updated successfully " + idString + " " + chatIdString;
+            return "ChatId updated successfully ";
         }
         catch (Exception e){
-            return "ChatId update failed";
+            return "ChatId update failed" + idString + " " + chatIdString;
         }
     }
 }
