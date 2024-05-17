@@ -122,22 +122,24 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
-			
+				
+				// Verify Telegram User Name from database and get Telegram User Id
 				ResponseEntity<Integer> userId = getTelegramUserId(responseFromUser);
 				telegramUser.setChatId(chatId);
-				
 				telegramUser.setID(userId.getBody());
-
-				if(telegramUser.getID() != null){
-					sendMessage("User found", chatId);
-				}
-				else{
-					sendMessage("User not found", chatId);
-				}
+				// Static transform from Integer to Long
+				Long tempId = telegramUser.getID().longValue();
 
 				try{
-					
 					execute(messageToTelegram);
+					if(telegramUser.getID() != null){
+						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
+						telegramUserService.updateTelegramUser(tempId, telegramUser);
+						sendMessage("Id Updated" + telegramUser.getChatId().toString(), telegramUser.getChatId());
+					}
+					else{
+						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), telegramUser.getChatId());
+					}
 				}
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
@@ -161,17 +163,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findTelegramUserId(TelegramName));
 	}
 
-
-	// Get Telegram User Id from database
-	// public ResponseEntity<TelegramUser> getTelegramUserInfo(String TelegramName){
-	// 	try{
-	// 		TelegramUser user = telegramUserService.getTelegramUserInfo(TelegramName);
-	// 		return new ResponseEntity<>(user, HttpStatus.OK);
-	// 	}catch (Exception e){
-	// 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	// 	}
-	// }
-
+	// Get Chat Id from database
+    public ResponseEntity<Long> findChatId(@PathVariable Long id){
+        return ResponseEntity.ok(telegramUserService.fndChatIdByTelegramUserId(id));
+    }
+	
 	// Put Telegram User ChatId
     public ResponseEntity updateTelegramUser(Long id, TelegramUser telegramUser){
 		return ResponseEntity.ok(telegramUserService.updateTelegramUser(id, telegramUser));

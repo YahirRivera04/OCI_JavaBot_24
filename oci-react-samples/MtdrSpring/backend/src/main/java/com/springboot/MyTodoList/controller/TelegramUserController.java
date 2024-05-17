@@ -42,17 +42,12 @@ public class TelegramUserController {
         return ResponseEntity.ok(TelegramUserService.findTelegramUserId(TelegramName));
     }
 
+    // ## Get Chat Id by Telegram User Id ##
 
-    // ## Get all Telegram User Info by Telegram Name ##
-    // @GetMapping(value = "/telegramuser/telegramuserinfo/{TelegramName}")
-    // public ResponseEntity<TelegramUser> getTelegramUserInfo(@PathVariable String TelegramName){
-    //     try{
-    //         TelegramUser user = TelegramUserService.getTelegramUserInfo(TelegramName);
-    //         return new ResponseEntity<>(user, HttpStatus.OK);
-    //     }catch (Exception e){
-    //         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    //     }
-    // }
+    @GetMapping(value = "/telegramuser/telegramchatid/{TelegramName}")
+    public ResponseEntity<Long> findChatId(@PathVariable Long id){
+        return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
+    }
 
     // ## Post ChatId ##
     //@CrossOrigin

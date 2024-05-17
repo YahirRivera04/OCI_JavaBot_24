@@ -46,15 +46,15 @@ public class TelegramUserService {
 
     // --------------------- Get Telegram ID by Telegram User name  ---------------------
 
-    public int findTelegramUserId(String TelegramName){
+    public Integer findTelegramUserId(String TelegramName){
         return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
     }
 
-    // --------------------- Get Telegram User Info Method ---------------------
+    // --------------------- Get Caht ID by Telegram User Id  ---------------------
 
-    // public TelegramUser getTelegramUserInfo(String TelegramName){
-    //     return telegramUserRepository.findByTelegramNameIs(TelegramName);
-    // }
+    public Long fndChatIdByTelegramUserId(Long id){
+        return telegramUserRepository.fndChatIdByTelegramUserId(id);
+    }
 
     // --------------------- Update ChatId Method ---------------------
 
@@ -72,33 +72,4 @@ public class TelegramUserService {
             return null;
         }
     }
-
-
-    // // --------------------- Read Method ---------------------
-
-    // public ResponseEntity<TelegramUser> getItemById(int id){
-    //     Optional<TelegramUser> data = telegramUserRepository.findById(id);
-    //     if (data.isPresent()){
-    //         return new ResponseEntity<>(data.get(), HttpStatus.OK);
-    //     }else{
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    // }
-
-    // // --------------------- Update Method ---------------------
-
-    // public TelegramUser updateTelegramUser(int id, TelegramUser td) {
-    //     Optional<TelegramUser> data = telegramUserRepository.findById(id);
-    //     if(data.isPresent()){
-    //         TelegramUser telegramUser = data.get();
-    //         // telegramUser.setID(id);
-    //         // telegramUser.setCreation_ts(td.getCreation_ts());
-    //         // telegramUser.setDescription(td.getDescription());
-    //         // telegramUser.setDone(td.isDone());
-    //         return telegramUserRepository.save(telegramUser);
-    //     }else{
-    //         return null;
-    //     }
-    // }
-
 }
