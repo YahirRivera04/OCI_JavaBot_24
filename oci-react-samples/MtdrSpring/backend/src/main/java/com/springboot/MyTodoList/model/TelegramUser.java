@@ -10,65 +10,76 @@ import java.util.List;
 public class TelegramUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "TELEGRAMUSERID")
-    Long ID;
+    Long id;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "EMAIL")
     String email;
+    
     @Column(name = "PHONENUMBER")
     String phoneNumber;
+    
     @Column(name = "TELEGRAMNAME")
     String telegramName;
+
     @ManyToOne
     @JoinColumn(name = "USERTYPEID")
     UserType userType;
+
     @Column(name = "CHATID")
-    Long chatID;
+    Long chatId;
+    
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
-        joinColumns = @JoinColumn(name = "TelegramUserId"),  
-        inverseJoinColumns = @JoinColumn(name = "TeamId")
+        joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
+        inverseJoinColumns = @JoinColumn(name = "TEAMID")
     )
-    private Set<Team> teams; 
+    private Set<Team> teams;
+
     @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<Task> tasks;
+    
     @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
+    
     @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdates;
+    
     @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
     List<Message> messages;
     public TelegramUser() {
     }
 
-    
     public TelegramUser(Long ID, String telegramName, UserType userType, Long chatID) {
-        this.ID = ID;
+        this.id = ID;
         this.name = "No name";
         this.email = "No email";
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
         this.userType = userType;
-        this.chatID = chatID;
+        this.chatId = chatID;
     }
     public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
-        this.ID = ID;
+        this.id = ID;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
         this.userType = userType;
-        this.chatID = chatID;
+        this.chatId = chatID;
     }
 
     public Long getID() {
-        return ID;
+        return id;
     }
 
     public void setID(Long ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
     public String getName() {
@@ -112,11 +123,11 @@ public class TelegramUser {
     }
 
     public Long getChatId(){
-        return chatID;
+        return chatId;
     }
 
     public void setChatId(Long chatID){
-        this.chatID = chatID;
+        this.chatId = chatID;
     }
 
     public Set<Team> getTeams() {
@@ -146,15 +157,15 @@ public class TelegramUser {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("TelegramUser[ID=").append(ID)
+        sb.append("TelegramUser[ID=").append(id)
            .append(", Name=").append(name)
            .append(", Email=").append(email)
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
            .append(", UserType=").append(userType != null ? userType.getName() : "None")
-           .append(", ChatId=").append(chatID);
+           .append(", ChatId=").append(chatId);
 
-        if (!teams.isEmpty()) {
+        if (teams != null && !teams.isEmpty()) {
             sb.append(", Teams=[");
             Iterator<Team> iterator = teams.iterator();
             while (iterator.hasNext()) {
@@ -162,7 +173,7 @@ public class TelegramUser {
                 sb.append("Team[Name=").append(team.getName())
                    .append(", Description=").append(team.getDescription()).append("]");
                 if (iterator.hasNext()) {
-                    sb.append(", "); 
+                    sb.append(", ");
                 }
             }
             sb.append("]");

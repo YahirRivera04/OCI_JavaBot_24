@@ -110,6 +110,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findTelegramUserId(TelegramName));
 	}
 
+
+
+
+
+
 	// Get Chat Id from database
     public ResponseEntity<Long> findChatId(@PathVariable Long id){
         return ResponseEntity.ok(telegramUserService.fndChatIdByTelegramUserId(id));
@@ -123,7 +128,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 
 
-
+	
 
 	// Auxiliar Method to print messages
 	public void sendMessage(String message, Long chatID){
