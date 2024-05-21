@@ -42,9 +42,16 @@ public class TelegramUserService {
 
     // --------------------- Get Caht ID by Telegram User Id  ---------------------
 
-    public Long fndChatIdByTelegramUserId(Long telegramUserId){
-        return telegramUserRepository.fndChatIdByTelegramUserId(telegramUserId);
+    public Long findChatIdByTelegramUserId(Long telegramUserId){
+        return telegramUserRepository.findChatIdByTelegramUserId(telegramUserId);
     }
+
+    // --------------------- Get Name by Telegram User Id  ---------------------
+
+    public String findNameByTelegramUserId(Long telegramUserId){
+        return telegramUserRepository.findNameByTelegramUserId(telegramUserId);
+    }
+
 
     // --------------------- Update ChatId Method ---------------------
 

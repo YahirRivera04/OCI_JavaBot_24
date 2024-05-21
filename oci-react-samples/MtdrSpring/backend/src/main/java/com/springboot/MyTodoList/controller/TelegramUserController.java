@@ -37,12 +37,23 @@ public class TelegramUserController {
     @GetMapping(value = "/telegramuser/chatid/{TelegramUserId}")
     public ResponseEntity<Long> findChatId(@PathVariable Long telegramUserId){
         try{
-            return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(telegramUserId));
+            return ResponseEntity.ok(TelegramUserService.findChatIdByTelegramUserId(telegramUserId));
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+      // ## Get Name by Telegram User Id ##
+      @GetMapping(value = "/telegramuser/name/{TelegramUserId}")
+      public ResponseEntity<String> findName(@PathVariable Long telegramUserId){
+          try{
+              return ResponseEntity.ok(TelegramUserService.findNameByTelegramUserId(telegramUserId));
+          }
+          catch (Exception e){
+              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          }
+      }
 
     // ## Post ChatId ##
     //@CrossOrigin

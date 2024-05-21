@@ -111,14 +111,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 
-
-
-
-
 	// Get Chat Id from database
     public ResponseEntity<Long> findChatId(@PathVariable Long id){
-        return ResponseEntity.ok(telegramUserService.fndChatIdByTelegramUserId(id));
+        return ResponseEntity.ok(telegramUserService.findChatIdByTelegramUserId(id));
     }
+
+
+	// Get Name from database
+    public ResponseEntity<String> findName(@PathVariable Long id){
+        return ResponseEntity.ok(telegramUserService.findNameByTelegramUserId(id));
+    }
+
+
+
 
 	// Put Telegram User ChatId
     public ResponseEntity<String> updateTelegramUser(Long id, Long chatId){
