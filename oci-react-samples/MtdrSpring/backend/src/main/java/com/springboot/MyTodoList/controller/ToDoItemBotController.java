@@ -86,8 +86,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							sendMessage(response.getBody(), telegramUser.getChatId());
 						}
 						catch(Exception e){
-							logger.error( "################################" + e.getLocalizedMessage() + "################################", e);
+							sendMessage(e.getLocalizedMessage().toString(), telegramUser.getChatId());
+							logger.error( e.getLocalizedMessage(), e);
 						}
+						
 						
 					}
 					else{
