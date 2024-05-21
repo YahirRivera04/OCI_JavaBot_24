@@ -55,15 +55,15 @@ public class TelegramUserService {
 
     // --------------------- Get Caht ID by Telegram User Id  ---------------------
 
-    public Long fndChatIdByTelegramUserId(Long id){
-        return telegramUserRepository.fndChatIdByTelegramUserId(id);
+    public Long fndChatIdByTelegramUserId(Long telegramUserId){
+        return telegramUserRepository.fndChatIdByTelegramUserId(telegramUserId);
     }
 
     // --------------------- Update ChatId Method ---------------------
 
-    public String updateChatId(Long id, Long chatId) {
+    public String updateChatId(Long telegramUserId, Long chatId) {
         try{
-            telegramUserRepository.setChatIdByTelegramUserId(id, chatId);
+            telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
             return "ChatId updated successfully ";
         }
         catch (Exception e){

@@ -81,6 +81,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
 						
 						// Update Telegram User ChatId
+						sendMessage("User Id retrieved " + telegramUser.getID().toString(), telegramUser.getChatId());
 						ResponseEntity<String> response = updateTelegramUser(telegramUser.getID(), telegramUser.getChatId());
 						sendMessage(response.getBody(), telegramUser.getChatId());
 					}
@@ -128,7 +129,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 
 
-	
+
 
 	// Auxiliar Method to print messages
 	public void sendMessage(String message, Long chatID){

@@ -46,9 +46,9 @@ public class TelegramUserController {
 
     // ## Get Chat Id by Telegram User Id ##
     @GetMapping(value = "/telegramuser/telegramchatid/{TelegramUserId}")
-    public ResponseEntity<Long> findChatId(@PathVariable Long id){
+    public ResponseEntity<Long> findChatId(@PathVariable Long telegramUserId){
         try{
-            return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
+            return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(telegramUserId));
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,9 +58,9 @@ public class TelegramUserController {
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
-    public ResponseEntity<String> updateTelegramUser( @PathVariable Long id, @RequestBody Long chatId){
+    public ResponseEntity<String> updateTelegramUser( @PathVariable Long telegramUserId, @RequestBody Long chatId){
         try {
-            return ResponseEntity.ok(TelegramUserService.updateChatId(id, chatId));
+            return ResponseEntity.ok(TelegramUserService.updateChatId(telegramUserId, chatId));
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
