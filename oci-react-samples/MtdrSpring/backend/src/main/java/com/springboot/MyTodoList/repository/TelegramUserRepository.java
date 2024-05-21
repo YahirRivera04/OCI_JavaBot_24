@@ -33,6 +33,6 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
 
     // Set chat id by telegram user id
     @Query(value = "UPDATE TODOUSER.TELEGRAMUSER SET ChatId = ?2 WHERE TelegramUserId = ?1", nativeQuery = true)
-    void setChatIdByTelegramUserId(Long telegramUserId, Long chatId);
+    Boolean setChatIdByTelegramUserId(Long telegramUserId, Long chatId);
 
 }
