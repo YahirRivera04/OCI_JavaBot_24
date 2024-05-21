@@ -49,7 +49,6 @@ public class TelegramUserService {
     // --------------------- Update ChatId Method ---------------------
 
     public String updateChatId(Long telegramUserId, Long chatId) {
-
         try{
             telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
             return "ChatId updated successfully ";

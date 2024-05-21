@@ -80,17 +80,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					if(telegramUser.getID() != null){
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
 						
-						// Update Telegram User ChatId
-						try{
-							ResponseEntity<String> response = updateTelegramUser(telegramUser.getID(), telegramUser.getChatId());
-							sendMessage(response.getBody(), telegramUser.getChatId());
-						}
-						catch(Exception e){
-							sendMessage(e.getLocalizedMessage().toString(), telegramUser.getChatId());
-							logger.error( e.getLocalizedMessage(), e);
-						}
-						
-						
+						// Update Telegram User ChatId					
+						ResponseEntity<String> response = updateTelegramUser(telegramUser.getID(), telegramUser.getChatId());
+						sendMessage(response.getBody(), telegramUser.getChatId());
 					}
 					else{
 						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), telegramUser.getChatId());
