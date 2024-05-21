@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+
 @RestController
 public class TelegramUserController {
     @Autowired
@@ -21,7 +22,7 @@ public class TelegramUserController {
     @GetMapping
     public ResponseEntity<String> checkIfTableExists(){
         try {
-            return new ResponseEntity<String>(TelegramUserService.checkIfTableExists(), HttpStatus.OK);
+            return new ResponseEntity<String>(TelegramUserService.checkIfTableExists("TelegramUser"), HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<String>("Table does not exist" + e.getMessage(), HttpStatus.NOT_FOUND);
@@ -41,16 +42,28 @@ public class TelegramUserController {
         return ResponseEntity.ok(TelegramUserService.findTelegramUserId(TelegramName));
     }
 
+    
+
     // ## Get Chat Id by Telegram User Id ##
     @GetMapping(value = "/telegramuser/telegramchatid/{TelegramUserId}")
     public ResponseEntity<Long> findChatId(@PathVariable Long id){
-        return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
+        try{
+            return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
     public ResponseEntity<String> updateTelegramUser( @PathVariable Long id, @RequestBody Long chatId){
-        return ResponseEntity.ok(TelegramUserService.updateChatId(id, chatId));
+        try {
+            return ResponseEntity.ok(TelegramUserService.updateChatId(id, chatId));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.service.TaskService;
 import com.springboot.MyTodoList.service.TelegramUserService;
@@ -43,8 +44,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			long chatId = update.getMessage().getChatId();
 
 			TelegramUser telegramUser = new TelegramUser();
-			Long UserId = null;
-
 			
 			// If the bot detects the start command
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){

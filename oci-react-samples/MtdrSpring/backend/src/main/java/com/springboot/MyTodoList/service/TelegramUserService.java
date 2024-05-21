@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.mockito.Mockito.timeout;
 
 import java.util.List;
 import java.util.Optional;
-
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.ToDoItem;
 import com.springboot.MyTodoList.repository.TelegramUserRepository;
@@ -29,10 +29,9 @@ public class TelegramUserService {
     }
 
     // --------------------- Check Table Exists Method ---------------------
-    public String checkIfTableExists(){
+    public String checkIfTableExists(String tableName){
         try {
-            telegramUserRepository.findTable();
-            if(telegramUserRepository.findTable().isEmpty()){
+            if(telegramUserRepository.existsTablebyTableName(tableName) == false){
                 return "Table does not exist";
             }
             return "TelegramUser Table Exists and is accesible";
@@ -67,12 +66,12 @@ public class TelegramUserService {
         try{
             telegramUser.setChatId(chatId);
             telegramUser.setID(id);
+            telegramUser.setName("Yahir_Rivera04");
             telegramUserRepository.save(telegramUser);
-
             return "ChatId updated successfully ";
         }
         catch (Exception e){
-            return "ChatId update failed";
+            return "ChatId update failed" + e.getMessage();
         }
     }
 }

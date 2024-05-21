@@ -17,8 +17,7 @@ import javax.transaction.Transactional;
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
     
     // Check if table exists
-    @Query(value = "SELECT * FROM TODOUSER.TELEGRAMUSER", nativeQuery = true)
-    List<TelegramUser> findTable();
+    Boolean existsTablebyTableName(String tableName);
 
     // Verify if user exists by telegram name
     Boolean existsByTelegramName(String telegramName);
