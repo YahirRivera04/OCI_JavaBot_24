@@ -9,10 +9,13 @@ public class TeamType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TeamTypeId")
     int ID;
+
     @Column(name = "Name")
     String name;
+    
     @Column(name = "Description")
     String description;
+    
     @OneToMany(mappedBy = "teamType", cascade = CascadeType.ALL)
     List<Team> teams;  
     public TeamType(){

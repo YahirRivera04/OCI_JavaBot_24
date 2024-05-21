@@ -9,20 +9,25 @@ import javax.persistence.*;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "TeamId")
     int ID;
+    
     @Column(name = "Name")
     String name;
+    
     @Column(name = "Description")
     String description;
+    
     @ManyToOne
     @JoinColumn(name = "TeamTypeId")
     TeamType teamType;
+
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
-        joinColumns = @JoinColumn(name = "TeamId"),  
-        inverseJoinColumns = @JoinColumn(name = "TelegramUserId")
+        joinColumns = @JoinColumn(name = "TEAMID"),  
+        inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
     )
     private Set<TelegramUser> telegramUsers;
 
