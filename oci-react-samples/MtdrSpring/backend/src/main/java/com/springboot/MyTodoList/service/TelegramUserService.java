@@ -62,15 +62,24 @@ public class TelegramUserService {
     // --------------------- Update ChatId Method ---------------------
 
     public String updateChatId(Long telegramUserId, Long chatId) {
-        Boolean response = telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
-        try{
-            if (response == false){
-                return "ChatId update failed";
-            }
-            return "ChatId updated successfully ";
+        //Boolean response = telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
+        // try{
+        //     if (response == false){
+        //         return "ChatId update failed";
+        //     }
+        //     return "ChatId updated successfully ";
+        // }
+        TelegramUser telegramUser = new TelegramUser();
+        telegramUser.setChatId(chatId);
+        telegramUser.setID(telegramUserId);
+        
+        try{    
+            telegramUserRepository.save(telegramUser);
+            return "ChatId updated successfully " + telegramUserRepository.save(telegramUser).getMessages().toString();
+            
         }
         catch (Exception e){
-            return "ChatId update failed " + e.getMessage();
+            return "ChatId update failed " + e.getMessage() + ". " + telegramUserRepository.save(telegramUser).getMessages().toString();
         }
     }
 }
