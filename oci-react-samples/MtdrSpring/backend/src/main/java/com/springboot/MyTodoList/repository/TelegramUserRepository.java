@@ -23,16 +23,11 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     // Verify if user exists by telegram name
     Boolean existsByTelegramName(String telegramName);
 
-    // get telegram id by telegram user name
+    // Get telegram id by telegram user name
     @Query(value = "SELECT telegramUserId FROM TODOUSER.TELEGRAMUSER WHERE telegramName = ?1", nativeQuery = true)
-    Integer findTelegramUserIdByTelegramName(String telegramName);
+    Long findTelegramUserIdByTelegramName(String telegramName);
 
-    // get chat id by telegram user id
+    // Get chat id by telegram user id
     @Query(value = "SELECT chatId FROM TODOUSER.TELEGRAMUSER WHERE telegramUserId = ?1", nativeQuery = true)
     Long fndChatIdByTelegramUserId(Long id);
-
-    // post chat id by telegram user id
-    @Query(value = "UPDATE TODOUSER.TELEGRAMUSER SET chatId = ?2 WHERE telegramUserId = ?1", nativeQuery = true)
-    void updateChatIdByTelegramUserId(Long id, Long chatId);
-
 }

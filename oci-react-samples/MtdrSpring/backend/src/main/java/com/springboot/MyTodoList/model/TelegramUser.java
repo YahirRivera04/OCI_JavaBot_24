@@ -11,7 +11,7 @@ public class TelegramUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TELEGRAMUSERID")
-    Integer ID;
+    Long ID;
     @Column(name = "NAME")
     String name;
     @Column(name = "EMAIL")
@@ -44,7 +44,7 @@ public class TelegramUser {
     }
 
     
-    public TelegramUser(Integer ID, String telegramName, UserType userType, Long chatID) {
+    public TelegramUser(Long ID, String telegramName, UserType userType, Long chatID) {
         this.ID = ID;
         this.name = "No name";
         this.email = "No email";
@@ -53,7 +53,7 @@ public class TelegramUser {
         this.userType = userType;
         this.chatID = chatID;
     }
-    public TelegramUser(Integer ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
+    public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
         this.ID = ID;
         this.name = name;
         this.email = email;
@@ -63,11 +63,11 @@ public class TelegramUser {
         this.chatID = chatID;
     }
 
-    public Integer getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(Integer ID) {
+    public void setID(Long ID) {
         this.ID = ID;
     }
 

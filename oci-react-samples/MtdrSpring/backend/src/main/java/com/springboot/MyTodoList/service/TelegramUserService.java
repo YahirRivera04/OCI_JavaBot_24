@@ -50,7 +50,7 @@ public class TelegramUserService {
 
     // --------------------- Get Telegram ID by Telegram User name  ---------------------
 
-    public Integer findTelegramUserId(String TelegramName){
+    public Long findTelegramUserId(String TelegramName){
         return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
     }
 
@@ -63,14 +63,16 @@ public class TelegramUserService {
     // --------------------- Update ChatId Method ---------------------
 
     public String updateChatId(Long id, Long chatId) {
-        String idString = id.toString();
-        String chatIdString = chatId.toString();
+        TelegramUser telegramUser = new TelegramUser();
         try{
-            telegramUserRepository.updateChatIdByTelegramUserId(id, chatId);
+            telegramUser.setChatId(chatId);
+            telegramUser.setID(id);
+            telegramUserRepository.save(telegramUser);
+
             return "ChatId updated successfully ";
         }
         catch (Exception e){
-            return "ChatId update failed" + idString + " " + chatIdString;
+            return "ChatId update failed";
         }
     }
 }

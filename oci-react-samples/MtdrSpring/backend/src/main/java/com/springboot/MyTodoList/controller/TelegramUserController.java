@@ -36,15 +36,13 @@ public class TelegramUserController {
 
 
     // ## Get telegram id by telegram user name ##
-
     @GetMapping(value = "/telegramuser/telegramuserid/{TelegramName}")
-    public ResponseEntity<Integer> getTelegramUserId(@PathVariable String TelegramName){
+    public ResponseEntity<Long> getTelegramUserId(@PathVariable String TelegramName){
         return ResponseEntity.ok(TelegramUserService.findTelegramUserId(TelegramName));
     }
 
     // ## Get Chat Id by Telegram User Id ##
-
-    @GetMapping(value = "/telegramuser/telegramchatid/{TelegramName}")
+    @GetMapping(value = "/telegramuser/telegramchatid/{TelegramUserId}")
     public ResponseEntity<Long> findChatId(@PathVariable Long id){
         return ResponseEntity.ok(TelegramUserService.fndChatIdByTelegramUserId(id));
     }
