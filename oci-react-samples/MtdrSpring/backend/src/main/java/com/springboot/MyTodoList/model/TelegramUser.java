@@ -165,7 +165,7 @@ public class TelegramUser {
            .append(", UserType=").append(userType != null ? userType.getName() : "None")
            .append(", ChatId=").append(chatId);
 
-        if (teams != null && !teams.isEmpty()) {
+        if (!teams.isEmpty()) {
             sb.append(", Teams=[");
             Iterator<Team> iterator = teams.iterator();
             while (iterator.hasNext()) {
@@ -173,7 +173,7 @@ public class TelegramUser {
                 sb.append("Team[Name=").append(team.getName())
                    .append(", Description=").append(team.getDescription()).append("]");
                 if (iterator.hasNext()) {
-                    sb.append(", ");
+                    sb.append(", "); 
                 }
             }
             sb.append("]");
