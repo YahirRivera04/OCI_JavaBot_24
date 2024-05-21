@@ -18,16 +18,16 @@ public class TelegramUserController {
     @Autowired
     private TelegramUserService TelegramUserService;
 
-    // ## Check Table Exists ##
-    @GetMapping
-    public ResponseEntity<String> checkIfTableExists(){
-        try {
-            return new ResponseEntity<String>(TelegramUserService.checkIfTableExists("TelegramUser"), HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<String>("Table does not exist" + e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
+    // // ## Check Table Exists ##
+    // @GetMapping
+    // public ResponseEntity<String> checkIfTableExists(){
+    //     try {
+    //         return new ResponseEntity<String>(TelegramUserService.checkIfTableExists("TelegramUser"), HttpStatus.OK);
+    //     }
+    //     catch (Exception e){
+    //         return new ResponseEntity<String>("Table does not exist" + e.getMessage(), HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
     // ## Verify User by TelegramName ##
     @GetMapping(value = "/telegramuser/telegramuserexist/{TelegramName}")
