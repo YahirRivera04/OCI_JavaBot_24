@@ -27,7 +27,7 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     Long findTelegramUserIdByTelegramName(String telegramName);
 
     // Get chat id by telegram user id
-    @Query(value = "SELECT chatId FROM TODOUSER.TELEGRAMUSER WHERE telegramUserId = ?1", nativeQuery = true)
+    @Query(value = "SELECT ChatId FROM TODOUSER.TELEGRAMUSER WHERE telegramUserId = ?1", nativeQuery = true)
     Long fndChatIdByTelegramUserId(Long id);
 
 

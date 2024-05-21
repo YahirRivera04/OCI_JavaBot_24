@@ -31,7 +31,7 @@ public class TelegramUser {
     UserType userType;
 
     @Column(name = "CHATID")
-    Long chatId;
+    Long ChatId;
     
     @ManyToMany
     @JoinTable(
@@ -62,7 +62,7 @@ public class TelegramUser {
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
         this.userType = userType;
-        this.chatId = chatID;
+        this.ChatId = chatID;
     }
     public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
         this.id = ID;
@@ -71,7 +71,7 @@ public class TelegramUser {
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
         this.userType = userType;
-        this.chatId = chatID;
+        this.ChatId = chatID;
     }
 
     public Long getID() {
@@ -123,11 +123,11 @@ public class TelegramUser {
     }
 
     public Long getChatId(){
-        return chatId;
+        return ChatId;
     }
 
     public void setChatId(Long chatID){
-        this.chatId = chatID;
+        this.ChatId = chatID;
     }
 
     public Set<Team> getTeams() {
@@ -163,7 +163,7 @@ public class TelegramUser {
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
            .append(", UserType=").append(userType != null ? userType.getName() : "None")
-           .append(", ChatId=").append(chatId);
+           .append(", ChatId=").append(ChatId);
 
         if (!teams.isEmpty()) {
             sb.append(", Teams=[");
