@@ -74,6 +74,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				
 				// Verify Telegram User Name from database and get Telegram User Id
 				telegramUser.setID(getTelegramUserId(responseFromUser).getBody());
+				telegramUser.setChatId(chatId);
 
 				try{
 					execute(messageToTelegram);
