@@ -27,19 +27,6 @@ public class TelegramUserService {
     public TelegramUserService(TelegramUserRepository telegramUserRepository) {
         this.telegramUserRepository = telegramUserRepository;
     }
-
-    // // --------------------- Check Table Exists Method ---------------------
-    // public String checkIfTableExists(String tableName){
-    //     try {
-    //         if(telegramUserRepository.existsTablebyTableName(tableName) == false){
-    //             return "Table does not exist";
-    //         }
-    //         return "TelegramUser Table Exists and is accesible";
-    //     }
-    //     catch (Exception e){
-    //         return "Table does not exist" + e.getMessage();
-    //     }
-    // }
     
     // --------------------- Read by Telegram User Method ---------------------
 
@@ -62,20 +49,14 @@ public class TelegramUserService {
     // --------------------- Update ChatId Method ---------------------
 
     public String updateChatId(Long telegramUserId, Long chatId) {
-        //Boolean response = telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
-        // try{
-        //     if (response == false){
-        //         return "ChatId update failed";
-        //     }
-        //     return "ChatId updated successfully ";
-        // }
+
         TelegramUser telegramUser = new TelegramUser();
         telegramUser.setChatId(chatId);
         telegramUser.setID(telegramUserId);
         
         try{    
             telegramUserRepository.save(telegramUser);
-            return "ChatId updated successfully " + telegramUserRepository.save(telegramUser).getMessages().toString();
+            return "ChatId updated successfully ";
             
         }
         catch (Exception e){
