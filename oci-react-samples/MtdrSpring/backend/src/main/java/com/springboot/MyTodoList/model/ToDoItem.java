@@ -21,7 +21,7 @@ public class ToDoItem {
     String description;
     @Column(name = "CREATION_TS")
     OffsetDateTime creation_ts;
-    @Column(name = "done")
+    @Column(name = "DONE")
     boolean done;
     public ToDoItem(){
 

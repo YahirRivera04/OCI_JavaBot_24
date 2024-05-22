@@ -9,30 +9,30 @@ import javax.persistence.*;
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserTypeId")
-    int ID;
-    @Column(name = "Name")
+    @Column(name = "USERTYPEID")
+    Long userTypeId;
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
     List<TelegramUser> telegramUsers; 
-    @OneToMany(mappedBy = "userType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "botMenuId", cascade = CascadeType.ALL)
     List<BotMenu> botMenus; 
     public UserType(){
     }
-    public UserType(int ID, String name ,String description) {
-        this.ID = ID;
+    public UserType(Long ID, String name ,String description) {
+        this.userTypeId = ID;
         this.name = name;
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return userTypeId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.userTypeId = ID;
     }
     public String getName() {
         return name;
@@ -61,7 +61,7 @@ public class UserType {
     @Override
     public String toString() {
         return "UserType{" +
-                "ID=" + ID +
+                "ID=" + userTypeId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

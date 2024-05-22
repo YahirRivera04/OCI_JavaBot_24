@@ -7,31 +7,31 @@ import javax.persistence.*;
 public class TeamType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TeamTypeId")
-    int ID;
+    @Column(name = "TEAMTYPEID")
+    Long teamTypeId;
 
-    @Column(name = "Name")
+    @Column(name = "NAME")
     String name;
     
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "teamType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teamId", cascade = CascadeType.ALL)
     List<Team> teams;  
     public TeamType(){
     }
-    public TeamType(int ID, String name ,String description) {
-        this.ID = ID;
+    public TeamType(Long ID, String name ,String description) {
+        this.teamTypeId = ID;
         this.name = name;
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return teamTypeId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.teamTypeId = ID;
     }
     public String getName() {
         return name;
@@ -56,7 +56,7 @@ public class TeamType {
     @Override
     public String toString() {
         return "TeamType{" +
-                "ID=" + ID +
+                "ID=" + teamTypeId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

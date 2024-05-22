@@ -10,7 +10,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TASKID")
-    int ID;
+    Long taskId;
     @Column(name = "NAME")
     String name;
     @Column(name = "DESCRIPTION")
@@ -20,22 +20,22 @@ public class Task {
     @Column(name = "PRIORITY")
     int priority;
     @ManyToOne
-    @JoinColumn(name = "TELEGRAMUSERID")
+    @JoinColumn(name = "telegramUserId")
     TelegramUser telegramUser;
     @ManyToOne
-    @JoinColumn(name = "SPRINTID")
+    @JoinColumn(name = "sprintId")
     Sprint sprint;
     @ManyToOne
-    @JoinColumn(name = "TASKSTATUSID")
+    @JoinColumn(name = "taskStatusId")
     TaskStatus taskStatus;
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
 
     public Task(){
 
     }
-    public Task(int ID, String name, String description, float estimatedHours, int priority, TelegramUser telegramUser, Sprint sprint, TaskStatus taskStatus) {
-        this.ID = ID;
+    public Task(Long ID, String name, String description, float estimatedHours, int priority, TelegramUser telegramUser, Sprint sprint, TaskStatus taskStatus) {
+        this.taskId = ID;
         this.name = name;
         this.description = description;
         this.estimatedHours = estimatedHours;
@@ -45,12 +45,12 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return taskId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.taskId = ID;
     }
 
     public String getName() {
@@ -116,7 +116,7 @@ public class Task {
     @Override
     public String toString() {
         return "ToDoItem{" +
-                "ID=" + ID +
+                "ID=" + taskId +
                 ", Name='" + name + '\'' +
                 ", Description=" + description +
                 ", Estimated Hours=" + estimatedHours +

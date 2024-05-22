@@ -22,9 +22,9 @@ public class Sprint {
     @ManyToOne
     @JoinColumn(name = "PROJECTID")
     Project project;
-    @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
     List<Task> tasks;
-    @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdates;  
     public Sprint(){
 

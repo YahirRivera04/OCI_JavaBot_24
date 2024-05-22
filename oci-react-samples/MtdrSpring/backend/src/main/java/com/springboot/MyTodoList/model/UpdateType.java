@@ -9,32 +9,32 @@ import javax.persistence.*;
 public class UpdateType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UpdateTypeId")
-    int ID;
-    @Column(name = "Name")
+    @Column(name = "UPDATETYPEID")
+    Long updateTypeId;
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "updateType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdates;
-    @OneToMany(mappedBy = "updateType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdates;
     
 
     public UpdateType(){
     }
-    public UpdateType(int ID, String name ,String description) {
-        this.ID = ID;
+    public UpdateType(Long ID, String name ,String description) {
+        this.updateTypeId = ID;
         this.name = name;
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return updateTypeId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.updateTypeId = ID;
     }
     public String getName() {
         return name;
@@ -63,7 +63,7 @@ public class UpdateType {
     @Override
     public String toString() {
         return "UpdateType{" +
-                "ID=" + ID +
+                "ID=" + updateTypeId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

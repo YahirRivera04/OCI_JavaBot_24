@@ -10,42 +10,42 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     
-    @Column(name = "TeamId")
-    int ID;
+    @Column(name = "TEAMID")
+    Long teamId;
     
-    @Column(name = "Name")
+    @Column(name = "NAME")
     String name;
     
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
     
     @ManyToOne
-    @JoinColumn(name = "TeamTypeId")
+    @JoinColumn(name = "teamTypeId")
     TeamType teamType;
 
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
-        joinColumns = @JoinColumn(name = "TEAMID"),  
-        inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
+        joinColumns = @JoinColumn(name = "teamId"),  
+        inverseJoinColumns = @JoinColumn(name = "telegramUserId")
     )
     private Set<TelegramUser> telegramUsers;
 
     public Team(){
     }
-    public Team(int ID, String name ,String description, TeamType teamType) {
-        this.ID = ID;
+    public Team(Long ID, String name ,String description, TeamType teamType) {
+        this.teamId = ID;
         this.name = name;
         this.description = description;
         this.teamType = teamType;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return teamId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.teamId = ID;
     }
     public String getName() {
         return name;
@@ -74,7 +74,7 @@ public class Team {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Team[ID=").append(ID)
+        sb.append("Team[ID=").append(teamId)
            .append(", Name=").append(name)
            .append(", Description=").append(description)
            .append(", TeamType=").append(teamType != null ? teamType.getName() : "None");

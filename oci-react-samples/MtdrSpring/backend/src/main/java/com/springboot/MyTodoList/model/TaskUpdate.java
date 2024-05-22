@@ -9,37 +9,37 @@ import javax.persistence.*;
 public class TaskUpdate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TaskUpdateId")
-    int ID;
+    @Column(name = "TASKUPDATEID")
+    Long taskUpdateId;
     @Column(name = "TIMESTAMP")
     OffsetDateTime timeStamp;
     @ManyToOne
-    @JoinColumn(name = "UpdateTypeId")
+    @JoinColumn(name = "updateTypeId")
     UpdateType updateType;
     @ManyToOne
-    @JoinColumn(name = "TaskId")
+    @JoinColumn(name = "taskId")
     Task task;
     @ManyToOne
-    @JoinColumn(name = "TelegramUserId")
+    @JoinColumn(name = "telegramUserId")
     TelegramUser telegramUser;
 
     public TaskUpdate(){
 
     }
-    public TaskUpdate(int ID, OffsetDateTime timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
-        this.ID = ID;
+    public TaskUpdate(Long ID, OffsetDateTime timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
+        this.taskUpdateId = ID;
         this.timeStamp = timeStamp;
         this.updateType = updateType;
         this.task = task;
         this.telegramUser = telegramUser;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return taskUpdateId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.taskUpdateId = ID;
     }
 
     public OffsetDateTime getTimeStamp() {
@@ -78,7 +78,7 @@ public class TaskUpdate {
     @Override
     public String toString() {
         return "ToDoItem{" +
-                "ID=" + ID +
+                "ID=" + taskUpdateId +
                 ", TIMESTAMP=" + timeStamp +
                 ", Update Type=" + updateType.getName() +
                 ", Task=" + task.getName() +

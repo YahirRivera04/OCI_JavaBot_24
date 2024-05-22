@@ -9,29 +9,29 @@ import javax.persistence.*;
 public class TaskStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TaskStatusId")
-    int ID;
-    @Column(name = "Name")
+    @Column(name = "TASKSTATUSID")
+    Long taskStatusId;
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
     List<Task> tasks;
 
     public TaskStatus(){
     }
-    public TaskStatus(int ID, String name ,String description) {
-        this.ID = ID;
+    public TaskStatus(Long ID, String name ,String description) {
+        this.taskStatusId = ID;
         this.name = name;
         this.description = description;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return taskStatusId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.taskStatusId = ID;
     }
     public String getName() {
         return name;
@@ -56,7 +56,7 @@ public class TaskStatus {
     @Override
     public String toString() {
         return "Task Status{" +
-                "ID=" + ID +
+                "ID=" + taskStatusId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
