@@ -10,33 +10,33 @@ import javax.persistence.*;
 public class BotMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BotMenuId")
-    int ID;
-    @Column(name = "Name")
+    @Column(name = "BOTMENUID")
+    Long botMenuId;
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
     @ManyToOne
-    @JoinColumn(name = "UserTypeId")
+    @JoinColumn(name = "USERTYPEID")
     UserType userType;
-    @OneToMany(mappedBy = "botMenu", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "botOptionId", cascade = CascadeType.ALL)
     List<BotOption> botOptions;
     public BotMenu(){
 
     }
-    public BotMenu(int ID, String name, String description, UserType userType) {
-        this.ID = ID;
+    public BotMenu(Long botMenuId, String name, String description, UserType userType) {
+        this.botMenuId = botMenuId;
         this.name = name;
         this.description = description;
         this.userType = userType;
     }
 
-    public int getID() {
-        return ID;
+    public long getID() {
+        return botMenuId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long botMenuId) {
+        this.botMenuId = botMenuId;
     }
 
     public String getName() {
@@ -70,7 +70,7 @@ public class BotMenu {
     @Override
     public String toString() {
         return "Bot Menu{" +
-                "ID=" + ID +
+                "ID=" + botMenuId +
                 ", Name='" + name + '\'' +
                 ", Descriprion=" + description +
                 ", User Type=" + userType.getName() +

@@ -6,32 +6,32 @@ import javax.persistence.*;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MessageId")
-    int ID;
-    @Column(name = "Content")
+    @Column(name = "MESSAGEID")
+    Long messageId;
+    @Column(name = "CONTENT")
     String content;
     @ManyToOne
-    @JoinColumn(name = "TelegramUserId")
-    TelegramUser telegramUser;
+    @JoinColumn(name = "TELEGRAMUSERID")
+    TelegramUser telegramUserId;
     @ManyToOne
-    @JoinColumn(name = "ConversationId")
-    Conversation conversation;
+    @JoinColumn(name = "CONVERSATIONID")
+    Conversation conversationId;
 
     public Message(){
     }
-    public Message(int ID, String content ,TelegramUser telegramUser, Conversation conversation) {
-        this.ID = ID;
+    public Message(Long ID, String content ,TelegramUser telegramUser, Conversation conversation) {
+        this.messageId = ID;
         this.content = content;
-        this.telegramUser = telegramUser;
-        this.conversation = conversation;
+        this.telegramUserId = telegramUser;
+        this.conversationId = conversation;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return messageId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.messageId = ID;
     }
 
     public String getContent() {
@@ -43,28 +43,28 @@ public class Message {
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUser;
+        return telegramUserId;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUser = telegramUser;
+        this.telegramUserId = telegramUser;
     }
 
     public Conversation getConversation() {
-        return conversation;
+        return conversationId;
     }
 
     public void setConversation(Conversation conversation) {
-        this.conversation = conversation;
+        this.conversationId = conversation;
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "ID=" + ID +
+                "ID=" + messageId +
                 ", Content='" + content + '\'' +
-                ", Telegram User='" + telegramUser.getTelegramName() + '\'' +
-                ", Conversation Id='" + conversation.getID() + '\'' +
+                ", Telegram User='" + telegramUserId.getTelegramName() + '\'' +
+                ", Conversation Id='" + conversationId.getID() + '\'' +
                 '}';
     }
 }

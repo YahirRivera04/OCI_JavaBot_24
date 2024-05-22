@@ -9,29 +9,29 @@ import java.util.List;
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ConversationId")
-    int ID;
-    @Column(name = "StartTime")
+    @Column(name = "CONVERSATIONID")
+    Long conversationId;
+    @Column(name = "STARTTIME")
     OffsetDateTime startTime;
-    @Column(name = "EndTime")
+    @Column(name = "ENDTIME")
     OffsetDateTime endTime;
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
     List<Message> messages;
     public Conversation(){
 
     }
-    public Conversation(int ID, OffsetDateTime startTime, OffsetDateTime endTime) {
-        this.ID = ID;
+    public Conversation(Long ID, OffsetDateTime startTime, OffsetDateTime endTime) {
+        this.conversationId = ID;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return conversationId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.conversationId = ID;
     }
 
     public OffsetDateTime startTime() {
@@ -53,7 +53,7 @@ public class Conversation {
     @Override
     public String toString() {
         return "Conversation{" +
-                "ID=" + ID +
+                "ID=" + conversationId +
                 ", Start time='" + startTime + '\'' +
                 ", End time=" + endTime +
                 '}';

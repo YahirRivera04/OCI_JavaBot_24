@@ -8,31 +8,31 @@ import javax.persistence.*;
 public class BotOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BotOptionId")
-    int ID;
-    @Column(name = "Text")
+    @Column(name = "BOTOPTIONID")
+    Long botOptionId;
+    @Column(name = "TEXT")
     String text;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
     @ManyToOne
-    @JoinColumn(name = "BotMenuId")
+    @JoinColumn(name = "botMenuId")
     BotMenu botMenu;
     public BotOption(){
 
     }
-    public BotOption(int ID, String text, String description, BotMenu botMenu) {
-        this.ID = ID;
+    public BotOption(Long ID, String text, String description, BotMenu botMenu) {
+        this.botOptionId = ID;
         this.text = text;
         this.description = description;
         this.botMenu = botMenu;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return botOptionId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.botOptionId = ID;
     }
 
     public String getText() {
@@ -62,7 +62,7 @@ public class BotOption {
     @Override
     public String toString() {
         return "Bot Option{" +
-                "ID=" + ID +
+                "ID=" + botOptionId +
                 ", Text='" + text + '\'' +
                 ", Descriprion=" + description +
                 ", User Type=" + botMenu.getName() +

@@ -9,18 +9,18 @@ import java.util.List;
 public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SprintId")
-    int ID;
-    @Column(name = "Name")
+    @Column(name = "SPRINTID")
+    Long sprintId;
+    @Column(name = "NAME")
     String name;
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     String description;
-    @Column(name = "StartDate")
+    @Column(name = "STARTDATE")
     OffsetDateTime startDate;
-    @Column(name = "EndDate")
+    @Column(name = "ENDDATE")
     OffsetDateTime endDate;
     @ManyToOne
-    @JoinColumn(name = "ProjectId")
+    @JoinColumn(name = "PROJECTID")
     Project project;
     @OneToMany(mappedBy = "sprint", cascade = CascadeType.ALL)
     List<Task> tasks;
@@ -29,8 +29,8 @@ public class Sprint {
     public Sprint(){
 
     }
-    public Sprint(int ID, String name, String description, OffsetDateTime startDate, OffsetDateTime endDate, Project project) {
-        this.ID = ID;
+    public Sprint(Long sprintId, String name, String description, OffsetDateTime startDate, OffsetDateTime endDate, Project project) {
+        this.sprintId = sprintId;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -38,12 +38,12 @@ public class Sprint {
         this.project = project;
     }
 
-    public int getID() {
-        return ID;
+    public Long getID() {
+        return sprintId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(Long ID) {
+        this.sprintId = ID;
     }
 
     public String getName() {
@@ -97,7 +97,7 @@ public class Sprint {
     @Override
     public String toString() {
         return "Conversation{" +
-                "ID=" + ID +
+                "ID=" + sprintId +
                 ", Start date='" + startDate + '\'' +
                 ", End date=" + endDate +
                 ", Name=" + name +
