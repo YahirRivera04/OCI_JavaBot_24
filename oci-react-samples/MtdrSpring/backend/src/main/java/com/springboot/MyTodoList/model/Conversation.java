@@ -19,7 +19,7 @@ public class Conversation {
     @Column(name = "ENDTIME")
     OffsetDateTime endTime;
     
-    @OneToMany(mappedBy = "MESSAGEID", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "CONVERSATION", cascade = CascadeType.ALL)
     List<Message> messageId;
     
     public Conversation(){
