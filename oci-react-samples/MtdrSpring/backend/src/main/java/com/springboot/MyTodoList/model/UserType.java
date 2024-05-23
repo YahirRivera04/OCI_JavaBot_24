@@ -9,18 +9,25 @@ import javax.persistence.*;
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "USERTYPEID")
     Long userTypeId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
-    List<TelegramUser> telegramUsers; 
-    @OneToMany(mappedBy = "botMenuId", cascade = CascadeType.ALL)
-    List<BotMenu> botMenus; 
+    
+    @OneToMany(mappedBy = "TELEGRAMUSERID", cascade = CascadeType.ALL)
+    List<TelegramUser> telegramUserId; 
+    
+    @OneToMany(mappedBy = "BOTMENUID", cascade = CascadeType.ALL)
+    List<BotMenu> botMenuId; 
+    
     public UserType(){
     }
+    
     public UserType(Long ID, String name ,String description) {
         this.userTypeId = ID;
         this.name = name;
@@ -51,11 +58,11 @@ public class UserType {
     }
 
     public List<TelegramUser> getTelegramUsers() {
-        return telegramUsers;
+        return telegramUserId;
     }
 
     public List<BotMenu> getBotMenus() {
-        return botMenus;
+        return botMenuId;
     }
 
     @Override

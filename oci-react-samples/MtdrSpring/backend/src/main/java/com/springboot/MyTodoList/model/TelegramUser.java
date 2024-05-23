@@ -36,22 +36,23 @@ public class TelegramUser {
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
-        joinColumns = @JoinColumn(name = "telegramUserId"),  
-        inverseJoinColumns = @JoinColumn(name = "teamId") 
+        joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
+        inverseJoinColumns = @JoinColumn(name = "TEAMID") 
     )
-    private Set<Team> teams;
+    private Set<Team> teamId;
 
-    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
-    List<Task> tasks;
+    @OneToMany(mappedBy = "TELEGRAMUSERID", cascade = CascadeType.ALL)
+    List<Task> taskId;
     
-    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
-    List<TaskUpdate> taskUpdates;
+    @OneToMany(mappedBy = "TELEGRAMUSERID", cascade = CascadeType.ALL)
+    List<TaskUpdate> taskUpdateId;
     
-    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
-    List<SprintUpdate> sprintUpdates;
+    @OneToMany(mappedBy = "TELEGRAMUSERID", cascade = CascadeType.ALL)
+    List<SprintUpdate> sprintUpdateId;
     
-    @OneToMany(mappedBy = "telegramUser", cascade = CascadeType.ALL)
-    List<Message> messages;
+    @OneToMany(mappedBy = "TELEGRAMUSERID", cascade = CascadeType.ALL)
+    List<Message> messageId;
+    
     public TelegramUser() {
     }
 
@@ -131,27 +132,27 @@ public class TelegramUser {
     }
 
     public Set<Team> getTeams() {
-        return teams;
+        return teamId;
     }
 
     public void setTeams(Set<Team> teams) {
-        this.teams = teams;
+        this.teamId = teams;
     }
 
     public List<Task> getTasks(){
-        return tasks;
+        return taskId;
     }
 
     public List<TaskUpdate> getTaskUpdates(){
-        return taskUpdates;
+        return taskUpdateId;
     }
 
     public List<SprintUpdate> getSprintUpdates(){
-        return sprintUpdates;
+        return sprintUpdateId;
     }
 
     public List<Message> getMessages(){
-        return messages;
+        return messageId;
     }
 
     @Override
@@ -165,9 +166,9 @@ public class TelegramUser {
            .append(", UserType=").append(userType != null ? userType.getName() : "None")
            .append(", ChatId=").append(ChatId);
 
-        if (!teams.isEmpty()) {
+        if (!teamId.isEmpty()) {
             sb.append(", Teams=[");
-            Iterator<Team> iterator = teams.iterator();
+            Iterator<Team> iterator = teamId.iterator();
             while (iterator.hasNext()) {
                 Team team = iterator.next();
                 sb.append("Team[Name=").append(team.getName())

@@ -10,17 +10,23 @@ import javax.persistence.*;
 public class BotMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "BOTMENUID")
     Long botMenuId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
+    
     @ManyToOne
     @JoinColumn(name = "USERTYPEID")
-    UserType userType;
-    @OneToMany(mappedBy = "botOptionId", cascade = CascadeType.ALL)
-    List<BotOption> botOptions;
+    UserType userTypeId;
+    
+    @OneToMany(mappedBy = "BOTOPTIONID", cascade = CascadeType.ALL)
+    List<BotOption> botOptionId;
+    
     public BotMenu(){
 
     }
@@ -28,7 +34,7 @@ public class BotMenu {
         this.botMenuId = botMenuId;
         this.name = name;
         this.description = description;
-        this.userType = userType;
+        this.userTypeId = userType;
     }
 
     public long getID() {
@@ -56,15 +62,15 @@ public class BotMenu {
     }
 
     public UserType getUserType() {
-        return userType;
+        return userTypeId;
     }
 
     public void setUserType(UserType userType) {
-        this.userType = userType;
+        this.userTypeId = userType;
     }
 
     public List<BotOption> getBotOptions(){
-        return botOptions;
+        return botOptionId;
     }
 
     @Override
@@ -73,7 +79,7 @@ public class BotMenu {
                 "ID=" + botMenuId +
                 ", Name='" + name + '\'' +
                 ", Descriprion=" + description +
-                ", User Type=" + userType.getName() +
+                ", User Type=" + userTypeId.getName() +
                 '}';
     }
 }

@@ -8,15 +8,19 @@ import javax.persistence.*;
 public class BotOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "BOTOPTIONID")
     Long botOptionId;
+
     @Column(name = "TEXT")
     String text;
+
     @Column(name = "DESCRIPTION")
     String description;
+
     @ManyToOne
-    @JoinColumn(name = "botMenuId")
-    BotMenu botMenu;
+    @JoinColumn(name = "BOTMENUID")
+    BotMenu botMenuId;
     
     public BotOption(){
 
@@ -25,7 +29,7 @@ public class BotOption {
         this.botOptionId = ID;
         this.text = text;
         this.description = description;
-        this.botMenu = botMenu;
+        this.botMenuId = botMenu;
     }
 
     public Long getID() {
@@ -53,11 +57,11 @@ public class BotOption {
     }
 
     public BotMenu getBotMenu() {
-        return botMenu;
+        return botMenuId;
     }
 
     public void setUserType(BotMenu botMenu) {
-        this.botMenu = botMenu;
+        this.botMenuId = botMenu;
     }
 
     @Override
@@ -66,7 +70,7 @@ public class BotOption {
                 "ID=" + botOptionId +
                 ", Text='" + text + '\'' +
                 ", Descriprion=" + description +
-                ", User Type=" + botMenu.getName() +
+                ", User Type=" + botMenuId.getName() +
                 '}';
     }
 }

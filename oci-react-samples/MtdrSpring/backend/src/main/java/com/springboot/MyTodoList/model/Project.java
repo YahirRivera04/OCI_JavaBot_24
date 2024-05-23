@@ -9,14 +9,18 @@ import javax.persistence.*;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "PROJECTID")
     Long projectId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    List<Sprint> sprints;  
+    
+    @OneToMany(mappedBy = "SPRINTID", cascade = CascadeType.ALL)
+    List<Sprint> sprintId;  
 
     public Project(){
     }
@@ -50,7 +54,7 @@ public class Project {
     }
 
     public List<Sprint> getSprints(){
-        return sprints;
+        return sprintId;
     }
 
     @Override

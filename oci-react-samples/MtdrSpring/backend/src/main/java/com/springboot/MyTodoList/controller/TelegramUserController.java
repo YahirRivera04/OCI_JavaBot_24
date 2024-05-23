@@ -18,15 +18,26 @@ public class TelegramUserController {
     @Autowired
     private TelegramUserService TelegramUserService;
 
+    // ## Get All User Info by Telegram User Id ##
 
-    // ## Verify User by TelegramName ##
+    @GetMapping(value = "/telegramuser/{TelegramUserId}")
+    public ResponseEntity<TelegramUser> getUserInfo(@PathVariable Long telegramUserId){
+        try{
+            return ResponseEntity.ok(TelegramUserService.getUserInfo(telegramUserId));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // ## Verify User by Telegram User Name ##
     @GetMapping(value = "/telegramuser/telegramuserexist/{TelegramName}")
     public ResponseEntity<Boolean> existByChatId(@PathVariable Long chatId){
             return ResponseEntity.ok(TelegramUserService.existByChatId(chatId));
     }
 
 
-    // ## Get telegram id by telegram user name ##
+    // ## Get telegram id by Telegram User Name ##
     @GetMapping(value = "/telegramuser/telegramuserid/{TelegramName}")
     public ResponseEntity<Long> getTelegramUserId(@PathVariable String TelegramName){
         return ResponseEntity.ok(TelegramUserService.findTelegramUserId(TelegramName));

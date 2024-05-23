@@ -9,16 +9,21 @@ import javax.persistence.*;
 public class UpdateType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "UPDATETYPEID")
     Long updateTypeId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
-    List<TaskUpdate> taskUpdates;
-    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
-    List<SprintUpdate> sprintUpdates;
+    
+    @OneToMany(mappedBy = "TASKUPDATEID", cascade = CascadeType.ALL)
+    List<TaskUpdate> taskUpdateId;
+    
+    @OneToMany(mappedBy = "SPRINTUPDATEID", cascade = CascadeType.ALL)
+    List<SprintUpdate> sprintUpdateId;
     
 
     public UpdateType(){
@@ -53,11 +58,11 @@ public class UpdateType {
     }
 
     public List<TaskUpdate> getTaskUpdates(){
-        return taskUpdates;
+        return taskUpdateId;
     }
 
     public List<SprintUpdate> getSprintUpdates(){
-        return sprintUpdates;
+        return sprintUpdateId;
     }
 
     @Override

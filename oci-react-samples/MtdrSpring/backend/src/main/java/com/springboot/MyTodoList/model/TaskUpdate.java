@@ -9,19 +9,24 @@ import javax.persistence.*;
 public class TaskUpdate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "TASKUPDATEID")
     Long taskUpdateId;
+    
     @Column(name = "TIMESTAMP")
     OffsetDateTime timeStamp;
+    
     @ManyToOne
-    @JoinColumn(name = "updateTypeId")
-    UpdateType updateType;
+    @JoinColumn(name = "UPDATETYPEID")
+    UpdateType updateTypeId;
+    
     @ManyToOne
-    @JoinColumn(name = "taskId")
-    Task task;
+    @JoinColumn(name = "TASKID")
+    Task taskId;
+    
     @ManyToOne
-    @JoinColumn(name = "telegramUserId")
-    TelegramUser telegramUser;
+    @JoinColumn(name = "TELEGRAMUSERID")
+    TelegramUser telegramUserId;
 
     public TaskUpdate(){
 
@@ -29,9 +34,9 @@ public class TaskUpdate {
     public TaskUpdate(Long ID, OffsetDateTime timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
         this.taskUpdateId = ID;
         this.timeStamp = timeStamp;
-        this.updateType = updateType;
-        this.task = task;
-        this.telegramUser = telegramUser;
+        this.updateTypeId = updateType;
+        this.taskId = task;
+        this.telegramUserId = telegramUser;
     }
 
     public Long getID() {
@@ -51,27 +56,27 @@ public class TaskUpdate {
     }
 
     public UpdateType getUpdateType() {
-        return updateType;
+        return updateTypeId;
     }
 
     public void setUpdateType(UpdateType updateType) {
-        this.updateType = updateType;
+        this.updateTypeId = updateType;
     }
 
     public Task getTask() {
-        return task;
+        return taskId;
     }
 
     public void setTask(Task task) {
-        this.task = task;
+        this.taskId = task;
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUser;
+        return telegramUserId;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUser = telegramUser;
+        this.telegramUserId = telegramUser;
     }
 
 
@@ -80,9 +85,9 @@ public class TaskUpdate {
         return "ToDoItem{" +
                 "ID=" + taskUpdateId +
                 ", TIMESTAMP=" + timeStamp +
-                ", Update Type=" + updateType.getName() +
-                ", Task=" + task.getName() +
-                ", Telegram User=" + telegramUser.getName() +
+                ", Update Type=" + updateTypeId.getName() +
+                ", Task=" + taskId.getName() +
+                ", Telegram User=" + telegramUserId.getName() +
                 '}';
     }
 }

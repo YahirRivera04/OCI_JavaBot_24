@@ -23,10 +23,16 @@ public class TelegramUserService {
     @Autowired
     private final TelegramUserRepository telegramUserRepository;
 
-
     public TelegramUserService(TelegramUserRepository telegramUserRepository) {
         this.telegramUserRepository = telegramUserRepository;
     }
+
+    // --------------------- Get All User Info Method ---------------------
+
+    public TelegramUser getUserInfo(Long telegramUserId) {
+        return telegramUserRepository.findById(telegramUserId).orElse(null);
+    }
+
     
     // --------------------- Read by Telegram User Method ---------------------
 

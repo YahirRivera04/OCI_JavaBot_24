@@ -16,10 +16,12 @@ public class TeamType {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "teamId", cascade = CascadeType.ALL)
-    List<Team> teams;  
+    @OneToMany(mappedBy = "TEAMID", cascade = CascadeType.ALL)
+    List<Team> teamId;  
+    
     public TeamType(){
     }
+    
     public TeamType(Long ID, String name ,String description) {
         this.teamTypeId = ID;
         this.name = name;
@@ -50,7 +52,7 @@ public class TeamType {
     }
 
     public List<Team> getTeamList(){
-        return teams;
+        return teamId;
     }
 
     @Override

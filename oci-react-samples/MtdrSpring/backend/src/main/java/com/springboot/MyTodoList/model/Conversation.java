@@ -9,14 +9,19 @@ import java.util.List;
 public class Conversation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "CONVERSATIONID")
     Long conversationId;
+    
     @Column(name = "STARTTIME")
     OffsetDateTime startTime;
+    
     @Column(name = "ENDTIME")
     OffsetDateTime endTime;
-    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
-    List<Message> messages;
+    
+    @OneToMany(mappedBy = "MESSAGEID", cascade = CascadeType.ALL)
+    List<Message> messageId;
+    
     public Conversation(){
 
     }
@@ -47,7 +52,7 @@ public class Conversation {
     }
     
     public List<Message> getMessages(){
-        return messages;
+        return messageId;
     }
 
     @Override

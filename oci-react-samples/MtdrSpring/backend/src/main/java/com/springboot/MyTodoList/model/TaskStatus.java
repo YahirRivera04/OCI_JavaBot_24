@@ -9,14 +9,18 @@ import javax.persistence.*;
 public class TaskStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "TASKSTATUSID")
     Long taskStatusId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
-    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
-    List<Task> tasks;
+    
+    @OneToMany(mappedBy = "TASKID", cascade = CascadeType.ALL)
+    List<Task> taskId;
 
     public TaskStatus(){
     }
@@ -50,7 +54,7 @@ public class TaskStatus {
     }
 
     public List<Task> getTasks(){
-        return tasks;
+        return taskId;
     }
 
     @Override

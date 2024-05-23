@@ -9,23 +9,32 @@ import java.util.List;
 public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "SPRINTID")
     Long sprintId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
+    
     @Column(name = "STARTDATE")
     OffsetDateTime startDate;
+    
     @Column(name = "ENDDATE")
     OffsetDateTime endDate;
+    
     @ManyToOne
     @JoinColumn(name = "PROJECTID")
-    Project project;
-    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
-    List<Task> tasks;
-    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
-    List<SprintUpdate> sprintUpdates;  
+    Project projectId;
+    
+    @OneToMany(mappedBy = "TASKID", cascade = CascadeType.ALL)
+    List<Task> taskId;
+    
+    @OneToMany(mappedBy = "SPRINTUPDATEID", cascade = CascadeType.ALL)
+    List<SprintUpdate> sprintUpdateId;  
+    
     public Sprint(){
 
     }
@@ -35,7 +44,7 @@ public class Sprint {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.project = project;
+        this.projectId = project;
     }
 
     public Long getID() {
@@ -79,19 +88,19 @@ public class Sprint {
     }
 
     public Project getProject() {
-        return project;
+        return projectId;
     }
 
     public void setProject(Project project) {
-        this.project = project;
+        this.projectId = project;
     }
 
     public List<Task> getTasks(){
-        return tasks;
+        return taskId;
     }
     
     public List<SprintUpdate> getSprintUpdates(){
-        return sprintUpdates;
+        return sprintUpdateId;
     }
 
     @Override
@@ -102,7 +111,7 @@ public class Sprint {
                 ", End date=" + endDate +
                 ", Name=" + name +
                 ", Description=" + description +
-                ", Project Name=" + project.getName() +
+                ", Project Name=" + projectId.getName() +
                 '}';
     }
 }

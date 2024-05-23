@@ -9,27 +9,36 @@ import javax.persistence.*;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "TASKID")
     Long taskId;
+    
     @Column(name = "NAME")
     String name;
+    
     @Column(name = "DESCRIPTION")
     String description;
+    
     @Column(name = "ESTIMATEDHOURS")
     float estimatedHours;
+    
     @Column(name = "PRIORITY")
     int priority;
+    
     @ManyToOne
-    @JoinColumn(name = "telegramUserId")
-    TelegramUser telegramUser;
+    @JoinColumn(name = "TELEGRAMUSERID")
+    TelegramUser telegramUserId;
+    
     @ManyToOne
-    @JoinColumn(name = "sprintId")
-    Sprint sprint;
+    @JoinColumn(name = "SPRINTID")
+    Sprint sprintId;
+    
     @ManyToOne
-    @JoinColumn(name = "taskStatusId")
-    TaskStatus taskStatus;
-    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
-    List<TaskUpdate> taskUpdates;
+    @JoinColumn(name = "TASKSTATUSID")
+    TaskStatus taskStatusId;
+    
+    @OneToMany(mappedBy = "TASKUPDATEID", cascade = CascadeType.ALL)
+    List<TaskUpdate> taskUpdatesId;
 
     public Task(){
 
@@ -40,9 +49,9 @@ public class Task {
         this.description = description;
         this.estimatedHours = estimatedHours;
         this.priority = priority;
-        this.telegramUser = telegramUser;
-        this.sprint = sprint;
-        this.taskStatus = taskStatus;
+        this.telegramUserId = telegramUser;
+        this.sprintId = sprint;
+        this.taskStatusId = taskStatus;
     }
 
     public Long getID() {
@@ -86,31 +95,31 @@ public class Task {
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUser;
+        return telegramUserId;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUser = telegramUser;
+        this.telegramUserId = telegramUser;
     }
 
     public Sprint getSprint() {
-        return sprint;
+        return sprintId;
     }
 
     public void setSprint(Sprint sprint) {
-        this.sprint = sprint;
+        this.sprintId = sprint;
     }
 
     public TaskStatus getTaskStatus() {
-        return taskStatus;
+        return taskStatusId;
     }
 
     public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
+        this.taskStatusId = taskStatus;
     }
 
     public List<TaskUpdate> geTaskUpdates(){
-        return taskUpdates;
+        return taskUpdatesId;
     }
 
     @Override
@@ -121,9 +130,9 @@ public class Task {
                 ", Description=" + description +
                 ", Estimated Hours=" + estimatedHours +
                 ", Priority=" + priority +
-                ", Telegram User=" + telegramUser.getName() +
-                ", Sprint=" + sprint.getName() +
-                ", Task Status=" + taskStatus.getName() +
+                ", Telegram User=" + telegramUserId.getName() +
+                ", Sprint=" + sprintId.getName() +
+                ", Task Status=" + taskStatusId.getName() +
                 '}';
     }
 }

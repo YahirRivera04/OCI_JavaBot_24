@@ -6,13 +6,17 @@ import javax.persistence.*;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     @Column(name = "MESSAGEID")
     Long messageId;
+    
     @Column(name = "CONTENT")
     String content;
+    
     @ManyToOne
     @JoinColumn(name = "TELEGRAMUSERID")
     TelegramUser telegramUserId;
+    
     @ManyToOne
     @JoinColumn(name = "CONVERSATIONID")
     Conversation conversationId;

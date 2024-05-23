@@ -20,16 +20,16 @@ public class Team {
     String description;
     
     @ManyToOne
-    @JoinColumn(name = "teamTypeId")
-    TeamType teamType;
+    @JoinColumn(name = "TEAMTYPEID")
+    TeamType teamTypeId;
 
     @ManyToMany
     @JoinTable(
         name = "USERTEAM", 
-        joinColumns = @JoinColumn(name = "teamId"),  
-        inverseJoinColumns = @JoinColumn(name = "telegramUserId")
+        joinColumns = @JoinColumn(name = "TEAMID"),  
+        inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
     )
-    private Set<TelegramUser> telegramUsers;
+    private Set<TelegramUser> telegramUserId;
 
     public Team(){
     }
@@ -37,7 +37,7 @@ public class Team {
         this.teamId = ID;
         this.name = name;
         this.description = description;
-        this.teamType = teamType;
+        this.teamTypeId = teamType;
     }
 
     public Long getID() {
@@ -64,11 +64,11 @@ public class Team {
     }
 
     public TeamType getTeamType() {
-        return teamType;
+        return teamTypeId;
     }
 
     public void setTeamType(TeamType teamType) {
-        this.teamType = teamType;
+        this.teamTypeId = teamType;
     }
 
     @Override
@@ -77,11 +77,11 @@ public class Team {
         sb.append("Team[ID=").append(teamId)
            .append(", Name=").append(name)
            .append(", Description=").append(description)
-           .append(", TeamType=").append(teamType != null ? teamType.getName() : "None");
+           .append(", TeamType=").append(teamTypeId != null ? teamTypeId.getName() : "None");
 
-        if (telegramUsers != null && !telegramUsers.isEmpty()) {
+        if (telegramUserId != null && !telegramUserId.isEmpty()) {
             sb.append(", Users=[");
-            Iterator<TelegramUser> iterator = telegramUsers.iterator();
+            Iterator<TelegramUser> iterator = telegramUserId.iterator();
             while (iterator.hasNext()) {
                 TelegramUser user = iterator.next();
                 sb.append("User[ID=").append(user.getID())
