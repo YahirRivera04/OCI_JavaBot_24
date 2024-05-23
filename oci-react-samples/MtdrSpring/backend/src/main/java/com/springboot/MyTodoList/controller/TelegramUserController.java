@@ -21,8 +21,8 @@ public class TelegramUserController {
 
     // ## Verify User by TelegramName ##
     @GetMapping(value = "/telegramuser/telegramuserexist/{TelegramName}")
-    public ResponseEntity<Boolean> getUserByTelegramName(@PathVariable String TelegramName){
-            return ResponseEntity.ok(TelegramUserService.existsByTelegramName(TelegramName));
+    public ResponseEntity<Boolean> existByChatId(@PathVariable Long chatId){
+            return ResponseEntity.ok(TelegramUserService.existByChatId(chatId));
     }
 
 
@@ -43,18 +43,7 @@ public class TelegramUserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-      // ## Get Name by Telegram User Id ##
-      @GetMapping(value = "/telegramuser/name/{TelegramUserId}")
-      public ResponseEntity<String> findName(@PathVariable Long telegramUserId){
-          try{
-              return ResponseEntity.ok(TelegramUserService.findNameByTelegramUserId(telegramUserId));
-          }
-          catch (Exception e){
-              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-          }
-      }
-
+    
     // ## Post ChatId ##
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")

@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
 
     // Verify if user exists by telegram name
-    Boolean existsByTelegramName(String telegramName);
+    Boolean existByChatId(Long chatId);
 
     // Get telegram id by telegram user name
     @Query(value = "SELECT TelegramUserId FROM TODOUSER.TELEGRAMUSER WHERE TelegramName = ?1", nativeQuery = true)
@@ -27,10 +27,6 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     // Get chat id by telegram user id
     @Query(value = "SELECT ChatId FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
     Long findChatIdByTelegramUserId(Long telegramUserId);
-
-    // Get chat id by telegram user id
-    @Query(value = "SELECT Name FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
-    String findNameByTelegramUserId(Long telegramUserId);
 
     // Set chat id by telegram user id
     @Modifying

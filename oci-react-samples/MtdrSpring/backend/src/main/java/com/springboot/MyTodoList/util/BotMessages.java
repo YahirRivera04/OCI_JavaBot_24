@@ -4,19 +4,10 @@ import org.assertj.core.error.ShouldBeWritable;
 
 public enum BotMessages {
 	
-	// Todo list messages (default)
-	HELLO_MYTODO_BOT(
-	"Hello! I'm MyTodoList Bot!\nType a new todo item below and press the send button (blue arrow), or select an option below:"),
 	BOT_REGISTERED_STARTED("Bot registered and started succesfully!"),
-	ITEM_DONE("Item done! Select /todolist to return to the list of todo items, or /start to go to the main screen."), 
-	ITEM_UNDONE("Item undone! Select /todolist to return to the list of todo items, or /start to go to the main screen."), 
-	ITEM_DELETED("Item deleted! Select /todolist to return to the list of todo items, or /start to go to the main screen."),
-	TYPE_NEW_TODO_ITEM("Type a new todo item below and press the send button (blue arrow) on the rigth-hand side."),
-	NEW_ITEM_ADDED("New item added! Select /todolist to return to the list of todo items, or /start to go to the main screen."),
-	BYE("Bye! Select /start to resume!"),
-
 	// Log in messages
-	LOG_IN_MESSAGE("Welcome to your Java Bot, please wait for the authorization. \n\n Enter your Telegram Username with format /response:TelegramUsername"),
+	WELCOME_MESSAGE("Welcome to your Java Bot, please wait for the authorization..."),
+	LOG_IN_MESSAGE("Enter your Telegram Username with format /login:TelegramUsername"),
 	LOG_IN_SUCCESS("You have successfully logged in!"),
 	LOG_IN_FAIL("Login failed! Please try again!"),
 

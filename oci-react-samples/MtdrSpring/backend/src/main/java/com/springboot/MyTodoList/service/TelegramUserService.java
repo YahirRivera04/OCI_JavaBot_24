@@ -30,8 +30,8 @@ public class TelegramUserService {
     
     // --------------------- Read by Telegram User Method ---------------------
 
-    public Boolean existsByTelegramName(String TelegramName){
-        return telegramUserRepository.existsByTelegramName(TelegramName);
+    public Boolean existByChatId(Long chatId){
+        return telegramUserRepository.existByChatId(chatId);
     }
 
     // --------------------- Get Telegram ID by Telegram User name  ---------------------
@@ -45,13 +45,6 @@ public class TelegramUserService {
     public Long findChatIdByTelegramUserId(Long telegramUserId){
         return telegramUserRepository.findChatIdByTelegramUserId(telegramUserId);
     }
-
-    // --------------------- Get Name by Telegram User Id  ---------------------
-
-    public String findNameByTelegramUserId(Long telegramUserId){
-        return telegramUserRepository.findNameByTelegramUserId(telegramUserId);
-    }
-
 
     // --------------------- Update ChatId Method ---------------------
 

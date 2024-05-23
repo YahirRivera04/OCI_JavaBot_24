@@ -17,6 +17,7 @@ public class BotOption {
     @ManyToOne
     @JoinColumn(name = "botMenuId")
     BotMenu botMenu;
+    
     public BotOption(){
 
     }
