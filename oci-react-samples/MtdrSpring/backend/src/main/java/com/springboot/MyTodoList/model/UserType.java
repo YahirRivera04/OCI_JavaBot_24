@@ -19,10 +19,10 @@ public class UserType {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "telegramUserIdFk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userTypeIdFk", cascade = CascadeType.ALL)
     List<TelegramUser> telegramUserId; 
     
-    @OneToMany(mappedBy = "botMenuIdFk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userTypeIdFk", cascade = CascadeType.ALL)
     List<BotMenu> botMenuId; 
     
     public UserType(){

@@ -19,10 +19,10 @@ public class UpdateType {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "taskUpdateIdFk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "updateTypeIdFk", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdateId;
     
-    @OneToMany(mappedBy = "sprintUpdateIdFk", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "updateTypeIdFk", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdateId;
     
 
