@@ -19,7 +19,7 @@ public class Project {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "sprintId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectIdFk", cascade = CascadeType.ALL)
     List<Sprint> sprintId;  
 
     public Project(){
