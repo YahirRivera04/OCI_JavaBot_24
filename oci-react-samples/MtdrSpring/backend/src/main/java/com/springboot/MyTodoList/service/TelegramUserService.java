@@ -37,7 +37,7 @@ public class TelegramUserService {
     // --------------------- Read by Telegram User Method ---------------------
 
     public Boolean existByChatId(Long chatId){
-        return telegramUserRepository.existByChatId(chatId);
+        return telegramUserRepository.existsByChatId(chatId);
     }
 
     // --------------------- Get Telegram ID by Telegram User name  ---------------------

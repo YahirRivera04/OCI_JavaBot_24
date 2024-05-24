@@ -27,7 +27,7 @@ public class TelegramUser {
     String telegramName;
 
     @Column(name = "CHATID")
-    Long ChatId;
+    Long chatId;
 
     @ManyToOne
     @JoinColumn(name = "USERTYPEID")
@@ -63,7 +63,7 @@ public class TelegramUser {
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
         this.userTypeIdFk = userType;
-        this.ChatId = chatID;
+        this.chatId = chatID;
     }
     public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
         this.telegramUserId = ID;
@@ -72,7 +72,7 @@ public class TelegramUser {
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
         this.userTypeIdFk = userType;
-        this.ChatId = chatID;
+        this.chatId = chatID;
     }
 
     public Long getID() {
@@ -124,11 +124,11 @@ public class TelegramUser {
     }
 
     public Long getChatId(){
-        return ChatId;
+        return chatId;
     }
 
     public void setChatId(Long chatID){
-        this.ChatId = chatID;
+        this.chatId = chatID;
     }
 
     public Set<Team> getTeams() {
@@ -164,7 +164,7 @@ public class TelegramUser {
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
            .append(", UserType=").append(userTypeIdFk != null ? userTypeIdFk.getName() : "None")
-           .append(", ChatId=").append(ChatId);
+           .append(", ChatId=").append(chatId);
 
         if (!teamId.isEmpty()) {
             sb.append(", Teams=[");
