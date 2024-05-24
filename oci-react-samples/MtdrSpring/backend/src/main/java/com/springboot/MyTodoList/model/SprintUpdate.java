@@ -18,15 +18,15 @@ public class SprintUpdate {
     
     @ManyToOne
     @JoinColumn(name = "UPDATETYPEID")
-    UpdateType updateTypeId;
+    UpdateType updateTypeIdFk;
     
     @ManyToOne
     @JoinColumn(name = "SPRINTID")
-    Sprint sprintId;
+    Sprint sprintIdFk;
     
     @ManyToOne
     @JoinColumn(name = "TELEGRAMUSERID")
-    TelegramUser telegramUserId;
+    TelegramUser telegramUserIdFk;
     
     public SprintUpdate(){
 
@@ -34,9 +34,9 @@ public class SprintUpdate {
     public SprintUpdate(Long ID, OffsetDateTime timeStamp, UpdateType updateType, Sprint sprint, TelegramUser telegramUser) {
         this.sprintUpdateId = ID;
         this.timeStamp = timeStamp;
-        this.updateTypeId = updateType;
-        this.sprintId = sprint;
-        this.telegramUserId = telegramUser;
+        this.updateTypeIdFk = updateType;
+        this.sprintIdFk = sprint;
+        this.telegramUserIdFk = telegramUser;
     }
 
     public Long getID() {
@@ -56,27 +56,27 @@ public class SprintUpdate {
     }
 
     public UpdateType getUpdateType() {
-        return updateTypeId;
+        return updateTypeIdFk;
     }
 
     public void setUpdateType(UpdateType updateType) {
-        this.updateTypeId = updateType;
+        this.updateTypeIdFk = updateType;
     }
 
     public Sprint getSprint() {
-        return sprintId;
+        return sprintIdFk;
     }
 
     public void setSprint(Sprint sprint) {
-        this.sprintId = sprint;
+        this.sprintIdFk = sprint;
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUserId;
+        return telegramUserIdFk;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUserId = telegramUser;
+        this.telegramUserIdFk = telegramUser;
     }
 
 
@@ -85,9 +85,9 @@ public class SprintUpdate {
         return "Sprint Update{" +
                 "ID=" + sprintUpdateId +
                 ", TIMESTAMP=" + timeStamp +
-                ", Update Type=" + updateTypeId.getName() +
-                ", Sprint=" + sprintId.getName() +
-                ", Telegram User=" + telegramUserId.getName() +
+                ", Update Type=" + updateTypeIdFk.getName() +
+                ", Sprint=" + sprintIdFk.getName() +
+                ", Telegram User=" + telegramUserIdFk.getName() +
                 '}';
     }
 }

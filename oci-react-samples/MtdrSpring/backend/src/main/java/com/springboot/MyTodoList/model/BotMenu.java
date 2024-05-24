@@ -22,7 +22,7 @@ public class BotMenu {
     
     @ManyToOne
     @JoinColumn(name = "USERTYPEID")
-    UserType userTypeId;
+    UserType userTypeIdFk;
     
     @OneToMany(mappedBy = "botOptionId", cascade = CascadeType.ALL)
     List<BotOption> botOptionId;
@@ -34,7 +34,7 @@ public class BotMenu {
         this.botMenuId = botMenuId;
         this.name = name;
         this.description = description;
-        this.userTypeId = userType;
+        this.userTypeIdFk = userType;
     }
 
     public long getID() {
@@ -62,11 +62,11 @@ public class BotMenu {
     }
 
     public UserType getUserType() {
-        return userTypeId;
+        return userTypeIdFk;
     }
 
     public void setUserType(UserType userType) {
-        this.userTypeId = userType;
+        this.userTypeIdFk = userType;
     }
 
     public List<BotOption> getBotOptions(){
@@ -79,7 +79,7 @@ public class BotMenu {
                 "ID=" + botMenuId +
                 ", Name='" + name + '\'' +
                 ", Descriprion=" + description +
-                ", User Type=" + userTypeId.getName() +
+                ", User Type=" + userTypeIdFk.getName() +
                 '}';
     }
 }

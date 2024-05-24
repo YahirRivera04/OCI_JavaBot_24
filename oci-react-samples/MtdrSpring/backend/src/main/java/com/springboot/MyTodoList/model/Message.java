@@ -15,19 +15,19 @@ public class Message {
     
     @ManyToOne
     @JoinColumn(name = "TELEGRAMUSERID")
-    TelegramUser telegramUserId;
+    TelegramUser telegramUserIdFk;
     
     @ManyToOne
     @JoinColumn(name = "CONVERSATIONID")
-    Conversation conversationId;
+    Conversation conversationIdFk;
 
     public Message(){
     }
     public Message(Long ID, String content ,TelegramUser telegramUser, Conversation conversation) {
         this.messageId = ID;
         this.content = content;
-        this.telegramUserId = telegramUser;
-        this.conversationId = conversation;
+        this.telegramUserIdFk = telegramUser;
+        this.conversationIdFk = conversation;
     }
 
     public Long getID() {
@@ -47,19 +47,19 @@ public class Message {
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUserId;
+        return telegramUserIdFk;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUserId = telegramUser;
+        this.telegramUserIdFk = telegramUser;
     }
 
     public Conversation getConversation() {
-        return conversationId;
+        return conversationIdFk;
     }
 
     public void setConversation(Conversation conversation) {
-        this.conversationId = conversation;
+        this.conversationIdFk = conversation;
     }
 
     @Override
@@ -67,8 +67,8 @@ public class Message {
         return "Message{" +
                 "ID=" + messageId +
                 ", Content='" + content + '\'' +
-                ", Telegram User='" + telegramUserId.getTelegramName() + '\'' +
-                ", Conversation Id='" + conversationId.getID() + '\'' +
+                ", Telegram User='" + telegramUserIdFk.getTelegramName() + '\'' +
+                ", Conversation Id='" + conversationIdFk.getID() + '\'' +
                 '}';
     }
 }

@@ -27,15 +27,15 @@ public class Task {
     
     @ManyToOne
     @JoinColumn(name = "TELEGRAMUSERID")
-    TelegramUser telegramUserId;
+    TelegramUser telegramUserIdFk;
     
     @ManyToOne
     @JoinColumn(name = "SPRINTID")
-    Sprint sprintId;
+    Sprint sprintIdFk;
     
     @ManyToOne
     @JoinColumn(name = "TASKSTATUSID")
-    TaskStatus taskStatusId;
+    TaskStatus taskStatusIdFk;
     
     @OneToMany(mappedBy = "taskUpdatesId", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdatesId;
@@ -49,9 +49,9 @@ public class Task {
         this.description = description;
         this.estimatedHours = estimatedHours;
         this.priority = priority;
-        this.telegramUserId = telegramUser;
-        this.sprintId = sprint;
-        this.taskStatusId = taskStatus;
+        this.telegramUserIdFk = telegramUser;
+        this.sprintIdFk = sprint;
+        this.taskStatusIdFk = taskStatus;
     }
 
     public Long getID() {
@@ -95,27 +95,27 @@ public class Task {
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUserId;
+        return telegramUserIdFk;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUserId = telegramUser;
+        this.telegramUserIdFk = telegramUser;
     }
 
     public Sprint getSprint() {
-        return sprintId;
+        return sprintIdFk;
     }
 
     public void setSprint(Sprint sprint) {
-        this.sprintId = sprint;
+        this.sprintIdFk = sprint;
     }
 
     public TaskStatus getTaskStatus() {
-        return taskStatusId;
+        return taskStatusIdFk;
     }
 
     public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatusId = taskStatus;
+        this.taskStatusIdFk = taskStatus;
     }
 
     public List<TaskUpdate> geTaskUpdates(){
@@ -130,9 +130,9 @@ public class Task {
                 ", Description=" + description +
                 ", Estimated Hours=" + estimatedHours +
                 ", Priority=" + priority +
-                ", Telegram User=" + telegramUserId.getName() +
-                ", Sprint=" + sprintId.getName() +
-                ", Task Status=" + taskStatusId.getName() +
+                ", Telegram User=" + telegramUserIdFk.getName() +
+                ", Sprint=" + sprintIdFk.getName() +
+                ", Task Status=" + taskStatusIdFk.getName() +
                 '}';
     }
 }

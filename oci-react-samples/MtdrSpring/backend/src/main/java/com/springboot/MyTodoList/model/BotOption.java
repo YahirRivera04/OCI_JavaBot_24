@@ -20,7 +20,7 @@ public class BotOption {
 
     @ManyToOne
     @JoinColumn(name = "BOTMENUID")
-    BotMenu botMenuId;
+    BotMenu botMenuIdFk;
     
     public BotOption(){
 
@@ -29,7 +29,7 @@ public class BotOption {
         this.botOptionId = ID;
         this.text = text;
         this.description = description;
-        this.botMenuId = botMenu;
+        this.botMenuIdFk = botMenu;
     }
 
     public Long getID() {
@@ -57,11 +57,11 @@ public class BotOption {
     }
 
     public BotMenu getBotMenu() {
-        return botMenuId;
+        return botMenuIdFk;
     }
 
     public void setUserType(BotMenu botMenu) {
-        this.botMenuId = botMenu;
+        this.botMenuIdFk = botMenu;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class BotOption {
                 "ID=" + botOptionId +
                 ", Text='" + text + '\'' +
                 ", Descriprion=" + description +
-                ", User Type=" + botMenuId.getName() +
+                ", User Type=" + botMenuIdFk.getName() +
                 '}';
     }
 }

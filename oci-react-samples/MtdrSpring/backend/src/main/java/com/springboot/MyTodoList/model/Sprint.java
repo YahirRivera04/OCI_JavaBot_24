@@ -27,7 +27,7 @@ public class Sprint {
     
     @ManyToOne
     @JoinColumn(name = "PROJECTID")
-    Project projectId;
+    Project projectIdFk;
     
     @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
     List<Task> taskId;
@@ -44,7 +44,7 @@ public class Sprint {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.projectId = project;
+        this.projectIdFk = project;
     }
 
     public Long getID() {
@@ -88,11 +88,11 @@ public class Sprint {
     }
 
     public Project getProject() {
-        return projectId;
+        return projectIdFk;
     }
 
     public void setProject(Project project) {
-        this.projectId = project;
+        this.projectIdFk = project;
     }
 
     public List<Task> getTasks(){
@@ -111,7 +111,7 @@ public class Sprint {
                 ", End date=" + endDate +
                 ", Name=" + name +
                 ", Description=" + description +
-                ", Project Name=" + projectId.getName() +
+                ", Project Name=" + projectIdFk.getName() +
                 '}';
     }
 }

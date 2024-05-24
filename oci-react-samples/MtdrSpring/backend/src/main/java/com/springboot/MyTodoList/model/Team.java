@@ -21,7 +21,7 @@ public class Team {
     
     @ManyToOne
     @JoinColumn(name = "TEAMTYPEID")
-    TeamType teamTypeId;
+    TeamType teamTypeIdFk;
 
     @ManyToMany
     @JoinTable(
@@ -37,7 +37,7 @@ public class Team {
         this.teamId = ID;
         this.name = name;
         this.description = description;
-        this.teamTypeId = teamType;
+        this.teamTypeIdFk = teamType;
     }
 
     public Long getID() {
@@ -64,11 +64,11 @@ public class Team {
     }
 
     public TeamType getTeamType() {
-        return teamTypeId;
+        return teamTypeIdFk;
     }
 
     public void setTeamType(TeamType teamType) {
-        this.teamTypeId = teamType;
+        this.teamTypeIdFk = teamType;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Team {
         sb.append("Team[ID=").append(teamId)
            .append(", Name=").append(name)
            .append(", Description=").append(description)
-           .append(", TeamType=").append(teamTypeId != null ? teamTypeId.getName() : "None");
+           .append(", TeamType=").append(teamTypeIdFk != null ? teamTypeIdFk.getName() : "None");
 
         if (telegramUserId != null && !telegramUserId.isEmpty()) {
             sb.append(", Users=[");

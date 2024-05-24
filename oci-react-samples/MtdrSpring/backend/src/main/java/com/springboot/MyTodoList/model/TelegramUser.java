@@ -31,7 +31,7 @@ public class TelegramUser {
 
     @ManyToOne
     @JoinColumn(name = "USERTYPEID")
-    UserType userTypeId;
+    UserType userTypeIdFk;
     
     @ManyToMany
     @JoinTable(
@@ -62,7 +62,7 @@ public class TelegramUser {
         this.email = "No email";
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
-        this.userTypeId = userType;
+        this.userTypeIdFk = userType;
         this.ChatId = chatID;
     }
     public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
@@ -71,7 +71,7 @@ public class TelegramUser {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
-        this.userTypeId = userType;
+        this.userTypeIdFk = userType;
         this.ChatId = chatID;
     }
 
@@ -116,11 +116,11 @@ public class TelegramUser {
     }
 
     public UserType getUserType() {
-        return userTypeId;
+        return userTypeIdFk;
     }
 
     public void setUserType(UserType userType) {
-        this.userTypeId = userType;
+        this.userTypeIdFk = userType;
     }
 
     public Long getChatId(){
@@ -163,7 +163,7 @@ public class TelegramUser {
            .append(", Email=").append(email)
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
-           .append(", UserType=").append(userTypeId != null ? userTypeId.getName() : "None")
+           .append(", UserType=").append(userTypeIdFk != null ? userTypeIdFk.getName() : "None")
            .append(", ChatId=").append(ChatId);
 
         if (!teamId.isEmpty()) {

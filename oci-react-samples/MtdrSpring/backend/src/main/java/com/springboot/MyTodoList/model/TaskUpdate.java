@@ -18,15 +18,15 @@ public class TaskUpdate {
     
     @ManyToOne
     @JoinColumn(name = "UPDATETYPEID")
-    UpdateType updateTypeId;
+    UpdateType updateTypeIdFk;
     
     @ManyToOne
     @JoinColumn(name = "TASKID")
-    Task taskId;
+    Task taskIdFk;
     
     @ManyToOne
     @JoinColumn(name = "TELEGRAMUSERID")
-    TelegramUser telegramUserId;
+    TelegramUser telegramUserIdFk;
 
     public TaskUpdate(){
 
@@ -34,9 +34,9 @@ public class TaskUpdate {
     public TaskUpdate(Long ID, OffsetDateTime timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
         this.taskUpdateId = ID;
         this.timeStamp = timeStamp;
-        this.updateTypeId = updateType;
-        this.taskId = task;
-        this.telegramUserId = telegramUser;
+        this.updateTypeIdFk = updateType;
+        this.taskIdFk = task;
+        this.telegramUserIdFk = telegramUser;
     }
 
     public Long getID() {
@@ -56,27 +56,27 @@ public class TaskUpdate {
     }
 
     public UpdateType getUpdateType() {
-        return updateTypeId;
+        return updateTypeIdFk;
     }
 
     public void setUpdateType(UpdateType updateType) {
-        this.updateTypeId = updateType;
+        this.updateTypeIdFk = updateType;
     }
 
     public Task getTask() {
-        return taskId;
+        return taskIdFk;
     }
 
     public void setTask(Task task) {
-        this.taskId = task;
+        this.taskIdFk = task;
     }
 
     public TelegramUser getTelegramUser() {
-        return telegramUserId;
+        return telegramUserIdFk;
     }
 
     public void setTelegramUser(TelegramUser telegramUser) {
-        this.telegramUserId = telegramUser;
+        this.telegramUserIdFk = telegramUser;
     }
 
 
@@ -85,9 +85,9 @@ public class TaskUpdate {
         return "ToDoItem{" +
                 "ID=" + taskUpdateId +
                 ", TIMESTAMP=" + timeStamp +
-                ", Update Type=" + updateTypeId.getName() +
-                ", Task=" + taskId.getName() +
-                ", Telegram User=" + telegramUserId.getName() +
+                ", Update Type=" + updateTypeIdFk.getName() +
+                ", Task=" + taskIdFk.getName() +
+                ", Telegram User=" + telegramUserIdFk.getName() +
                 '}';
     }
 }
