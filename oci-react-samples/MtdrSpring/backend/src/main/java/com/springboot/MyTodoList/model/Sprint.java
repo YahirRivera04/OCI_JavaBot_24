@@ -29,10 +29,10 @@ public class Sprint {
     @JoinColumn(name = "PROJECTID")
     Project projectId;
     
-    @OneToMany(mappedBy = "SPRINT", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintId", cascade = CascadeType.ALL)
     List<Task> taskId;
     
-    @OneToMany(mappedBy = "SPRINT", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintId", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdateId;  
     
     public Sprint(){

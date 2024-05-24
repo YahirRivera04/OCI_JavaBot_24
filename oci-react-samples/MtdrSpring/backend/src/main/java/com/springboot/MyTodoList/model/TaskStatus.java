@@ -19,7 +19,7 @@ public class TaskStatus {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "TASKSTATUS", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskStatusId", cascade = CascadeType.ALL)
     List<Task> taskId;
 
     public TaskStatus(){
