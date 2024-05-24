@@ -19,7 +19,7 @@ public class UserType {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "userTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
     List<TelegramUser> telegramUserId; 
     
     @OneToMany(mappedBy = "userTypeId", cascade = CascadeType.ALL)
