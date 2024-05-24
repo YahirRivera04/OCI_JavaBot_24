@@ -41,16 +41,16 @@ public class TelegramUser {
     )
     private Set<Team> teamId;
 
-    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskIdFk", cascade = CascadeType.ALL)
     List<Task> taskId;
     
-    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskUpdateIdFk", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdateId;
     
-    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintUpdateIdFk", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdateId;
     
-    @OneToMany(mappedBy = "messageId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "messageIdFk", cascade = CascadeType.ALL)
     List<Message> messageId;
     
     public TelegramUser() {
