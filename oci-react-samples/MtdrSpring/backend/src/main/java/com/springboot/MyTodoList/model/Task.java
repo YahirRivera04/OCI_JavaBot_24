@@ -37,7 +37,7 @@ public class Task {
     @JoinColumn(name = "TASKSTATUSID")
     TaskStatus taskStatusId;
     
-    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskUpdatesId", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdatesId;
 
     public Task(){

@@ -26,12 +26,12 @@ public class TelegramUser {
     @Column(name = "TELEGRAMNAME")
     String telegramName;
 
-    @ManyToOne
-    @JoinColumn(name = "USERTYPEID")
-    UserType userType;
-
     @Column(name = "CHATID")
     Long ChatId;
+
+    @ManyToOne
+    @JoinColumn(name = "USERTYPEID")
+    UserType userTypeId;
     
     @ManyToMany
     @JoinTable(
@@ -41,16 +41,16 @@ public class TelegramUser {
     )
     private Set<Team> teamId;
 
-    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
     List<Task> taskId;
     
-    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskUpdateId", cascade = CascadeType.ALL)
     List<TaskUpdate> taskUpdateId;
     
-    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sprintUpdateId", cascade = CascadeType.ALL)
     List<SprintUpdate> sprintUpdateId;
     
-    @OneToMany(mappedBy = "telegramUserId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "messageId", cascade = CascadeType.ALL)
     List<Message> messageId;
     
     public TelegramUser() {
@@ -62,7 +62,7 @@ public class TelegramUser {
         this.email = "No email";
         this.phoneNumber = "No phone Number";
         this.telegramName = telegramName;
-        this.userType = userType;
+        this.userTypeId = userType;
         this.ChatId = chatID;
     }
     public TelegramUser(Long ID, String name ,String email, String phoneNumber, String telegramName, UserType userType, Long chatID) {
@@ -71,7 +71,7 @@ public class TelegramUser {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.telegramName = telegramName;
-        this.userType = userType;
+        this.userTypeId = userType;
         this.ChatId = chatID;
     }
 
@@ -116,11 +116,11 @@ public class TelegramUser {
     }
 
     public UserType getUserType() {
-        return userType;
+        return userTypeId;
     }
 
     public void setUserType(UserType userType) {
-        this.userType = userType;
+        this.userTypeId = userType;
     }
 
     public Long getChatId(){
@@ -163,7 +163,7 @@ public class TelegramUser {
            .append(", Email=").append(email)
            .append(", PhoneNumber=").append(phoneNumber)
            .append(", TelegramName=").append(telegramName)
-           .append(", UserType=").append(userType != null ? userType.getName() : "None")
+           .append(", UserType=").append(userTypeId != null ? userTypeId.getName() : "None")
            .append(", ChatId=").append(ChatId);
 
         if (!teamId.isEmpty()) {

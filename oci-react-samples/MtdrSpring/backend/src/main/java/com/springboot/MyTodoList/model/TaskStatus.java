@@ -19,11 +19,12 @@ public class TaskStatus {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "taskStatusId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL)
     List<Task> taskId;
 
     public TaskStatus(){
     }
+    
     public TaskStatus(Long ID, String name ,String description) {
         this.taskStatusId = ID;
         this.name = name;

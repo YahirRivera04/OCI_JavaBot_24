@@ -16,7 +16,7 @@ public class TeamType {
     @Column(name = "DESCRIPTION")
     String description;
     
-    @OneToMany(mappedBy = "teamTypeId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teamId", cascade = CascadeType.ALL)
     List<Team> teamId;  
     
     public TeamType(){
