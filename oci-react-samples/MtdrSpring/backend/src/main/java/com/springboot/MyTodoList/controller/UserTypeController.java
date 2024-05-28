@@ -18,7 +18,7 @@ public class UserTypeController {
     private UserTypeService UserTypeService;
 
     // --------------------- Get User Type Info by Name Method ---------------------
-    @GetMapping(value = "/usertype/usertypeinfo/{name}")
+    @GetMapping(value = "/usertype/usertypeinfo/{Name}")
     public ResponseEntity<UserType> findUserTypeByName(@PathVariable String name){
         return ResponseEntity.ok(UserTypeService.findUserTypeByName(name));
     }

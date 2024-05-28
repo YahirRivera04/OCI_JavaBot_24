@@ -56,9 +56,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
-			// Get all the info from User Type
+
+
 			UserType userTypeManager = findUserTypeByName("Manager").getBody();
-			UserType userTypeDeveloper = findUserTypeByName("Developer").getBody();	
+			UserType userTypeDeveloper = findUserTypeByName("Developer").getBody();
+			if(userTypeDeveloper != null && userTypeManager != null){
+				sendMessage("Manager loaded " + userTypeManager.getName().toString(), chatId);
+				sendMessage("Manager loaded " + userTypeDeveloper.getName().toString(), chatId);
+			}
+			
 
 			// New Telegram User Object
 			TelegramUser telegramUser = new TelegramUser();
