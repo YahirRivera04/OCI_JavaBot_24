@@ -57,19 +57,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
-
-
-			UserType userTypeManager = findUserTypeByName("Manager").getBody();
-			UserType userTypeDeveloper = findUserTypeByName("Developer").getBody();
-
-			if(userTypeDeveloper != null && userTypeManager != null){
-				sendMessage("Manager loaded " + userTypeManager.getName().toString(), chatId);
-				sendMessage("Manager loaded " + userTypeDeveloper.getName().toString(), chatId);
-			}
-			else{
-				sendMessage("ERROR HANDELING USER TYPES", chatId);
-			}
 			
+			// New UserType Objects
+			UserType userTypeManager = new UserType();
+			UserType userTypeDeveloper = new UserType();	
 
 			// New Telegram User Object
 			TelegramUser telegramUser = new TelegramUser();
@@ -77,6 +68,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// If the bot detects the start command
 			// "/start"
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
+
+				userTypeManager = findUserTypeByName("Manager").getBody();
+				userTypeDeveloper = findUserTypeByName("Developer").getBody();
+	
+				if(userTypeDeveloper != null && userTypeManager != null){
+					sendMessage("Manager loaded " + userTypeManager.getName(), chatId);
+					sendMessage("Developer loaded " + userTypeDeveloper.getName(), chatId);
+				}
+				else{
+					sendMessage("ERROR HANDELING USER TYPES", chatId);
+				}
+
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
