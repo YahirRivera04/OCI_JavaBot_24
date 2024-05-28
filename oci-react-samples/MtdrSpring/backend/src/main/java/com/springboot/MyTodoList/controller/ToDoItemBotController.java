@@ -53,6 +53,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			Long chatId = update.getMessage().getChatId();
 			// Get the Telegram User Name from Telegram		
 			String userName = update.getMessage().getForwardFrom().getUserName();
+			sendMessage("User " + userName, chatId);
 
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
