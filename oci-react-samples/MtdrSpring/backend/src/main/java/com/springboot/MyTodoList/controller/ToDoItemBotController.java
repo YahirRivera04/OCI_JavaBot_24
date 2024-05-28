@@ -1,5 +1,6 @@
 package com.springboot.MyTodoList.controller;
 
+import org.aspectj.weaver.ast.And;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -16,33 +17,6 @@ import com.springboot.MyTodoList.service.TelegramUserService;
 import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotMessages;
-
-/*
- * CaseNumber 1
- * 
- * The user is already logged in and it's chat id is in the database.
- * Message: "Welcome Name"
- * Deploy 4 boxes to show the possible actions
- * "Show tasks, edit task, create task, delete task"
- * 
- * CaseNumber 2
- * 
- * SHOW TASK CASE
- * 
- * CaseNumber 3
- * 
- * EDIT TASK CASE
- * 
- * CaseNumber 4
- * 
- * CREATE TASK CASE
- * 
- * CaseNumber 5
- * 
- * DELETE TASK CASE
- * 
- */
-
 
 
 public class ToDoItemBotController extends TelegramLongPollingBot {
@@ -71,67 +45,93 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			Long chatId = update.getMessage().getChatId();
 			int caseNumber = 0;
+
+			// Create new user
 			TelegramUser telegramUser = new TelegramUser();
+			// Add the Chat Id to the User
+			telegramUser.setChatId(chatId);
 
 			// If the bot detects the start command
 			// "/start"
-			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
 
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
+
+			switch (caseNumber) {
+				case 1:
+					
+					// Logic for retrieve the information of the user and allow to get, modify , create and delete tasks.
+
+
+
+					break;
 				
-				try{
-					execute(messageToTelegram);
+				case 2:
 
-					// Check if the chatId exists in the database
-					if(existByChatId(chatId).getBody() == true){
-						// You have successfully logged in
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-						caseNumber = 1;
+					break;
+				
+				default:
+
+					if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
+
+						SendMessage messageToTelegram = new SendMessage();
+						messageToTelegram.setChatId(telegramUser.getChatId());
+
+						messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
+						sendMessage(existByChatId(telegramUser.getChatId()).getBody().toString(), telegramUser.getChatId());
+
+						try{
+							execute(messageToTelegram);
+		
+							// Check if the chatId exists in the database
+							if(existByChatId(telegramUser.getChatId()).getBody() == true && existByChatId(telegramUser.getChatId()).getBody() != null){
+								// You have successfully logged in
+								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+								caseNumber = 1;
+							}
+							else{
+								// Enter your Telegram Username with format /login:TelegramUsername
+								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), telegramUser.getChatId());
+							}
+						}
+						catch(TelegramApiException e){
+							logger.error(e.getLocalizedMessage(), e);
+						}
+		
 					}
-					else{
-						// Enter your Telegram Username with format /login:TelegramUsername
-						sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
-					}
-				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}
-
-			}
-			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
-				
-				// Extracts the User name from the message
-				String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
-				
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
-				
-				// Verify Telegram User Name from database and get Telegram User Id
-				telegramUser.setID(getTelegramUserId(responseFromUser).getBody());
-				telegramUser.setChatId(chatId);
-
-				try{
-					execute(messageToTelegram);
-					if(telegramUser.getID() != null){
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
+					// If the bot detects the command /login:"TelegramUserName"
+					else if(messageTextFromTelegram.substring(0, 10).equals(BotCommands.RESPONSE_COMMAND.getCommand())){
 						
-						// Update Telegram User ChatId					
-						ResponseEntity<String> response = updateChatId(telegramUser.getID(), telegramUser.getChatId());
-						sendMessage(response.getBody(), telegramUser.getChatId());
-						caseNumber = 1;
+						// Extracts the User name from the message
+						String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
+						
+						SendMessage messageToTelegram = new SendMessage();
+						messageToTelegram.setChatId(telegramUser.getChatId());
+						messageToTelegram.setText("Verifying the user: " + responseFromUser);					
+						
+						// Verify Telegram User Name from database and get Telegram User Id
+						telegramUser.setID(getTelegramUserId(responseFromUser).getBody());
+		
+						try{
+							execute(messageToTelegram);
+							if(telegramUser.getID() != null){
+								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
+								
+								// Update Telegram User ChatId					
+								ResponseEntity<String> response = updateChatId(telegramUser.getID(), telegramUser.getChatId());
+								sendMessage(response.getBody(), telegramUser.getChatId());
+								caseNumber = 1;
+							}
+							else{
+								sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), telegramUser.getChatId());
+							}
+						}
+						catch(TelegramApiException e){
+							logger.error(e.getLocalizedMessage(), e);
+						}				
 					}
-					else{
-						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), telegramUser.getChatId());
-					}
+					
 				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}				
-			}
+
+			
 
 
 
