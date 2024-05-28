@@ -31,7 +31,7 @@ public class TelegramUserController {
     }
 
     // ## Verify User by Telegram User Name ##
-    @GetMapping(value = "/telegramuser/telegramuserexist/{TelegramName}")
+    @GetMapping(value = "/telegramuser/existbychatid/{TelegramName}")
     public ResponseEntity<Boolean> existByChatId(@PathVariable Long chatId){
             return ResponseEntity.ok(TelegramUserService.existByChatId(chatId));
     }
