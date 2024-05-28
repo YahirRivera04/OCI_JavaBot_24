@@ -16,29 +16,11 @@ import java.util.List;
 public class UserTypeController {
     @Autowired
     private UserTypeService UserTypeService;
-    //@CrossOrigin
 
-    // ## Get ##
-    @GetMapping(value = "/usertype/{id}")
-    public ResponseEntity<UserType> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<UserType> responseEntity = UserTypeService.getItemById(id);
-            return new ResponseEntity<UserType>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // ## Update ##
-    @PutMapping(value = "usertype/{id}")
-    public ResponseEntity updateUserType(@PathVariable int id, @RequestBody UserType td){
-        try{
-            UserType userTypeItem = UserTypeService.updateUserType(id, td);
-            System.out.println(userTypeItem.toString());
-            return new ResponseEntity<>(userTypeItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    // --------------------- Get User Type Info by Name Method ---------------------
+    @GetMapping(value = "/usertype/usertypeinfo/{name}")
+    public ResponseEntity<UserType> findUserTypeByName(@PathVariable String name){
+        return ResponseEntity.ok(UserTypeService.findUserTypeByName(name));
     }
 
 

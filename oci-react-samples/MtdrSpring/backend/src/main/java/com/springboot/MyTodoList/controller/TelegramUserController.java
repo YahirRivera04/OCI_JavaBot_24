@@ -1,6 +1,7 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.ToDoItem;
+import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.TelegramUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,32 +31,20 @@ public class TelegramUserController {
         }
     }
 
-    // ## Verify User by Telegram User Name ##
-    @GetMapping(value = "/telegramuser/existbychatid/{TelegramName}")
+    // --------------------- Exist Chat Id by Chat Id Method ---------------------
+    @GetMapping(value = "/telegramuser/existbychatid/{chatId}")
     public ResponseEntity<Boolean> existByChatId(@PathVariable Long chatId){
             return ResponseEntity.ok(TelegramUserService.existByChatId(chatId));
     }
 
 
-    // ## Get telegram id by Telegram User Name ##
+    // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------
     @GetMapping(value = "/telegramuser/telegramuserid/{TelegramName}")
     public ResponseEntity<Long> getTelegramUserId(@PathVariable String TelegramName){
         return ResponseEntity.ok(TelegramUserService.findTelegramUserId(TelegramName));
     }
-
-
-    // ## Get Chat Id by Telegram User Id ##
-    @GetMapping(value = "/telegramuser/chatid/{TelegramUserId}")
-    public ResponseEntity<Long> findChatId(@PathVariable Long telegramUserId){
-        try{
-            return ResponseEntity.ok(TelegramUserService.findChatIdByTelegramUserId(telegramUserId));
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
     
-    // ## Post ChatId ##
+    // --------------------- Update ChatId Method ---------------------
     //@CrossOrigin
     @PutMapping(value = "telegramuser/setid/{TelegramUserId}")
     public ResponseEntity<String> updateTelegramUser( @PathVariable Long telegramUserId, @RequestBody Long chatId){
@@ -66,4 +55,17 @@ public class TelegramUserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // --------------------- Get Telegram User Id by Chat Id Method  ---------------------
+    @GetMapping(value = "telegramuser/telegramuserid/{ChatId}")
+    public ResponseEntity<Long> findUserIdByChatId (@PathVariable Long chatId){
+        return ResponseEntity.ok(TelegramUserService.findUserIdByChatId(chatId));
+    }
+
+    // --------------------- Get User Type id by User Id ---------------------
+    @GetMapping(value =  "telegramuser/usertypeid/{TelegramUserId}")
+    public ResponseEntity<Long> findUserTypeId(@PathVariable Long telegramUserId){
+        return ResponseEntity.ok(TelegramUserService.findUserTypeId(telegramUserId));
+    }
+
 }

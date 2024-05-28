@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.ToDoItem;
+import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.repository.TelegramUserRepository;
 
 // Marks the class as a Spring service component, 
@@ -28,32 +29,22 @@ public class TelegramUserService {
     }
 
     // --------------------- Get All User Info Method ---------------------
-
     public TelegramUser getUserInfo(Long telegramUserId) {
         return telegramUserRepository.findById(telegramUserId).orElse(null);
     }
 
     
-    // --------------------- Read by Telegram User Method ---------------------
-
+    // --------------------- Find Chat Id by Telegram User Method ---------------------
     public Boolean existByChatId(Long chatId){
         return telegramUserRepository.existsByChatId(chatId);
     }
 
-    // --------------------- Get Telegram ID by Telegram User name  ---------------------
-
+    // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------
     public Long findTelegramUserId(String TelegramName){
         return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
     }
 
-    // --------------------- Get Caht ID by Telegram User Id  ---------------------
-
-    public Long findChatIdByTelegramUserId(Long telegramUserId){
-        return telegramUserRepository.findChatIdByTelegramUserId(telegramUserId);
-    }
-
     // --------------------- Update ChatId Method ---------------------
-
     public String updateChatId(Long telegramUserId, Long chatId) {
         try{
             telegramUserRepository.setChatIdByTelegramUserId(telegramUserId, chatId);
@@ -63,4 +54,17 @@ public class TelegramUserService {
             return "ChatId update failed " + e.getMessage();
         }
     }
+
+    // --------------------- Get Telegram User Id by Chat Id Method  ---------------------
+    public Long findUserIdByChatId(Long chatId){
+        return telegramUserRepository.findUserIdByChatId(chatId);
+    }
+
+
+    // --------------------- Get User Type id by User Id ---------------------
+    public Long findUserTypeId(Long userId){
+        return telegramUserRepository.findUserTypeId(userId);
+    }
+
+
 }
