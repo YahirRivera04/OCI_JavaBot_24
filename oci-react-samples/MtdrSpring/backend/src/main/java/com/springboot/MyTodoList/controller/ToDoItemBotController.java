@@ -60,9 +60,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			UserType userTypeManager = findUserTypeByName("Manager").getBody();
 			UserType userTypeDeveloper = findUserTypeByName("Developer").getBody();
+
 			if(userTypeDeveloper != null && userTypeManager != null){
 				sendMessage("Manager loaded " + userTypeManager.getName().toString(), chatId);
 				sendMessage("Manager loaded " + userTypeDeveloper.getName().toString(), chatId);
+			}
+			else{
+				sendMessage("ERROR HANDELING USER TYPES", chatId);
 			}
 			
 
