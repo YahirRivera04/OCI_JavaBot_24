@@ -155,7 +155,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Verify Telegram Chat Id from database
 	public ResponseEntity<Boolean> existsByChatId(Long chatId){
-		return ResponseEntity.ok(telegramUserService.existsByChatId(chatId));
+		if(telegramUserService.existsByChatId(chatId) != null){
+			return ResponseEntity.ok(true);
+		}
+		else {
+			return ResponseEntity.ok(false);
+		}
 	}
 
 	// Get Telegram User Id with User Name
