@@ -40,7 +40,7 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
     @Query(value = "SELECT UserTypeId FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
     Long findUserTypeId(Long telegramUserId);
 
-    @Query(value = "SELECT TelegramName FROM TODOUSER.TELEGRAMUSER WERE TelegramUserId = ?1", nativeQuery = true)
+    @Query(value = "SELECT TelegramName FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
     String findTelegramNameByTelegramUserId(Long telegramUserId);
 
 
