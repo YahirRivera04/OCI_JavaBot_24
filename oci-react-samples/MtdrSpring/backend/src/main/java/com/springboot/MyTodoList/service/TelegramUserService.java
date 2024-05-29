@@ -29,7 +29,7 @@ public class TelegramUserService {
     }
     
     // --------------------- Find Chat Id by Telegram User Method ---------------------
-    public Boolean existByChatId(Long chatId){
+    public Boolean existsByChatId(Long chatId){
         return telegramUserRepository.existsByChatId(chatId);
     }
 

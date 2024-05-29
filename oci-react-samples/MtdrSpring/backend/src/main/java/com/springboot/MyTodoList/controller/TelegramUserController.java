@@ -20,9 +20,9 @@ public class TelegramUserController {
     private TelegramUserService TelegramUserService;
 
     // --------------------- Exist Chat Id by Chat Id Method ---------------------
-    @GetMapping(value = "/telegramuser/existbychatid/{chatId}")
-    public ResponseEntity<Boolean> existByChatId(@PathVariable Long chatId){
-            return ResponseEntity.ok(TelegramUserService.existByChatId(chatId));
+    @GetMapping(value = "/telegramuser/existsbychatid/{chatId}")
+    public ResponseEntity<Boolean> existsByChatId(@PathVariable Long chatId){
+            return ResponseEntity.ok(TelegramUserService.existsByChatId(chatId));
     }
 
 

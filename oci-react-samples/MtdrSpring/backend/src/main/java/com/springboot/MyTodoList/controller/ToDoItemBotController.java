@@ -84,7 +84,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				try{
 					execute(messageToTelegram);
 					// Check if the chatId exists in the database
-					if(existByChatId(chatId).getBody() != null && existByChatId(chatId).getBody() == true){
+					if(existsByChatId(chatId).getBody() == true){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
@@ -134,7 +134,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}				
 			}	
 			
-			
+		if(messageTextFromTelegram.equals("/continue")){
 			if(caseNumber == 1 && telegramUser.getUserType().getName() == "Developer"){
 				sendMessage("Hello Developper " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
 			}
@@ -142,7 +142,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				sendMessage("Hello Manager " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
 
 			}
-
+		}
 	}
 }
 	
@@ -154,8 +154,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	// TELEGRAM USER METHODS
 
 	// Verify Telegram Chat Id from database
-	public ResponseEntity<Boolean> existByChatId(Long chatId){
-		return ResponseEntity.ok(telegramUserService.existByChatId(chatId));
+	public ResponseEntity<Boolean> existsByChatId(Long chatId){
+		return ResponseEntity.ok(telegramUserService.existsByChatId(chatId));
 	}
 
 	// Get Telegram User Id with User Name
