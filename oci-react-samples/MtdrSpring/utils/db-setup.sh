@@ -194,7 +194,7 @@ CREATE TABLE $U.TELEGRAMUSER (
     Email NVARCHAR2(100),
     PhoneNumber NVARCHAR2(15),
     TelegramName NVARCHAR2(100),
-    ChatId LONG,
+    ChatId NUMBER,
     UserTypeId NUMBER REFERENCES $U.USERTYPE(UserTypeId)
     );
 
