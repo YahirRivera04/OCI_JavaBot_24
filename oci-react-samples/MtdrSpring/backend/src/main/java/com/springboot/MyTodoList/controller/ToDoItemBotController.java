@@ -83,6 +83,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				
 				try{
 					execute(messageToTelegram);
+					sendMessage(userTypeDeveloper.getName() + " " + userTypeManager.getName(), chatId);
 
 					// Check if the chatId exists in the database
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
@@ -137,16 +138,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					logger.error(e.getLocalizedMessage(), e);
 				}				
 			}	
-			
-		if(messageTextFromTelegram.equals("/continue")){
-			if(caseNumber == 1 && telegramUser.getUserType().getName() == "Developer"){
-				sendMessage("Hello Developper " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
-			}
-			else if (caseNumber == 1 && telegramUser.getUserType().getName() == "Manager") {
-				sendMessage("Hello Manager " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
+			else if(messageTextFromTelegram.equals("/continue")){
+				if(caseNumber == 1 && telegramUser.getUserType().getName() == "Developer"){
+					sendMessage("Hello Developper " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
+				}
+				else if (caseNumber == 1 && telegramUser.getUserType().getName() == "Manager") {
+					sendMessage("Hello Manager " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
 
+				}
 			}
-		}
 	}
 }
 	
