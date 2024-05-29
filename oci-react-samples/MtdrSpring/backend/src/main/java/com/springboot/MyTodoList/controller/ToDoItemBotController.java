@@ -105,10 +105,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 10).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
+			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
 				
 				// Extracts the User name from the message
-				String responseFromUser = messageTextFromTelegram.substring(10,messageTextFromTelegram.length());
+				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
 				
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
