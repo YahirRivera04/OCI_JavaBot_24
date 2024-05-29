@@ -69,8 +69,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				Long manager = findUserTypeByName("Manager").getBody();
 				Long developer = findUserTypeByName("Developer").getBody();
 
-				sendMessage(manager + " " + developer, chatId);
-
 				userTypeManager.setID(manager);
 				userTypeManager.setName("Manager");
 				userTypeManager.setDescription("");
