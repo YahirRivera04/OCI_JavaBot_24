@@ -79,14 +79,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
-
-				// Check if the chatId exists in the database
-				Boolean temp = existsByChatId(chatId).getBody();
+				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());		
 				
 				try{
 					execute(messageToTelegram);
-					if(temp != null && temp == true){
+
+					// Check if the chatId exists in the database
+					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
+
+					if(chatIdResponse != null && chatIdResponse == chatId){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
@@ -156,15 +157,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	// TELEGRAM USER METHODS
 
 	// Verify Telegram Chat Id from database
-	public ResponseEntity<Boolean> existsByChatId(Long chatId){
-		Long response = telegramUserService.existsByChatId(chatId);
-		if(response == chatId){
-			return ResponseEntity.ok(true);
-		}
-		else{
-			return ResponseEntity.ok(false);
-		}
-		
+	public ResponseEntity<Long> findChatIdByChatId(Long chatId){
+		Long response = telegramUserService.findChatIdByChatId(chatId);
+		return ResponseEntity.ok(response);
 	}
 
 	// Get Telegram User Id with User Name

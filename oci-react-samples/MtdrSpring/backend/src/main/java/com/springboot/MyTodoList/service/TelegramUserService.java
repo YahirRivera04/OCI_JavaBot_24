@@ -27,8 +27,8 @@ public class TelegramUserService {
     }
     
     // --------------------- Find Chat Id by Telegram User Method ---------------------
-    public Long existsByChatId(Long chatId){
-        return telegramUserRepository.existsChatIdByChatId(chatId);
+    public Long findChatIdByChatId(Long chatId){
+        return telegramUserRepository.findChatIdByChatId(chatId);
     }
 
     // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------

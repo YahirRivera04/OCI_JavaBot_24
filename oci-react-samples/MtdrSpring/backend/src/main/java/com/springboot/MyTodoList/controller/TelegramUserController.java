@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.mockito.ArgumentMatchers.refEq;
+
 import java.net.URI;
 import java.util.List;
 
@@ -23,16 +25,9 @@ public class TelegramUserController {
 
     // --------------------- Exist Chat Id by Chat Id Method ---------------------
     @GetMapping(value = "/telegramuser/existsbychatid/{chatId}")
-    public ResponseEntity<Boolean> existsByChatId(@PathVariable Long chatId){
-        try {
-            if(TelegramUserService.existsByChatId(chatId) != null){
-                return ResponseEntity.ok(true);
-            }
-            else return ResponseEntity.ok(false);
-        }    
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Long> existsByChatId(@PathVariable Long chatId){
+        Long id = TelegramUserService.findChatIdByChatId(chatId);
+        return ResponseEntity.ok(id);
     }
 
 
