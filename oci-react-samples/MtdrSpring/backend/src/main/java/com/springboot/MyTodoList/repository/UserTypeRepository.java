@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 public interface UserTypeRepository extends JpaRepository<UserType, Long> {
 
     // Get User Type Info by Name
-    @Query(value = "SELECT * FROM TODOUSER.USERTYPE WHERE Name = ?1", nativeQuery = true)
-    UserType findUserTypeByName(String Name);
+    @Query(value = "SELECT UserTypeId FROM TODOUSER.USERTYPE WHERE Name = ?1", nativeQuery = true)
+    Long findUserTypeIdByName(String Name);
 
 }

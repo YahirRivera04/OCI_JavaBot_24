@@ -27,8 +27,8 @@ public class UserTypeService {
     }
     
     // --------------------- Get User Type Method ---------------------
-    public UserType findUserTypeByName(String name){
-        return userTypeRepository.findUserTypeByName(name);
+    public Long findUserTypeIdByName(String name){
+        return userTypeRepository.findUserTypeIdByName(name);
     }
     
 }

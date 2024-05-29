@@ -68,4 +68,10 @@ public class TelegramUserController {
         return ResponseEntity.ok(TelegramUserService.findUserTypeId(telegramUserId));
     }
 
+    // --------------------- Get Telegram User Name by Telegram User Id ---------------------
+    @GetMapping(value = "telegramuser/telegramusername/{TelegramUserId}")
+    public ResponseEntity<String> findUserNameById(Long id){
+		return ResponseEntity.ok(TelegramUserService.findUserNameById(id));
+	}
+
 }

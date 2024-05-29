@@ -51,9 +51,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
-			// Get the Telegram User Name from Telegram		
-			String userName = update.getMessage().getForwardFrom().getUserName();
-			sendMessage("User " + userName, chatId);
 
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
@@ -69,21 +66,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// "/start"
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
 
-				userTypeManager = findUserTypeByName("Manager").getBody();
-				userTypeDeveloper = findUserTypeByName("Developer").getBody();
-	
-				if(userTypeDeveloper != null && userTypeManager != null){
-					sendMessage("Manager loaded " + userTypeManager.getName(), chatId);
-					sendMessage("Developer loaded " + userTypeDeveloper.getName(), chatId);
-				}
-				else{
-					sendMessage("ERROR HANDELING USER TYPES", chatId);
-				}
+				Long manager = findUserTypeByName("Manager").getBody();
+				Long developer = findUserTypeByName("Developer").getBody();
 
+				sendMessage(manager + " " + developer, chatId);
+
+				userTypeManager.setID(manager);
+				userTypeManager.setName("Manager");
+				userTypeManager.setDescription("");
+
+				userTypeDeveloper.setID(developer);
+				userTypeDeveloper.setName("Developer");
+				userTypeDeveloper.setDescription("");
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-
 				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
 
 				try{
@@ -92,7 +89,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					if(existByChatId(chatId).getBody() != null && existByChatId(chatId).getBody() == true){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, userName);
+						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
 						caseNumber = 1;
 					}
 					else{
@@ -183,11 +180,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findUserTypeId(id));
 	}
 
+	// Get Telegram User Name with Telegram User Id
+	public ResponseEntity<String> findTelegramNameByTelegramUserId(Long id){
+		return ResponseEntity.ok(telegramUserService.findTelegramNameByTelegramUserId(id));
+	}
+
 
 	// USER TYPE METHODS
-
-	public ResponseEntity<UserType> findUserTypeByName(String name){
-		return ResponseEntity.ok(userTypeService.findUserTypeByName(name));
+	public ResponseEntity<Long> findUserTypeByName(String name){
+		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
 	}
 
 
@@ -218,7 +219,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		if(findUserTypeId(user.getID()).getBody() == dev.getID()) user.setUserType(dev);
 		else user.setUserType(man);
 		// Set Telegram User Name
-		user.setName(telegramUserName);
+		if(telegramUserName.equals("")) user.setTelegramName(findTelegramNameByTelegramUserId(user.getID()).getBody());
+		else user.setName(telegramUserName);
+		
 		return user;
 	}
 
