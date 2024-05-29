@@ -36,10 +36,10 @@ public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long
 
     // Get User type id by telegram user id
     @Query(value = "SELECT UserTypeId FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
-    Long findUserTypeId(Long userId);
+    Long findUserTypeId(Long telegramUserId);
 
     @Query(value = "SELECT TelegramName FROM TODOUSER.TELEGRAMUSER WERE TelegramUserId = ?1", nativeQuery = true)
-    String findTelegramNameByTelegramUserId(Long userId);
+    String findTelegramNameByTelegramUserId(Long telegramUserId);
 
 
 }

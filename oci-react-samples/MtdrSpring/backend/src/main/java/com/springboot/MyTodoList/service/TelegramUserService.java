@@ -66,6 +66,7 @@ public class TelegramUserService {
         return telegramUserRepository.findUserTypeId(userId);
     }
 
+    // --------------------- Get Telegram Name by User Id ---------------------
     public String findTelegramNameByTelegramUserId(Long id){
         return telegramUserRepository.findTelegramNameByTelegramUserId(id);
     } 
