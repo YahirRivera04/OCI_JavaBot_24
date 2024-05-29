@@ -85,7 +85,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					execute(messageToTelegram);
 					// Check if the chatId exists in the database
 					Boolean temp = existsByChatId(chatId).getBody();
-					sendMessage("The user exists " + temp, chatId);
 					
 					if(temp != null && temp == true){
 						// You have successfully logged in!!
