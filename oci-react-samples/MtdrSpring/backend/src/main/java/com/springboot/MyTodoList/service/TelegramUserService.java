@@ -11,8 +11,6 @@ import static org.mockito.Mockito.timeout;
 import java.util.List;
 import java.util.Optional;
 import com.springboot.MyTodoList.model.TelegramUser;
-import com.springboot.MyTodoList.model.ToDoItem;
-import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.repository.TelegramUserRepository;
 
 // Marks the class as a Spring service component, 
@@ -30,7 +28,7 @@ public class TelegramUserService {
     
     // --------------------- Find Chat Id by Telegram User Method ---------------------
     public Long existsByChatId(Long chatId){
-        return telegramUserRepository.existsByChatId(chatId);
+        return telegramUserRepository.existsChatIdByChatId(chatId);
     }
 
     // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------
