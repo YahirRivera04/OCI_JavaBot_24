@@ -79,13 +79,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());		
+				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
 				
 				try{
 					execute(messageToTelegram);
 
 					// Check if the chatId exists in the database
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
+					
+					if(chatIdResponse != null ){
+						sendMessage("Si tiene algo", chatIdResponse);
+					}
+					else{
+						sendMessage("Esta Null", chatIdResponse);
+					}
 
 
 					if(chatIdResponse != null && chatIdResponse == chatId){
