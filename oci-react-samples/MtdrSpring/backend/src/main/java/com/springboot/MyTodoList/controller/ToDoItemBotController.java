@@ -61,6 +61,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// New Telegram User Object
 			TelegramUser telegramUser = new TelegramUser();
+			int chatIdCompare = -1;
 
 			// If the bot detects the start command
 			// "/start"
@@ -88,15 +89,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
 					
 					if(chatIdResponse != null ){
+						chatIdCompare = Long.compare(chatIdResponse, chatId);
 						String message = "Si tiene algo " + chatIdResponse;
 						sendMessage(message, chatId);
 					}
 					else{
 						sendMessage("Esta Null", chatIdResponse);
 					}
-
-
-					if(chatIdResponse != null && chatIdResponse == chatId){
+					
+					
+					if(chatIdCompare == 0){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
