@@ -88,7 +88,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
 					
 					if(chatIdResponse != null ){
-						sendMessage("Si tiene algo", chatIdResponse);
+						String message = "Si tiene algo " + chatIdResponse;
+						sendMessage(message, chatId);
 					}
 					else{
 						sendMessage("Esta Null", chatIdResponse);
@@ -121,9 +122,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
 				
-				// Verify Telegram User Name from database and get Telegram User Id
-				//telegramUser.setID(getTelegramUserId(responseFromUser).getBody());
-
 				try{
 					execute(messageToTelegram);
 					if(getTelegramUserId(responseFromUser).getBody() != null){
@@ -146,15 +144,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}	
 			else if(messageTextFromTelegram.equals("/continue")){
 				if(caseNumber == 1 && telegramUser.getUserType().getName() == "Developer"){
-					sendMessage("Hello Developper " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
+					sendMessage("Hello Developper " + telegramUser.getTelegramName(), telegramUser.getChatId());
 				}
 				else if (caseNumber == 1 && telegramUser.getUserType().getName() == "Manager") {
-					sendMessage("Hello Manager " + telegramUser.getTelegramName().toString(), telegramUser.getChatId());
+					sendMessage("Hello Manager " + telegramUser.getTelegramName(), telegramUser.getChatId());
 
 				}
 			}
+		}
 	}
-}
 	
 	@Override
 	public String getBotUsername() {		
@@ -229,7 +227,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		else user.setUserType(man);
 		// Set Telegram User Name
 		if(telegramUserName.equals("")) user.setTelegramName(findTelegramNameByTelegramUserId(user.getID()).getBody());
-		else user.setName(telegramUserName);
+		else user.setTelegramName(telegramUserName);
 		
 		return user;
 	}
