@@ -161,6 +161,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// After log in, menu for Dev and Manager	
 			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
 				
+				sendMessage("Continue enter", chatId);
+				
 				telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
 				sendMessage("User: " + telegramUser.getUserType().getName(), telegramUser.getChatId());
 				
@@ -196,8 +198,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 					// Add the keyboard markup
 					messageToTelegram.setReplyMarkup(keyboardMarkup);
-
-					
 
 					try {
 						execute(messageToTelegram);
@@ -260,7 +260,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 	// TASK STATUS METHODS
-	
+	public ResponseEntity<List<TaskStatus>> findTaskStatus(){
+		return ResponseEntity.ok(taskStatusService.findAllTaskStatus());
+	}
 
 
 	// Auxiliar Method to print messages
