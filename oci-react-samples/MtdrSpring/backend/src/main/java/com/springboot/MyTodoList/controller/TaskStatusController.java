@@ -1,51 +1,34 @@
 package com.springboot.MyTodoList.controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.TaskStatusService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 import java.util.List;
 
 @RestController
 public class TaskStatusController {
     @Autowired
-    private TaskStatusService TaskStatusService;
-    //@CrossOrigin
+    private TaskStatusService TaskStatusService; 
 
-    // ## Get ##
-    @GetMapping(value = "/taskstatus/{id}")
-    public ResponseEntity<TaskStatus> getItemById(@PathVariable int id){
+    // --------------------- Get All Task Status ---------------------
+    // /
+    @GetMapping(value = "/taskstatus/")
+    public ResponseEntity<String> findTaskStatus(){
+        String info = "";
         try{
-            ResponseEntity<TaskStatus> responseEntity = TaskStatusService.getItemById(id);
-            return new ResponseEntity<TaskStatus>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
+            List<TaskStatus> taskStatus = TaskStatusService.findAllTaskStatus();
+            for(int i = 0; i < taskStatus.size(); i++){
+                info += taskStatus.get(i).toString() + "\n";
+            }
+            return ResponseEntity.ok(info);
+        }
+        catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // ## Update ##
-    @PutMapping(value = "taskstatus/{id}")
-    public ResponseEntity<TaskStatus> updateTaskStatus(@PathVariable int id, @RequestBody TaskStatus td){
-        try{
-            TaskStatus taskItem = TaskStatusService.updateTaskStatus(id, td);
-            System.out.println(taskItem.toString());
-            return new ResponseEntity<>(taskItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
-
-
-
-    
-    
-
 }

@@ -5,6 +5,7 @@ import org.aspectj.weaver.ast.And;
 import org.mockito.internal.matchers.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,16 +15,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
-import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.service.TaskService;
-import com.springboot.MyTodoList.service.TelegramUserService;
 import com.springboot.MyTodoList.service.ToDoItemService;
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.service.UserTypeService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import io.swagger.models.Response;
+
+import com.springboot.MyTodoList.service.TelegramUserService;
+import com.springboot.MyTodoList.model.TelegramUser;
+
+import com.springboot.MyTodoList.model.UserType;
+import com.springboot.MyTodoList.service.UserTypeService;
+
+import com.springboot.MyTodoList.model.TaskStatus;
+import com.springboot.MyTodoList.service.TaskStatusService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +42,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private ToDoItemService toDoItemService;
 	private TelegramUserService telegramUserService;
 	private UserTypeService userTypeService;
+	private TaskStatusService taskStatusService;
 	private TaskService taskService;
 	private String botName;
 
-	public ToDoItemBotController(String botToken, String botName, TelegramUserService telegramUserService, ToDoItemService toDoItemService, TaskService taskService, UserTypeService userTypeService) {
+	public ToDoItemBotController(String botToken, String botName, TelegramUserService telegramUserService, ToDoItemService toDoItemService, TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -46,6 +54,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.telegramUserService = telegramUserService;
 		this.userTypeService = userTypeService;
 		this.taskService = taskService;
+		this.taskStatusService = taskStatusService;
 		this.botName = botName;
 	}
 
@@ -101,7 +110,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Case Number to acces developer or manager methods
 						caseNumber++;
 						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
 					}
 					else{
 						// Enter your Telegram Username with format /login:TelegramUsername
@@ -138,7 +147,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Case Number to acces developer or manager methods
 						caseNumber++;
 						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
 
 					}
 					else {
@@ -158,8 +167,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
 					
-					sendMessage("Si entro dev", telegramUser.getChatId());
-
 					// Create variables necessaries to interact with telegram					
 					SendMessage messageToTelegram = new SendMessage();
 					ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -190,6 +197,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Add the keyboard markup
 					messageToTelegram.setReplyMarkup(keyboardMarkup);
 
+					
+
 					try {
 						execute(messageToTelegram);
 					} 
@@ -200,7 +209,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 				// Manager Case
 				else if(telegramUser.getUserType().getName().equals("Manager")){
-
+				
 				}
 
 			}
@@ -250,8 +259,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
 	}
 
-	// TASK METHODS
-
+	// TASK STATUS METHODS
+	
 
 
 	// Auxiliar Method to print messages
