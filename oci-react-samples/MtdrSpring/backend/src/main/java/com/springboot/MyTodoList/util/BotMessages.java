@@ -14,6 +14,9 @@ public enum BotMessages {
 	// Show tasks
 	SHOW_TASK_MESSAGE("Here are your tasks: \n"),
 
+	// Continue 
+	CONTINUE_MESSAGE("To continue, please use the command /continue"),
+
 	// Edit task
 	EDIT_TASK_MESSAGE("Edit your task below:"),
 	EDIT_TASK_NAME("Name:"),

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
@@ -20,8 +22,10 @@ import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.UserTypeService;
 import com.springboot.MyTodoList.util.BotCommands;
+import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,7 +60,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
-			
+
 			// New UserType Objects
 			UserType userTypeManager = new UserType();
 			UserType userTypeDeveloper = new UserType();	
@@ -67,7 +71,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// New Telegram User Object
 			TelegramUser telegramUser = new TelegramUser();
-			int chatIdCompare = -1;
+			
 
 			// If the bot detects the start command
 			// "/start"
@@ -83,6 +87,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 					// Check if the chatId exists in the database
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
+					int chatIdCompare = -1;
+					// Compare the chatId from the database with the chatId from the user
 					if(chatIdResponse != null )	chatIdCompare = Long.compare(chatIdResponse, chatId);
 					// Verify the chatId content
 					if(chatIdCompare == 0){
@@ -90,18 +96,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						// Set Telegram User Information
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
-
-
-						// Pruevas ################### BORRAR DESPUES #########################
-						sendMessage(telegramUser.getChatId().toString(), telegramUser.getChatId());
-						sendMessage(telegramUser.getID().toString(), telegramUser.getChatId());
-						sendMessage(telegramUser.getUserType().getName(), telegramUser.getChatId());
-						sendMessage(telegramUser.getTelegramName(), telegramUser.getChatId());
-						// Pruevas ###################
-
-
 						// Case Number to acces developer or manager methods
 						caseNumber = 1;
+						// Continue Message /continue
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 					}
 					else{
 						// Enter your Telegram Username with format /login:TelegramUsername
@@ -142,15 +140,55 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				catch(TelegramApiException e){
 					logger.error(e.getLocalizedMessage(), e);
 				}				
-			}	
-			else if(messageTextFromTelegram.equals("/continue")){
-				if(caseNumber == 1 && telegramUser.getUserType().getName() == "Developer"){
-					sendMessage("Hello Developper " + telegramUser.getTelegramName(), telegramUser.getChatId());
-				}
-				else if (caseNumber == 1 && telegramUser.getUserType().getName() == "Manager") {
-					sendMessage("Hello Manager " + telegramUser.getTelegramName(), telegramUser.getChatId());
+			}
+			// After log in, menu for Dev and Manager	
+			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
+				// Developer Case
+				if(telegramUser.getUserType().getName().equals("Developer")){
+					
+					// Create variables necessaries to interact with telegram					
+					SendMessage messageToTelegram = new SendMessage();
+					ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+					List<KeyboardRow> keyboard = new ArrayList<>();
+					messageToTelegram.setChatId(telegramUser.getChatId());
+
+					// Message with all the information retrieved form the database
+					messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
+					" \nTelegram User Id " + telegramUser.getID().toString() + 
+					" \nUser Type " + telegramUser.getUserType().getName() +
+					" \nTelegram Name " + telegramUser.getTelegramName());
+
+					// First Row
+					KeyboardRow row = new KeyboardRow();
+					row.add(BotLabels.SHOW_TASK.getLabel());
+					row.add(BotLabels.EDIT_TASK.getLabel());
+					
+					// Second Row
+					row = new KeyboardRow();
+					row.add(BotLabels.DELETE_TASK.getLabel());
+					row.add(BotLabels.CREATE_TASK.getLabel());
+					keyboard.add(row);
+					
+					// Add the first row to the keyboard
+					keyboard.add(row);
+					keyboardMarkup.setKeyboard(keyboard);
+
+					// Add the keyboard markup
+					messageToTelegram.setReplyMarkup(keyboardMarkup);
+
+					try {
+						execute(messageToTelegram);
+					} 
+					catch (TelegramApiException e) {
+						logger.error(e.getLocalizedMessage(), e);
+					}
 
 				}
+				// Manager Case
+				else if(telegramUser.getUserType().getName().equals("Manager")){
+
+				}
+
 			}
 		}
 	}

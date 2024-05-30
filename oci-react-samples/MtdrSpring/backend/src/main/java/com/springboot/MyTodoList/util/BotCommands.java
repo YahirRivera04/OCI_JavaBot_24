@@ -8,7 +8,12 @@ public enum BotCommands {
 	CANCEL_COMMAND("/cancel"),
 	TODO_LIST("/todolist"),
 	ADD_ITEM("/additem"),
-	RESPONSE_COMMAND("/login:");
+
+	RESPONSE_COMMAND("/login:"),
+	CONTINUE_COMMAND("/continue"),
+
+	DEVELOPPER_COMMAND("/developer"),
+	MANAGER_COMMAND("/manager");
 
 	private String command;
 
