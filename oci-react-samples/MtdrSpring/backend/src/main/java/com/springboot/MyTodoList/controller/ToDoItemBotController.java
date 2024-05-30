@@ -94,11 +94,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					if(chatIdCompare == 0){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+						
 						// Set Telegram User Information
-						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+						//telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+						
 						// Case Number to acces developer or manager methods
 						caseNumber++;
-						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
 						// Continue Message /continue
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 					}
@@ -130,14 +131,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Update Chat Id in db
 						ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
 						sendMessage(response.getBody(), telegramUser.getChatId());
+						
 						// Set local telegram user
-						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
+						//telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
+						
 						// Case Number to acces developer or manager methods
 						caseNumber++;
-						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
 						// Continue Message /continue
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-						
+
 					}
 					else {
 						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
@@ -149,9 +151,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			// After log in, menu for Dev and Manager	
 			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
+				
+				telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+				sendMessage("User: " + telegramUser.getUserType().getName(), telegramUser.getChatId());
+				
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
 					
+					sendMessage("Si entro dev", telegramUser.getChatId());
+
 					// Create variables necessaries to interact with telegram					
 					SendMessage messageToTelegram = new SendMessage();
 					ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -237,11 +245,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findTelegramNameByTelegramUserId(id));
 	}
 
-
 	// USER TYPE METHODS
 	public ResponseEntity<Long> findUserTypeByName(String name){
 		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
 	}
+
+	// TASK METHODS
 
 
 
