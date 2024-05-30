@@ -90,6 +90,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						// Set Telegram User Information
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+
+
+						// Pruevas ################### BORRAR DESPUES #########################
+						sendMessage(telegramUser.getChatId().toString(), telegramUser.getChatId());
+						sendMessage(telegramUser.getID().toString(), telegramUser.getChatId());
+						sendMessage(telegramUser.getUserType().getName(), telegramUser.getChatId());
+						sendMessage(telegramUser.getTelegramName(), telegramUser.getChatId());
+						// Pruevas ###################
+
+
 						// Case Number to acces developer or manager methods
 						caseNumber = 1;
 					}
@@ -231,7 +241,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		TelegramUser user = new TelegramUser();
 		
 		// Set Chat Id
-		user.setChatId(chatId);
+		user.setChatId(chatId);		
 		// Set Telegram User Id
 		user.setID(findUserId(user.getChatId()).getBody());
 		// Set User Type

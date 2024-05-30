@@ -22,6 +22,7 @@ public class TelegramUserController {
 
 
     // --------------------- Exist Chat Id by Chat Id Method ---------------------
+    // /telegramuser/chatid/1984472475
     @GetMapping(value = "/telegramuser/chatid/{chatId}")
     public ResponseEntity<String> findChatIdByChatId(@PathVariable Long chatId){
         try{
@@ -36,6 +37,7 @@ public class TelegramUserController {
     }
 
     // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------
+    // /telegramuser/telegramuserid/Yahir_Rivera04
     @GetMapping(value = "/telegramuser/telegramuserid/{TelegramName}")
     public ResponseEntity<String> getTelegramUserId(@PathVariable String TelegramName){
         try{
@@ -61,7 +63,8 @@ public class TelegramUserController {
     }
 
     // --------------------- Get Telegram User Id by Chat Id Method  ---------------------
-    @GetMapping(value = "telegramuser/telegramuserid/{ChatId}")
+    // /telegramuser/telegramuserid/1984472475
+    @GetMapping(value = "telegramuser/telegramuserid/{chatId}")
     public ResponseEntity<String> findUserIdByChatId (@PathVariable Long chatId){
         try{
             Long telegramUserIdLong = TelegramUserService.findUserIdByChatId(chatId);
@@ -74,6 +77,7 @@ public class TelegramUserController {
     }
 
     // --------------------- Get Telegram User Type id by Telegram User Id ---------------------
+    // /telegramuser/usertypeid/1
     @GetMapping(value =  "telegramuser/usertypeid/{TelegramUserId}")
     public ResponseEntity<String> findUserTypeId(@PathVariable Long telegramUserId){
         try{
@@ -87,6 +91,7 @@ public class TelegramUserController {
     }
 
     // --------------------- Get Telegram User Name by Telegram User Id ---------------------
+    // /telegramuser/telegramname/1
     @GetMapping(value = "telegramuser/telegramname/{TelegramUserId}")
     public ResponseEntity<String> findTelegramNameByTelegramUserId(Long id){
         try{
