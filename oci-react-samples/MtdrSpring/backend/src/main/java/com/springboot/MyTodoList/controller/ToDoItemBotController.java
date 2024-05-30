@@ -22,6 +22,8 @@ import com.springboot.MyTodoList.service.UserTypeService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotMessages;
 
+import java.util.List;
+
 
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
@@ -59,6 +61,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			UserType userTypeManager = new UserType();
 			UserType userTypeDeveloper = new UserType();	
 
+			// Get User Type Information
+			userTypeManager = setUserTypeInfo().get(0);
+			userTypeDeveloper = setUserTypeInfo().get(1);
+
 			// New Telegram User Object
 			TelegramUser telegramUser = new TelegramUser();
 			int chatIdCompare = -1;
@@ -67,17 +73,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// "/start"
 			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
 
-				Long manager = findUserTypeByName("Manager").getBody();
-				Long developer = findUserTypeByName("Developer").getBody();
-
-				userTypeManager.setID(manager);
-				userTypeManager.setName("Manager");
-				userTypeManager.setDescription("");
-
-				userTypeDeveloper.setID(developer);
-				userTypeDeveloper.setName("Developer");
-				userTypeDeveloper.setDescription("");
-
+				// Send Welcome Message
 				SendMessage messageToTelegram = new SendMessage();
 				messageToTelegram.setChatId(chatId);
 				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
@@ -87,21 +83,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 					// Check if the chatId exists in the database
 					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
-					
-					if(chatIdResponse != null ){
-						chatIdCompare = Long.compare(chatIdResponse, chatId);
-						String message = "Si tiene algo " + chatIdResponse;
-						sendMessage(message, chatId);
-					}
-					else{
-						sendMessage("Esta Null", chatIdResponse);
-					}
-					
-					
+					if(chatIdResponse != null )	chatIdCompare = Long.compare(chatIdResponse, chatId);
+					// Verify the chatId content
 					if(chatIdCompare == 0){
 						// You have successfully logged in!!
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+						// Set Telegram User Information
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+						// Case Number to acces developer or manager methods
 						caseNumber = 1;
 					}
 					else{
@@ -216,10 +205,31 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 
+	public List<UserType> setUserTypeInfo(){
+
+		UserType Manager = new UserType();
+		UserType Developer = new UserType();
+
+		Long manager = findUserTypeByName("Manager").getBody();
+		Long developer = findUserTypeByName("Developer").getBody();
+
+		Manager.setID(manager);
+		Manager.setName("Manager");
+		Manager.setDescription("");
+
+		Developer.setID(developer);
+		Developer.setName("Developer");
+		Developer.setDescription("");
+
+		return List.of(Manager, Developer);
+	}
+
+
 	public TelegramUser setTelegramUser(Long chatId, UserType dev, UserType man, String telegramUserName){
 
 		// Add db informaton to the local user
 		TelegramUser user = new TelegramUser();
+		
 		// Set Chat Id
 		user.setChatId(chatId);
 		// Set Telegram User Id
