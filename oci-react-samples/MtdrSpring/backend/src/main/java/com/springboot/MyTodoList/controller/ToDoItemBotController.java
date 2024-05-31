@@ -122,42 +122,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
-			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
-				
-				// Extracts the User name from the message
-				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
-				
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
-				
-				try{
-					execute(messageToTelegram);
-					if(getTelegramUserId(responseFromUser).getBody() != null){
-						// User Found Log in sucess
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-						// Update Chat Id in db
-						ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
-						sendMessage(response.getBody(), telegramUser.getChatId());
-						
-						// Set local telegram user
-						//telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
-						
-						// Case Number to acces developer or manager methods
-						caseNumber++;
-						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
-
-					}
-					else {
-						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
-					}
-				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}				
-			}
 			// After log in, menu for Dev and Manager	
 			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
 				
@@ -213,6 +177,47 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 
 			}
+			// If the bot detects the command /login:"TelegramUserName"
+			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
+				
+				// Extracts the User name from the message
+				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
+				
+				SendMessage messageToTelegram = new SendMessage();
+				messageToTelegram.setChatId(chatId);
+				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
+				
+				try{
+					execute(messageToTelegram);
+					if(getTelegramUserId(responseFromUser).getBody() != null){
+						// User Found Log in sucess
+						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+						// Update Chat Id in db
+						ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
+						sendMessage(response.getBody(), telegramUser.getChatId());
+						
+						// Set local telegram user
+						//telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
+						
+						// Case Number to acces developer or manager methods
+						caseNumber++;
+						// Continue Message /continue
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+
+					}
+					else {
+						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
+					}
+				}
+				catch(TelegramApiException e){
+					logger.error(e.getLocalizedMessage(), e);
+				}				
+			}
+			else {
+				// Verification of what is inside here
+				sendMessage(messageTextFromTelegram, telegramUser.getChatId());
+			}
+			
 		}
 	}
 	
