@@ -16,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.service.TaskService;
-import com.springboot.MyTodoList.service.ToDoItemService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
@@ -36,21 +35,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ToDoItemBotController extends TelegramLongPollingBot {
+public class BotController extends TelegramLongPollingBot {
 
-	private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
-	private ToDoItemService toDoItemService;
+	private static final Logger logger = LoggerFactory.getLogger(BotController.class);
 	private TelegramUserService telegramUserService;
 	private UserTypeService userTypeService;
 	private TaskStatusService taskStatusService;
 	private TaskService taskService;
 	private String botName;
 
-	public ToDoItemBotController(String botToken, String botName, TelegramUserService telegramUserService, ToDoItemService toDoItemService, TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService) {
+	public BotController(String botToken, String botName, TelegramUserService telegramUserService, TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
-		this.toDoItemService = toDoItemService;
 		this.telegramUserService = telegramUserService;
 		this.userTypeService = userTypeService;
 		this.taskService = taskService;
@@ -79,13 +76,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			switch (caseNumber) {
 				// When already logged
 				case 1:
-					sendMessage("Case Number " + caseNumber, chatId);
-					sendMessage("Case Number using telegram user " + caseNumber, telegramUser.getChatId());
 					// After log in, menu for Dev and Manager	
 					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
-						//sendMessage("Si entre", chatId);
-						sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
 						// Developer Case
 						if(telegramUser.getUserType().getName().equals("Developer")){
 							
@@ -93,11 +86,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							SendMessage messageToTelegram = new SendMessage();
 							messageToTelegram.setChatId(telegramUser.getChatId());
 
-							// Message with all the information retrieved form the database
-							messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
-							" \nTelegram User Id " + telegramUser.getID().toString() + 
-							" \nUser Type " + telegramUser.getUserType().getName() +
-							" \nTelegram Name " + telegramUser.getTelegramName());
+							// Message with information retrieved form the database
+							messageToTelegram.setText("Welcome " + telegramUser.getTelegramName() + 
+							", you are logged as " + telegramUser.getUserType().getName());
 
 							ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 							List<KeyboardRow> keyboard = new ArrayList<>();
@@ -130,7 +121,41 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						// Manager Case
 						else if(telegramUser.getUserType().getName().equals("Manager")){
-							sendMessage(messageTextFromTelegram, telegramUser.getChatId());
+
+							// Create variables necessaries to interact with telegram					
+							SendMessage messageToTelegram = new SendMessage();
+							messageToTelegram.setChatId(telegramUser.getChatId());
+
+							// Message with all the information retrieved form the database
+							messageToTelegram.setText("Welcome " + telegramUser.getTelegramName() + 
+							", you are logged as " + telegramUser.getUserType().getName());
+
+							ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+							List<KeyboardRow> keyboard = new ArrayList<>();
+
+							// First Row
+							KeyboardRow row = new KeyboardRow();
+							row.add(BotLabels.CREATE_SPRINT.getLabel());
+							row.add(BotLabels.CREATE_PROJECT.getLabel());
+							
+							// Second Row
+							row = new KeyboardRow();
+							row.add(BotLabels.CREATE_PROJECT.getLabel());
+							keyboard.add(row);
+							
+							// Add the first row to the keyboard
+							keyboard.add(row);
+							keyboardMarkup.setKeyboard(keyboard);
+
+							// Add the keyboard markup
+							messageToTelegram.setReplyMarkup(keyboardMarkup);
+
+							try {
+								execute(messageToTelegram);
+							} 
+							catch (TelegramApiException e) {
+								logger.error(e.getLocalizedMessage(), e);
+							}
 						}
 
 					}
@@ -163,7 +188,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								telegramUser = setTelegramUser(chatId, "");
 								// Case Number to acces developer or manager methods
 								caseNumber++;
-								sendMessage("Case number updated to " + caseNumber, chatId);
+								//sendMessage("Case number updated to " + caseNumber, chatId);
 
 								// Continue Message /continue
 								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
@@ -200,7 +225,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								telegramUser = setTelegramUser(chatId, responseFromUser);
 								// Case Number to acces developer or manager methods
 								caseNumber++;
-								sendMessage("Case number updated to " + caseNumber, chatId);
+								//sendMessage("Case number updated to " + caseNumber, chatId);
 								
 								// Continue Message /continue
 								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
