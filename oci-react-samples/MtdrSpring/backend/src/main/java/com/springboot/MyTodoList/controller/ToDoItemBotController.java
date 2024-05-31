@@ -86,156 +86,142 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			TelegramUser telegramUser = new TelegramUser();
 			
 
-			// If the bot detects the start command
-			// "/start"
-			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
 
-				// Send Welcome Message
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
-				
-				try{
-					execute(messageToTelegram);
+			switch (caseNumber) {
+				// When already logged
+				case 1:
+					// After log in, menu for Dev and Manager	
+					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
-					// Check if the chatId exists in the database
-					Long chatIdResponse = findChatIdByChatId(chatId).getBody();
-					int chatIdCompare = -1;
-					// Compare the chatId from the database with the chatId from the user
-					if(chatIdResponse != null )	chatIdCompare = Long.compare(chatIdResponse, chatId);
-					// Verify the chatId content
-					if(chatIdCompare == 0){
-						// You have successfully logged in!!
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+						sendMessage("Si entre", chatId);
+						sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
+						// Developer Case
+						if(telegramUser.getUserType().getName().equals("Developer")){
+							
+							// Create variables necessaries to interact with telegram					
+							SendMessage messageToTelegram = new SendMessage();
+							messageToTelegram.setChatId(telegramUser.getChatId());
+
+							// Message with all the information retrieved form the database
+							messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
+							" \nTelegram User Id " + telegramUser.getID().toString() + 
+							" \nUser Type " + telegramUser.getUserType().getName() +
+							" \nTelegram Name " + telegramUser.getTelegramName());
+
+							ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+							List<KeyboardRow> keyboard = new ArrayList<>();
+
+							// First Row
+							KeyboardRow row = new KeyboardRow();
+							row.add(BotLabels.SHOW_TASK.getLabel());
+							row.add(BotLabels.EDIT_TASK.getLabel());
+							
+							// Second Row
+							row = new KeyboardRow();
+							row.add(BotLabels.DELETE_TASK.getLabel());
+							row.add(BotLabels.CREATE_TASK.getLabel());
+							keyboard.add(row);
+							
+							// Add the first row to the keyboard
+							keyboard.add(row);
+							keyboardMarkup.setKeyboard(keyboard);
+
+							// Add the keyboard markup
+							messageToTelegram.setReplyMarkup(keyboardMarkup);
+
+							try {
+								execute(messageToTelegram);
+							} 
+							catch (TelegramApiException e) {
+								logger.error(e.getLocalizedMessage(), e);
+							}
+
+						}
+						// Manager Case
+						else if(telegramUser.getUserType().getName().equals("Manager")){
+							sendMessage(messageTextFromTelegram, telegramUser.getChatId());
+						}
+
+					}
+					break;
+					
+				// Log in by default
+				default:
+					// If the bot detects the start command
+					// "/start"
+					if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
+
+						// Send Welcome Message
+						SendMessage messageToTelegram = new SendMessage();
+						messageToTelegram.setChatId(chatId);
+						messageToTelegram.setText(BotMessages.WELCOME_MESSAGE.getMessage());
 						
-						// Set Telegram User Information
-						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
-						sendMessage("Chat Id " + telegramUser.getChatId().toString() + 
-						" \nTelegram User Id " + telegramUser.getID().toString() + 
-						" \nUser Type " + telegramUser.getUserType().getName() +
-						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
+						try{
+							execute(messageToTelegram);
 
-						// Case Number to acces developer or manager methods
-						caseNumber++;
-						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
-
-						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-						sendMessage(BotCommands.CONTINUE_COMMAND.getCommand(), telegramUser.getChatId());
+							// Check if the chatId exists in the database
+							Long chatIdResponse = findChatIdByChatId(chatId).getBody();
+							int chatIdCompare = -1;
+							// Compare the chatId from the database with the chatId from the user
+							if(chatIdResponse != null )	chatIdCompare = Long.compare(chatIdResponse, chatId);
+							// Verify the chatId content
+							if(chatIdCompare == 0){
+								// You have successfully logged in!!
+								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+								// Set Telegram User Information
+								telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+								// Case Number to acces developer or manager methods
+								caseNumber++;
+								// Continue Message /continue
+								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+							}
+							else{
+								// Enter your Telegram Username with format /login:TelegramUsername
+								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
+							}
+						}
+						catch(TelegramApiException e){
+							logger.error(e.getLocalizedMessage(), e);
+						}
 
 					}
-					else{
-						// Enter your Telegram Username with format /login:TelegramUsername
-						sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
-					}
-				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}
-
-			}
-			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
-				
-				// Extracts the User name from the message
-				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
-				
-				SendMessage messageToTelegram = new SendMessage();
-				messageToTelegram.setChatId(chatId);
-				messageToTelegram.setText("Verifying the user: " + responseFromUser);					
-				
-				try{
-					execute(messageToTelegram);
-					if(getTelegramUserId(responseFromUser).getBody() != null){
-						// User Found Log in sucess
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-						// Update Chat Id in db
-						ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
-						sendMessage(response.getBody(), chatId);
+					// If the bot detects the command /login:"TelegramUserName"
+					else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
 						
-						// Set local telegram user
-						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
-						sendMessage("Chat Id " + telegramUser.getChatId().toString() + 
-						" \nTelegram User Id " + telegramUser.getID().toString() + 
-						" \nUser Type " + telegramUser.getUserType().getName() +
-						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
+						// Extracts the User name from the message
+						String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
+						
+						SendMessage messageToTelegram = new SendMessage();
+						messageToTelegram.setChatId(chatId);
+						messageToTelegram.setText("Verifying the user: " + responseFromUser);					
+						
+						try{
+							execute(messageToTelegram);
+							if(getTelegramUserId(responseFromUser).getBody() != null){
+								// User Found Log in sucess
+								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+								// Update Chat Id in db
+								ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
+								sendMessage(response.getBody(), chatId);					
+								// Set local telegram user
+								telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
+								// Case Number to acces developer or manager methods
+								caseNumber++;
+								// Continue Message /continue
+								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 
-						// Case Number to acces developer or manager methods
-						caseNumber++;
-
-						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
-
-
-						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-
+							}
+							else {
+								sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
+							}
+						}
+						catch(TelegramApiException e){
+							logger.error(e.getLocalizedMessage(), e);
+						}				
 					}
-					else {
-						sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
-					}
-				}
-				catch(TelegramApiException e){
-					logger.error(e.getLocalizedMessage(), e);
-				}				
-			}
-			// After log in, menu for Dev and Manager	
-			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
-
-				sendMessage("Si entre", telegramUser.getChatId());
-				sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
-				// Developer Case
-				if(telegramUser.getUserType().getName().equals("Developer")){
-					
-					// Create variables necessaries to interact with telegram					
-					SendMessage messageToTelegram = new SendMessage();
-					messageToTelegram.setChatId(telegramUser.getChatId());
-
-					// Message with all the information retrieved form the database
-					messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
-					" \nTelegram User Id " + telegramUser.getID().toString() + 
-					" \nUser Type " + telegramUser.getUserType().getName() +
-					" \nTelegram Name " + telegramUser.getTelegramName());
-
-					ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-					List<KeyboardRow> keyboard = new ArrayList<>();
-
-					// First Row
-					KeyboardRow row = new KeyboardRow();
-					row.add(BotLabels.SHOW_TASK.getLabel());
-					row.add(BotLabels.EDIT_TASK.getLabel());
-					
-					// Second Row
-					row = new KeyboardRow();
-					row.add(BotLabels.DELETE_TASK.getLabel());
-					row.add(BotLabels.CREATE_TASK.getLabel());
-					keyboard.add(row);
-					
-					// Add the first row to the keyboard
-					keyboard.add(row);
-					keyboardMarkup.setKeyboard(keyboard);
-
-					// Add the keyboard markup
-					messageToTelegram.setReplyMarkup(keyboardMarkup);
-
-					try {
-						execute(messageToTelegram);
-					} 
-					catch (TelegramApiException e) {
-						logger.error(e.getLocalizedMessage(), e);
-					}
-
-				}
-				// Manager Case
-				else if(telegramUser.getUserType().getName().equals("Manager")){
-					sendMessage(messageTextFromTelegram, telegramUser.getChatId());
-				}
+					break;
 
 			}
-			else {
-				// Verification of what is inside here
-				sendMessage(messageTextFromTelegram, telegramUser.getChatId());
-			}
-			
 		}
 	}
 	
