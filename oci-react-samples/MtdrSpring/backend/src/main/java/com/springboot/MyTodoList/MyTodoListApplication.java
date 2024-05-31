@@ -13,23 +13,22 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.BotController;
 import com.springboot.MyTodoList.controller.ProjectController;
+import com.springboot.MyTodoList.controller.TaskStatusController;
+import com.springboot.MyTodoList.controller.TelegramUserController;
+import com.springboot.MyTodoList.controller.UserTypeController;
 import com.springboot.MyTodoList.util.BotMessages;
 
 import com.springboot.MyTodoList.service.BotMenuService;
 import com.springboot.MyTodoList.service.BotOptionService;
 import com.springboot.MyTodoList.service.ConversationService;
 import com.springboot.MyTodoList.service.MessageService;
-import com.springboot.MyTodoList.service.ProjectService;
 import com.springboot.MyTodoList.service.SprintService;
 import com.springboot.MyTodoList.service.SprintUpdateService;
 import com.springboot.MyTodoList.service.TaskService;
-import com.springboot.MyTodoList.service.TaskStatusService;
 import com.springboot.MyTodoList.service.TaskUpdateService;
 import com.springboot.MyTodoList.service.TeamService;
 import com.springboot.MyTodoList.service.TeamTypeService;
-import com.springboot.MyTodoList.service.TelegramUserService;
 import com.springboot.MyTodoList.service.UpdateTypeService;
-import com.springboot.MyTodoList.service.UserTypeService;
 
 @SpringBootApplication
 public class MyTodoListApplication implements CommandLineRunner {
@@ -49,9 +48,6 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private MessageService messageService;
 
 	@Autowired
-	private ProjectService projectService;
-
-	@Autowired
 	private ProjectController projectController;
 
 	@Autowired
@@ -64,7 +60,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private TaskService taskService;
 
 	@Autowired
-	private TaskStatusService taskStatusService;
+	private TaskStatusController taskStatusController;
 
 	@Autowired
 	private TaskUpdateService taskUpdateService;
@@ -76,13 +72,13 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private TeamTypeService teamTypeService;
 
 	@Autowired
-	private TelegramUserService telegramUserService;
+	private TelegramUserController telegramUserController;
 
 	@Autowired
 	private UpdateTypeService updateTypeService;
 
 	@Autowired
-	private UserTypeService userTypeService;
+	private UserTypeController userTypeController;
 
 	@Value("${telegram.bot.token}")
 	private String telegramBotToken;
@@ -98,8 +94,8 @@ public class MyTodoListApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-			telegramBotsApi.registerBot(new BotController(telegramBotToken, botName, telegramUserService, 
-			taskService, userTypeService, taskStatusService, projectService, projectController));
+			telegramBotsApi.registerBot(new BotController(telegramBotToken, botName, telegramUserController,
+			taskService, userTypeController, taskStatusController, projectController));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

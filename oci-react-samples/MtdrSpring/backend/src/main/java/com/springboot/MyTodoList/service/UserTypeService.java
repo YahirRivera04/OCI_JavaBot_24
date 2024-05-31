@@ -25,11 +25,6 @@ public class UserTypeService {
         this.userTypeRepository = userTypeRepository;
     }
     
-    // --------------------- Get User Type Method ---------------------
-    public Long findUserTypeIdByName(String name){
-        return userTypeRepository.findUserTypeIdByName(name);
-    }
-    
     // --------------------- Get All User Type Method ---------------------
     public List<UserType> findAllUserType(){
         return userTypeRepository.findAll();

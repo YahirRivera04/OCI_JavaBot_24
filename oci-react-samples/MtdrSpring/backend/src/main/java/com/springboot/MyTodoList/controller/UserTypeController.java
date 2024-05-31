@@ -2,6 +2,8 @@ package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.UserTypeService;
 
+import com.springboot.MyTodoList.controller.BotController;
+
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +19,10 @@ public class UserTypeController {
     @Autowired
     private UserTypeService userTypeService;
 
-    // --------------------- Get User Type Info by Name Method ---------------------
-    @GetMapping(value = "/usertype/usertypeinfo/{Name}")
-    public ResponseEntity<Long> findUserTypeIdByName(@PathVariable String name){
-        return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
-    }
+    @Autowired
+    private BotController botController;
+
+    // ##################### User Type Controller Metods ##################### //
 
     // --------------------- Get All User Type Method ---------------------
     @GetMapping(value = "/usertype/")
@@ -38,6 +39,33 @@ public class UserTypeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    // ##################### Bot Controller Metods ##################### //
 
+    // Get All User Types
+	public ResponseEntity<List<UserType>> findAllUserType(){
+		return ResponseEntity.ok(userTypeService.findAllUserType());
+	}
+
+    // Get All User Type
+    public List<UserType> getUserTypeList(){
+        List<UserType> userTypeList = List.of(new UserType());
+        userTypeList = findAllUserType().getBody();
+        return userTypeList;
+    }
+
+    // Print All User Type
+    public void printUserTypeList(Long chatId){
+        List<UserType> userTypeList = List.of(new UserType());
+        userTypeList = findAllUserType().getBody();
+        // Print all information form project
+        if(userTypeList != null){
+            for(int i = 0; i < userTypeList.size(); i++){
+                botController.sendMessage("Id " + userTypeList.get(i).getID().toString() +
+                " \nName " + userTypeList.get(i).getName() + 
+                " \nDescription " + userTypeList.get(i).getDescription(), chatId);
+            }
+        }
+    }
 
 }
