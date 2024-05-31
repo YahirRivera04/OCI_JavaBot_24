@@ -67,6 +67,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
 
+
+			sendMessage(messageTextFromTelegram, chatId);
+
+
 			// Set Auxiliar Variable to iog in
 			int caseNumber = 0;
 
@@ -113,6 +117,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Case Number to acces developer or manager methods
 						caseNumber++;
+
+						sendMessage("Case Number " + caseNumber, chatId);
+
 						// Continue Message /continue
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
 					}
@@ -143,13 +150,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						// Update Chat Id in db
 						ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
-						sendMessage(response.getBody(), telegramUser.getChatId());
+						sendMessage(response.getBody(), chatId);
 						
 						// Set local telegram user
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
-						
+						sendMessage("Chat Id " + telegramUser.getChatId().toString() + 
+						" \nTelegram User Id " + telegramUser.getID().toString() + 
+						" \nUser Type " + telegramUser.getUserType().getName() +
+						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
+
 						// Case Number to acces developer or manager methods
 						caseNumber++;
+
+						sendMessage("Case Number " + caseNumber, chatId);
+
+
 						// Continue Message /continue
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
 
@@ -165,6 +180,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// After log in, menu for Dev and Manager	
 			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
 
+				sendMessage(telegramUser.getUserType().getName(),chatId);
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
 					
