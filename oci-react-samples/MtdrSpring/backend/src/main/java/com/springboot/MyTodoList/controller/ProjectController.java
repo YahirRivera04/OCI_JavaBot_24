@@ -43,11 +43,11 @@ public class ProjectController {
 
     // ##################### Bot Controller Metods ##################### //
 
-    // Get All projects :)
+    // Get All projects
 	public ResponseEntity<List<Project>> findAllProjects(){
 		return ResponseEntity.ok(projectService.findAllProjects());
 	}
 
-	// Create new project #################### 
+	// Create new project 
 
 }

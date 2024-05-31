@@ -323,14 +323,6 @@ public class BotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findTelegramNameByTelegramUserId(id));
 	}
 
-	// PROJECT METHODS ()
-
-	// // Get All projects :)
-	// public ResponseEntity<List<Project>> findAllProjects(){
-	// 	return ResponseEntity.ok(projectService.findAllProjects());
-	// }
-
-	// // Create new project #################### 
 
 	// TASK STATUS METHODS (Works all)
 
@@ -368,6 +360,7 @@ public class BotController extends TelegramLongPollingBot {
 	// Get All User Type
 	public List<UserType> getUserTypeList(){
 		List<UserType> userTypeList = List.of(new UserType());
+		userTypeList = findAllUserType().getBody();
 		return userTypeList;
 	}
 
