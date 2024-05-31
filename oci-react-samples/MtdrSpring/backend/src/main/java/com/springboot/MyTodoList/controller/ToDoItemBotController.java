@@ -110,7 +110,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						" \nTelegram User Id " + telegramUser.getID().toString() + 
 						" \nUser Type " + telegramUser.getUserType().getName() +
 						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
-						
+
 						// Case Number to acces developer or manager methods
 						caseNumber++;
 						// Continue Message /continue
@@ -209,7 +209,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 				// Manager Case
 				else if(telegramUser.getUserType().getName().equals("Manager")){
-				
+					sendMessage(messageTextFromTelegram, telegramUser.getChatId());
 				}
 
 			}
