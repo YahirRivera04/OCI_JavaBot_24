@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.TaskStatusService;
-import com.springboot.MyTodoList.controller.BotController;
+import com.springboot.MyTodoList.controller.ToDoItemBotController;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class TaskStatusController {
     private TaskStatusService taskStatusService;
     
     @Autowired
-    private BotController botController;
+    private ToDoItemBotController botController;
 
     // ##################### Task Status Controller Metods ##################### //
 

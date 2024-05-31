@@ -1,7 +1,7 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.service.ProjectService;
-import com.springboot.MyTodoList.controller.BotController;
+import com.springboot.MyTodoList.controller.ToDoItemBotController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +17,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @Autowired
-    private BotController botController;
+    private ToDoItemBotController botController;
 
     // ##################### Project Controller Metods ##################### //
     

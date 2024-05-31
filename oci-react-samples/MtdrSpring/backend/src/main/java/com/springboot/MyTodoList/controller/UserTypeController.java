@@ -2,7 +2,7 @@ package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.UserTypeService;
 
-import com.springboot.MyTodoList.controller.BotController;
+import com.springboot.MyTodoList.controller.ToDoItemBotController;
 
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class UserTypeController {
     private UserTypeService userTypeService;
 
     @Autowired
-    private BotController botController;
+    private ToDoItemBotController botController;
 
     // ##################### User Type Controller Metods ##################### //
 

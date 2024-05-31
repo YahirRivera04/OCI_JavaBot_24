@@ -1,6 +1,5 @@
 
 package com.springboot.MyTodoList.controller;
-import org.springframework.stereotype.Controller;
 import org.apache.tomcat.jni.User;
 import org.aspectj.weaver.ast.And;
 import org.mockito.internal.matchers.Null;
@@ -48,10 +47,9 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-@Controller
-public class BotController extends TelegramLongPollingBot {
+public class ToDoItemBotController extends TelegramLongPollingBot {
 
-	private static final Logger logger = LoggerFactory.getLogger(BotController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ToDoItemBotController.class);
 	private TelegramUserController telegramUserController;
 	private UserTypeController userTypeController;
 	private TaskStatusController taskStatusController;
@@ -59,7 +57,7 @@ public class BotController extends TelegramLongPollingBot {
 	private ProjectController projectController;
 	private String botName;
 
-	public BotController(String botToken, String botName, 
+	public ToDoItemBotController(String botToken, String botName, 
 	TelegramUserController telegramUserController, TaskService taskService,
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
 	ProjectController projectController) {
