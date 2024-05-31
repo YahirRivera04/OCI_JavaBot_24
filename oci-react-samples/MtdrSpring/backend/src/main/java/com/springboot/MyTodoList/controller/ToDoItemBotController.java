@@ -61,31 +61,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	@Override
 	public void onUpdateReceived(Update update) {
 
+		// Set Auxiliar Variable to iog in
+		int caseNumber = 0;
+
+		// New UserType Objects
+		UserType userTypeManager = new UserType();
+		UserType userTypeDeveloper = new UserType();	
+
+		// Get User Type Information
+		userTypeManager = setUserTypeInfo().get(0);
+		userTypeDeveloper = setUserTypeInfo().get(1);
+
+		// New Telegram User Object
+		TelegramUser telegramUser = new TelegramUser();
+
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
 			String messageTextFromTelegram = update.getMessage().getText();
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
 
-
 			sendMessage(messageTextFromTelegram, chatId);
-
-
-			// Set Auxiliar Variable to iog in
-			int caseNumber = 0;
-
-			// New UserType Objects
-			UserType userTypeManager = new UserType();
-			UserType userTypeDeveloper = new UserType();	
-
-			// Get User Type Information
-			userTypeManager = setUserTypeInfo().get(0);
-			userTypeDeveloper = setUserTypeInfo().get(1);
-
-			// New Telegram User Object
-			TelegramUser telegramUser = new TelegramUser();
-			
-
 
 			switch (caseNumber) {
 				// When already logged
@@ -146,7 +142,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 
 					//}
-					break;
+					//break;
 					
 				// Log in by default
 				default:
@@ -222,8 +218,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							logger.error(e.getLocalizedMessage(), e);
 						}				
 					}
-					break;
-
+					//break;
 			}
 		}
 	}
