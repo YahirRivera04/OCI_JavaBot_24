@@ -74,14 +74,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.botName = botName;
 	}
 
-	// Set Auxiliar Variable to iog in
+	// Set Auxiliar Variable to log in
 	int caseNumber = 0;
-	// // New UserType Objects
-	// UserType userTypeManager = new UserType();
-	// UserType userTypeDeveloper = new UserType();	
 
+	// New List of User Type
+	List<UserType> userTypeList = List.of(new UserType());
 	// New Telegram User Object
 	TelegramUser telegramUser = new TelegramUser();
+	// New List of Task Status
+	List<TaskStatus> taskStatusList = List.of(new TaskStatus());
+	// New List of Projects
+	List<Project> projectList = List.of(new Project());
+	// New List of Sprints
+	List<Sprint> sprintList = List.of(new Sprint());
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -311,7 +316,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Print All User Type
     public void printUserTypeList(Long chatId){
-        List<UserType> userTypeList = List.of(new UserType());
         userTypeList = userTypeController.findAllUserType().getBody();
         // Print all information form project
         if(userTypeList != null){
@@ -325,9 +329,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Print All Task Status
 	public void printTaskStatusList(Long chatId){
-		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
 		taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-
 		if(taskStatusList != null){
 			for(int i = 0; i < taskStatusList.size(); i++){
 				sendMessage("Id " + taskStatusList.get(i).getID().toString() + 
@@ -339,7 +341,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Print All Projects
     public void printProjectList(Long chatId){
-        List<Project> projectList = List.of(new Project());
         projectList = projectController.findAllProjects().getBody();
         // Print all information form project
         if(projectList != null){
@@ -353,10 +354,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Print All Sprints
 	public void printSprintList(Long chatId){
-		List<Sprint> sprintList = List.of(new Sprint());
 		sprintList = sprintController.findAllSprints().getBody();
-		if(sprintList != null){
+		if(sprintList != null && projectList != null){
             for(int i = 0; i < sprintList.size(); i++){
+				for(int j = 0; j < projectList.size(); j++){
+					if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
+						sprintList.get(i).setProject(projectList.get(j));
+					}
+				}
+
                 sendMessage("Id " + sprintList.get(i).getID().toString() +
                 " \nName " + sprintList.get(i).getName() + 
                 " \nDescription " + sprintList.get(i).getDescription() + 
