@@ -1,5 +1,4 @@
 package com.springboot.MyTodoList.service;
-
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +11,6 @@ import java.util.Optional;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.repository.UserTypeRepository;
 
-// Marks the class as a Spring service component, 
-// allowing it to be automatically detected and instantiated by Spring container
-// during component scanning.
 
 @Service
 public class UserTypeService {
