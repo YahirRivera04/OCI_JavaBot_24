@@ -166,7 +166,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								sendMessage("Case number updated to " + caseNumber, chatId);
 
 								// Continue Message /continue
-								//sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
+								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 							}
 							else{
 								// Enter your Telegram Username with format /login:TelegramUsername
@@ -203,7 +203,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								sendMessage("Case number updated to " + caseNumber, chatId);
 								
 								// Continue Message /continue
-								//sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
+								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 							}
 							else {
 								// Log in fail message
