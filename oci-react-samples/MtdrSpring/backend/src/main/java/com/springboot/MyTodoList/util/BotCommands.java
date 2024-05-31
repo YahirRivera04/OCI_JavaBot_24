@@ -9,11 +9,20 @@ public enum BotCommands {
 	TODO_LIST("/todolist"),
 	ADD_ITEM("/additem"),
 
+	// Start commands
 	RESPONSE_COMMAND("/login:"),
 	CONTINUE_COMMAND("/continue"),
 
-	DEVELOPPER_COMMAND("/developer"),
-	MANAGER_COMMAND("/manager");
+	// Developer buttons
+	SHOW_TASK_COMMAND("Show Task"),
+	EDIT_TASK_COMMAND("Edit Task"),
+	DELETE_TASK_COMMAND("Delete Task"),
+	CREATE_TASK_COMMAND("Create Task"),
+
+	// Manager buttons
+	SHOW_PROJECT_COMMAND("View Project"),
+	CREATE_PROJECT_COMMAND("Create Project"),
+	CREATE_SPRINT_COMMAND("Create Sprint");
 
 	private String command;
 

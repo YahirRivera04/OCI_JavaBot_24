@@ -1,5 +1,5 @@
-package com.springboot.MyTodoList.controller;
 
+package com.springboot.MyTodoList.controller;
 import org.apache.tomcat.jni.User;
 import org.aspectj.weaver.ast.And;
 import org.mockito.internal.matchers.Null;
@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import com.springboot.MyTodoList.service.TaskService;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
@@ -30,6 +29,9 @@ import com.springboot.MyTodoList.service.UserTypeService;
 
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.TaskStatusService;
+
+import com.springboot.MyTodoList.model.Task;
+import com.springboot.MyTodoList.service.TaskService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,15 +99,15 @@ public class BotController extends TelegramLongPollingBot {
 							KeyboardRow row = new KeyboardRow();
 							row.add(BotLabels.SHOW_TASK.getLabel());
 							row.add(BotLabels.EDIT_TASK.getLabel());
-							
+							keyboard.add(row);
+
 							// Second Row
 							row = new KeyboardRow();
 							row.add(BotLabels.DELETE_TASK.getLabel());
 							row.add(BotLabels.CREATE_TASK.getLabel());
 							keyboard.add(row);
 							
-							// Add the first row to the keyboard
-							keyboard.add(row);
+							// Set the rows to the keyboard
 							keyboardMarkup.setKeyboard(keyboard);
 
 							// Add the keyboard markup
@@ -137,14 +139,14 @@ public class BotController extends TelegramLongPollingBot {
 							KeyboardRow row = new KeyboardRow();
 							row.add(BotLabels.CREATE_SPRINT.getLabel());
 							row.add(BotLabels.CREATE_PROJECT.getLabel());
-							
+							keyboard.add(row);
+
 							// Second Row
 							row = new KeyboardRow();
 							row.add(BotLabels.CREATE_PROJECT.getLabel());
 							keyboard.add(row);
 							
-							// Add the first row to the keyboard
-							keyboard.add(row);
+							// Set the rows to the keyboard
 							keyboardMarkup.setKeyboard(keyboard);
 
 							// Add the keyboard markup
@@ -157,10 +159,24 @@ public class BotController extends TelegramLongPollingBot {
 								logger.error(e.getLocalizedMessage(), e);
 							}
 						}
-
+					}
+					else{
+						caseNumber++;	
 					}
 					break;
+				// Next buttons menu to do some actions based on selected for Developers
+				case 2:
+					// Test of methods to build a task
+					sendMessage("Test of Task Status", telegramUser.getChatId());
+					List<TaskStatus> taskStatusList = setTaskStatus();
 					
+
+
+					break;
+				// // Next buttons menu to do some actions based on selected for Managers
+				// case 3:
+
+				// 	break;
 				// Log in by default
 				default:
 					// If the bot detects the start command
@@ -353,5 +369,32 @@ public class BotController extends TelegramLongPollingBot {
 		
 		return user;
 	}
+
+	public List<TaskStatus> setTaskStatus(){
+		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
+		taskStatusList = findTaskStatus().getBody();
+		
+
+		if(taskStatusList != null){
+			for(int i = 0; i < taskStatusList.size(); i++){
+				sendMessage("Id " + taskStatusList.get(i).getID().toString() + 
+				" \nName " +  taskStatusList.get(i).getName() + 
+				" \nDescription " + taskStatusList.get(i).getDescription(), telegramUser.getChatId());	
+			}
+		}
+		
+		return taskStatusList;	
+	}
+
+
+
+	public Task setTask(){
+		
+		Task task = new Task();
+		
+		
+		return task;
+	}
+
 
 }
