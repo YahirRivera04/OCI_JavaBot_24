@@ -141,7 +141,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
 							}
-							caseNumber++;
 						}
 						// Manager Case
 						else if(telegramUser.getUserType().getName().equals("Manager")){
@@ -181,11 +180,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
 							}
-							caseNumber++;
 						}
 					}
 					else if(messageTextFromTelegram.equals(BotCommands.LOG_OUT_COMMAND.getCommand())){
 						caseNumber = 0;
+						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+					}
+					else{
+						caseNumber++;
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
@@ -202,7 +204,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 					sendMessage("Test of Sprint", telegramUser.getChatId());
 					printSprintList(telegramUser.getChatId());
-					
+
 					break;
 				// Log in by default
 				default:
@@ -360,7 +362,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
                 " \nDescription " + sprintList.get(i).getDescription() + 
 				" \nStart Date " + sprintList.get(i).getStartDate() + 
 				" \nEnd Date " + sprintList.get(i).getEndDate() + 
-				" \nProject Id " + sprintList.get(i).getProject().getID(), chatId);
+				" \nProject Id " + sprintList.get(i).getProject().getID() +
+				" \n Project Name " + sprintList.get(i).getProject().getName() +
+				" \n Project Description " + sprintList.get(i).getProject().getDescription(), chatId);
             }
         }
 	}

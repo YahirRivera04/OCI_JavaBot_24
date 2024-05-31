@@ -10,6 +10,8 @@ public enum BotMessages {
 	LOG_IN_MESSAGE("Enter your Telegram Username with format /login:TelegramUsername"),
 	LOG_IN_SUCCESS("You have successfully logged in!"),
 	LOG_IN_FAIL("Login failed! Please try again!"),
+	// Log Out messages
+	LOG_OUT_MESSAGE("See you next time"),
 
 	// Show tasks
 	SHOW_TASK_MESSAGE("Here are your tasks: \n"),
