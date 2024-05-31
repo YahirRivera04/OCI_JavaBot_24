@@ -34,7 +34,7 @@ import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.controller.ProjectController;
 
 import com.springboot.MyTodoList.model.Sprint;
-import com.springboot.MyTodoList.service.SprintService;
+import com.springboot.MyTodoList.controller.SprintController;
 
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.controller.TaskStatusController;
@@ -55,12 +55,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TaskStatusController taskStatusController;
 	private TaskService taskService;
 	private ProjectController projectController;
+	private SprintController sprintController;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
 	TelegramUserController telegramUserController, TaskService taskService,
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
-	ProjectController projectController) {
+	ProjectController projectController, SprintController sprintController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -69,6 +70,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.taskService = taskService;
 		this.taskStatusController = taskStatusController;
 		this.projectController = projectController;
+		this.sprintController = sprintController;
 		this.botName = botName;
 	}
 
@@ -121,7 +123,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							row.add(BotLabels.DELETE_TASK.getLabel());
 							row.add(BotLabels.CREATE_TASK.getLabel());
 							keyboard.add(row);
-							
+
+							// Third Row
+							row = new KeyboardRow();
+							row.add(BotLabels.LOGOUT.getLabel());
+							keyboard.add(row);
+
 							// Set the rows to the keyboard
 							keyboardMarkup.setKeyboard(keyboard);
 
@@ -159,6 +166,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							// Second Row
 							row = new KeyboardRow();
 							row.add(BotLabels.CREATE_PROJECT.getLabel());
+							row.add(BotLabels.LOGOUT.getLabel());
 							keyboard.add(row);
 							
 							// Set the rows to the keyboard
@@ -175,6 +183,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 							caseNumber++;
 						}
+					}
+					else if(messageTextFromTelegram.equals(BotCommands.LOG_OUT_COMMAND.getCommand())){
+						caseNumber = 0;
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
@@ -334,4 +345,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
             }
         }
     }
+
+	// Print All Sprints
+	public void printSprintList(Long chatId){
+		List<Sprint> sprintList = List.of(new Sprint());
+		sprintList = sprintController.findAllSprints().getBody();
+		if(sprintList != null){
+            for(int i = 0; i < sprintList.size(); i++){
+                sendMessage("Id " + sprintList.get(i).getID().toString() +
+                " \nName " + sprintList.get(i).getName() + 
+                " \nDescription " + sprintList.get(i).getDescription() + 
+				" \nStart Date " + sprintList.get(i).getStartDate() + 
+				" \nEnd Date " + sprintList.get(i).getEndDate() + 
+				" \nProject Id " + sprintList.get(i).getProject().getID(), chatId);
+            }
+        }
+	}
+
 }

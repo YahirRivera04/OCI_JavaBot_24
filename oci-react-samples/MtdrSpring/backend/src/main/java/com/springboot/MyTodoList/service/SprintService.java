@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.repository.SprintRepository;
 
@@ -20,30 +21,19 @@ public class SprintService {
     @Autowired
     private SprintRepository sprintRepository;
     
-    // --------------------- Read Method ---------------------
-
-    public ResponseEntity<Sprint> getItemById(int id){
-        Optional<Sprint> data = sprintRepository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       // --------------------- Get All Sprint Method ---------------------
+    public List<Sprint> findAllSprints(){
+        return sprintRepository.findAll();
     }
 
-    // --------------------- Update Method ---------------------
-
-    public Sprint updateSprint(int id, Sprint td) {
-        Optional<Sprint> data = sprintRepository.findById(id);
-        if(data.isPresent()){
-            Sprint sprint = data.get();
-            // sprint.setID(id);
-            // sprint.setCreation_ts(td.getCreation_ts());
-            // sprint.setDescription(td.getDescription());
-            // sprint.setDone(td.isDone());
-            return sprintRepository.save(sprint);
-        }else{
-            return null;
+    // --------------------- Create New Sprint Method ---------------------
+    public String createNewSprint(Sprint newSprint){
+        try{
+            sprintRepository.save(newSprint);
+            return "Project " + newSprint.getName() + " created succesfully";
+        }
+        catch (Exception e){
+            return "Project " + newSprint.getName() + " fail in creation " + e;   
         }
     }
 
