@@ -1,5 +1,4 @@
 package com.springboot.MyTodoList.controller;
-import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.UserTypeService;
 

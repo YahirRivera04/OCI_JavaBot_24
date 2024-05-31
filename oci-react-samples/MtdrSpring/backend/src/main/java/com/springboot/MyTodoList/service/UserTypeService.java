@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.repository.TelegramUserRepository;
 import com.springboot.MyTodoList.repository.UserTypeRepository;
 
 // Marks the class as a Spring service component, 

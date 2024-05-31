@@ -15,14 +15,16 @@ import java.util.List;
 @RestController
 public class ProjectController {
     @Autowired
-    private ProjectService projectServices;
+    private ProjectService projectService;
+
+    // ##################### Project Controller Metods ##################### //
     
     // --------------------- Get All Projects ---------------------
     @GetMapping(value = "/project/")
     public ResponseEntity<String> findProjects(){
         String info = "";
         try{
-            List<Project> projectList = projectServices.findAllProjects();
+            List<Project> projectList = projectService.findAllProjects();
             for(int i = 0; i < projectList.size(); i++){
                 info += projectList.get(i).toString() + "\n";
             }
@@ -36,7 +38,16 @@ public class ProjectController {
     // --------------------- Post Project ---------------------
     @GetMapping(value = "/project/{Project}")
     public ResponseEntity<String> createProject(@PathVariable Project project){
-        return ResponseEntity.ok(projectServices.createNewProject(project));
+        return ResponseEntity.ok(projectService.createNewProject(project));
     }
+
+    // ##################### Bot Controller Metods ##################### //
+
+    // Get All projects :)
+	public ResponseEntity<List<Project>> findAllProjects(){
+		return ResponseEntity.ok(projectService.findAllProjects());
+	}
+
+	// Create new project #################### 
 
 }

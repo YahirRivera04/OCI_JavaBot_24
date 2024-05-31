@@ -26,11 +26,13 @@ import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.UserTypeService;
 import com.springboot.MyTodoList.service.TelegramUserService;
 import com.springboot.MyTodoList.model.TelegramUser;
+import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
 
 // Task Needs
 
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.service.ProjectService;
+import com.springboot.MyTodoList.controller.ProjectController;
 
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.service.SprintService;
@@ -43,6 +45,8 @@ import com.springboot.MyTodoList.service.TaskService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 
 public class BotController extends TelegramLongPollingBot {
@@ -53,11 +57,12 @@ public class BotController extends TelegramLongPollingBot {
 	private TaskStatusService taskStatusService;
 	private TaskService taskService;
 	private ProjectService projectService;
+	private ProjectController projectController;
 	private String botName;
 
 	public BotController(String botToken, String botName, TelegramUserService telegramUserService,
 	TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService,
-	ProjectService projectService) {
+	ProjectService projectService, ProjectController projectController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -66,6 +71,7 @@ public class BotController extends TelegramLongPollingBot {
 		this.taskService = taskService;
 		this.taskStatusService = taskStatusService;
 		this.projectService = projectService;
+		this.projectController = projectController;
 		this.botName = botName;
 	}
 
@@ -180,13 +186,13 @@ public class BotController extends TelegramLongPollingBot {
 				case 2:
 					// Test of methods to build a task
 					sendMessage("Test of Task Status", telegramUser.getChatId());
-					getTaskStatusList();
+					printTaskStatusList();
 
 					sendMessage("Test of Project", telegramUser.getChatId());
-					getProjectList();
+					printProjectList();
 
 					sendMessage("Test User Type", telegramUser.getChatId());
-					getUserTypeList();
+					printUserTypeList();
 
 					break;
 				// Log in by default
@@ -284,10 +290,6 @@ public class BotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(userTypeService.findAllUserType());
 	}
 
-	public ResponseEntity<Long> findUserTypeByName(String name){
-		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
-	}
-
 	// TELEGRAM USER METHODS (Works all)
 
 	// Verify Telegram Chat Id from database
@@ -323,14 +325,12 @@ public class BotController extends TelegramLongPollingBot {
 
 	// PROJECT METHODS ()
 
-	// Get All projects
-	public ResponseEntity<List<Project>> findAllProjects(){
-		return ResponseEntity.ok(projectService.findAllProjects());
-	}
+	// // Get All projects :)
+	// public ResponseEntity<List<Project>> findAllProjects(){
+	// 	return ResponseEntity.ok(projectService.findAllProjects());
+	// }
 
-	// Create new project
-
-
+	// // Create new project #################### 
 
 	// TASK STATUS METHODS (Works all)
 
@@ -352,8 +352,8 @@ public class BotController extends TelegramLongPollingBot {
 		}
 	}
 	
-	// Print User Type
-	public void getUserTypeList(){
+	// Print All User Type
+	public void printUserTypeList(){
 		List<UserType> userTypeList = List.of(new UserType());
 		userTypeList = findAllUserType().getBody();
 		// Print all information form project
@@ -365,26 +365,12 @@ public class BotController extends TelegramLongPollingBot {
 			}
 		}
 	}
-	// Set all needed for User Type Local
-	public List<UserType> setUserTypeInfo(){
-
-		// Add db information to the local users
-		UserType Manager = new UserType();
-		UserType Developer = new UserType();
-		// Get the id from the db
-		Long manager = findUserTypeByName("Manager").getBody();
-		Long developer = findUserTypeByName("Developer").getBody();
-		// Assign other fields to the objects
-		Manager.setID(manager);
-		Manager.setName("Manager");
-		Manager.setDescription("");
-		Developer.setID(developer);
-		Developer.setName("Developer");
-		Developer.setDescription("");
-
-		return List.of(Manager, Developer);
+	// Get All User Type
+	public List<UserType> getUserTypeList(){
+		List<UserType> userTypeList = List.of(new UserType());
+		return userTypeList;
 	}
-	
+
 	// Set all needed for Telegram User Local
 	public TelegramUser setTelegramUser(Long chatId, String telegramUserName){
 
@@ -393,9 +379,9 @@ public class BotController extends TelegramLongPollingBot {
 		// Get User Type Information
 		UserType dev = new UserType();
 		UserType man = new UserType();
-		// Fill with info
-		dev = setUserTypeInfo().get(0);
-		man = setUserTypeInfo().get(1);
+		
+		dev = getUserTypeList().get(1);
+		man = getUserTypeList().get(0);
 		
 		// Set Chat Id
 		user.setChatId(chatId);		
@@ -411,10 +397,10 @@ public class BotController extends TelegramLongPollingBot {
 		return user;
 	}
 	
-	// Print Projects
-	public void getProjectList(){
+	// Print All Projects
+	public void printProjectList(){
 		List<Project> projectList = List.of(new Project());
-		projectList = findAllProjects().getBody();
+		projectList = projectController.findAllProjects().getBody();
 		// Print all information form project
 		if(projectList != null){
 			for(int i = 0; i < projectList.size(); i++){
@@ -425,8 +411,8 @@ public class BotController extends TelegramLongPollingBot {
 		}
 	}
 	
-	// Print Task Status
-	public void getTaskStatusList(){
+	// Print All Task Status
+	public void printTaskStatusList(){
 		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
 		taskStatusList = findAllTaskStatus().getBody();
 
@@ -440,13 +426,13 @@ public class BotController extends TelegramLongPollingBot {
 	}
 
 	// Set all needed for Task Local
-	public Task setTask(){
+	// public Task setTask(){
 		
-		Task task = new Task();
+	// 	Task task = new Task();
 		
 		
-		return task;
-	}
+	// 	return task;
+	// }
 
 
 }
