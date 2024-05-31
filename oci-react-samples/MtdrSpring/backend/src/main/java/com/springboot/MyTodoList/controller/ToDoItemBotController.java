@@ -72,7 +72,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 
 			// Set Auxiliar Variable to iog in
-			Boolean caseNumber = false;
+			int caseNumber = 0;
 
 			// New UserType Objects
 			UserType userTypeManager = new UserType();
@@ -88,7 +88,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// If the bot detects the start command
 			// "/start"
-			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == false){
+			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
 
 				// Send Welcome Message
 				SendMessage messageToTelegram = new SendMessage();
@@ -116,12 +116,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
 
 						// Case Number to acces developer or manager methods
-						caseNumber = true;
-
-						sendMessage("Case Number " + caseNumber, chatId);
+						caseNumber++;
+						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
 
 						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage(BotCommands.CONTINUE_COMMAND.getCommand(), telegramUser.getChatId());
+
 					}
 					else{
 						// Enter your Telegram Username with format /login:TelegramUsername
@@ -134,7 +135,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == false){
+			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
 				
 				// Extracts the User name from the message
 				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
@@ -160,13 +161,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
 
 						// Case Number to acces developer or manager methods
-						caseNumber = true;
+						caseNumber++;
 
-						sendMessage("Case Number " + caseNumber, chatId);
+						sendMessage("Case Number " + caseNumber, telegramUser.getChatId());
 
 
 						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 
 					}
 					else {
@@ -178,10 +179,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}				
 			}
 			// After log in, menu for Dev and Manager	
-			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == true){
+			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
 
-				sendMessage("Si entre", chatId);
-				sendMessage(telegramUser.getUserType().getName(),chatId);
+				sendMessage("Si entre", telegramUser.getChatId());
+				sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
 					
