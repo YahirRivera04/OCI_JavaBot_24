@@ -106,6 +106,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Telegram User Information
 						telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+						sendMessage("Chat Id " + telegramUser.getChatId().toString() + 
+						" \nTelegram User Id " + telegramUser.getID().toString() + 
+						" \nUser Type " + telegramUser.getUserType().getName() +
+						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
 						
 						// Case Number to acces developer or manager methods
 						caseNumber++;
@@ -160,7 +164,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			// After log in, menu for Dev and Manager	
 			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
-					
+
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
 					
@@ -282,16 +286,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	public List<UserType> setUserTypeInfo(){
 
+		// Add db information to the local users
 		UserType Manager = new UserType();
 		UserType Developer = new UserType();
-
+		// Get the id from the db
 		Long manager = findUserTypeByName("Manager").getBody();
 		Long developer = findUserTypeByName("Developer").getBody();
-
+		// Assign other fields to the objects
 		Manager.setID(manager);
 		Manager.setName("Manager");
 		Manager.setDescription("");
-
 		Developer.setID(developer);
 		Developer.setName("Developer");
 		Developer.setDescription("");
