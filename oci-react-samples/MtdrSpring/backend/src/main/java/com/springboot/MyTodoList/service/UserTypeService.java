@@ -31,4 +31,9 @@ public class UserTypeService {
         return userTypeRepository.findUserTypeIdByName(name);
     }
     
+    // --------------------- Get All User Type Method ---------------------
+    public List<UserType> findAllUserType(){
+        return userTypeRepository.findAll();
+    }
+
 }

@@ -21,11 +21,19 @@ import com.springboot.MyTodoList.util.BotMessages;
 
 import io.swagger.models.Response;
 
+// Telegram User Needs
+import com.springboot.MyTodoList.model.UserType;
+import com.springboot.MyTodoList.service.UserTypeService;
 import com.springboot.MyTodoList.service.TelegramUserService;
 import com.springboot.MyTodoList.model.TelegramUser;
 
-import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.service.UserTypeService;
+// Task Needs
+
+import com.springboot.MyTodoList.model.Project;
+import com.springboot.MyTodoList.service.ProjectService;
+
+import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.service.SprintService;
 
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.TaskStatusService;
@@ -44,9 +52,12 @@ public class BotController extends TelegramLongPollingBot {
 	private UserTypeService userTypeService;
 	private TaskStatusService taskStatusService;
 	private TaskService taskService;
+	private ProjectService projectService;
 	private String botName;
 
-	public BotController(String botToken, String botName, TelegramUserService telegramUserService, TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService) {
+	public BotController(String botToken, String botName, TelegramUserService telegramUserService,
+	TaskService taskService, UserTypeService userTypeService, TaskStatusService taskStatusService,
+	ProjectService projectService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -54,6 +65,7 @@ public class BotController extends TelegramLongPollingBot {
 		this.userTypeService = userTypeService;
 		this.taskService = taskService;
 		this.taskStatusService = taskStatusService;
+		this.projectService = projectService;
 		this.botName = botName;
 	}
 
@@ -168,15 +180,15 @@ public class BotController extends TelegramLongPollingBot {
 				case 2:
 					// Test of methods to build a task
 					sendMessage("Test of Task Status", telegramUser.getChatId());
-					List<TaskStatus> taskStatusList = setTaskStatus();
-					
+					getTaskStatusList();
 
+					sendMessage("Test of Project", telegramUser.getChatId());
+					getProjectList();
+
+					sendMessage("Test User Type", telegramUser.getChatId());
+					getUserTypeList();
 
 					break;
-				// // Next buttons menu to do some actions based on selected for Managers
-				// case 3:
-
-				// 	break;
 				// Log in by default
 				default:
 					// If the bot detects the start command
@@ -267,7 +279,16 @@ public class BotController extends TelegramLongPollingBot {
 		return botName;
 	}
 
-	// TELEGRAM USER METHODS
+	// USER TYPE METHODS ()
+	public ResponseEntity<List<UserType>> findAllUserType(){
+		return ResponseEntity.ok(userTypeService.findAllUserType());
+	}
+
+	public ResponseEntity<Long> findUserTypeByName(String name){
+		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
+	}
+
+	// TELEGRAM USER METHODS (Works all)
 
 	// Verify Telegram Chat Id from database
 	public ResponseEntity<Long> findChatIdByChatId(Long chatId){
@@ -300,16 +321,23 @@ public class BotController extends TelegramLongPollingBot {
 		return ResponseEntity.ok(telegramUserService.findTelegramNameByTelegramUserId(id));
 	}
 
-	// USER TYPE METHODS
-	public ResponseEntity<Long> findUserTypeByName(String name){
-		return ResponseEntity.ok(userTypeService.findUserTypeIdByName(name));
+	// PROJECT METHODS ()
+
+	// Get All projects
+	public ResponseEntity<List<Project>> findAllProjects(){
+		return ResponseEntity.ok(projectService.findAllProjects());
 	}
 
-	// TASK STATUS METHODS
-	public ResponseEntity<List<TaskStatus>> findTaskStatus(){
+	// Create new project
+
+
+
+	// TASK STATUS METHODS (Works all)
+
+	// Get all Task Status
+	public ResponseEntity<List<TaskStatus>> findAllTaskStatus(){
 		return ResponseEntity.ok(taskStatusService.findAllTaskStatus());
-	}
-
+	} 
 
 	// Auxiliar Method to print messages
 	public void sendMessage(String message, Long chatID){
@@ -323,8 +351,21 @@ public class BotController extends TelegramLongPollingBot {
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
-
-
+	
+	// Print User Type
+	public void getUserTypeList(){
+		List<UserType> userTypeList = List.of(new UserType());
+		userTypeList = findAllUserType().getBody();
+		// Print all information form project
+		if(userTypeList != null){
+			for(int i = 0; i < userTypeList.size(); i++){
+				sendMessage("Id " + userTypeList.get(i).getID().toString() +
+				" \nName " + userTypeList.get(i).getName() + 
+				" \nDescription " + userTypeList.get(i).getDescription(), telegramUser.getChatId());
+			}
+		}
+	}
+	// Set all needed for User Type Local
 	public List<UserType> setUserTypeInfo(){
 
 		// Add db information to the local users
@@ -343,8 +384,8 @@ public class BotController extends TelegramLongPollingBot {
 
 		return List.of(Manager, Developer);
 	}
-
-
+	
+	// Set all needed for Telegram User Local
 	public TelegramUser setTelegramUser(Long chatId, String telegramUserName){
 
 		// Add db informaton to the local user
@@ -369,11 +410,25 @@ public class BotController extends TelegramLongPollingBot {
 		
 		return user;
 	}
-
-	public List<TaskStatus> setTaskStatus(){
+	
+	// Print Projects
+	public void getProjectList(){
+		List<Project> projectList = List.of(new Project());
+		projectList = findAllProjects().getBody();
+		// Print all information form project
+		if(projectList != null){
+			for(int i = 0; i < projectList.size(); i++){
+				sendMessage("Id " + projectList.get(i).getID().toString() +
+				" \nName " + projectList.get(i).getName() + 
+				" \nDescription " + projectList.get(i).getDescription(), telegramUser.getChatId());
+			}
+		}
+	}
+	
+	// Print Task Status
+	public void getTaskStatusList(){
 		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
-		taskStatusList = findTaskStatus().getBody();
-		
+		taskStatusList = findAllTaskStatus().getBody();
 
 		if(taskStatusList != null){
 			for(int i = 0; i < taskStatusList.size(); i++){
@@ -382,12 +437,9 @@ public class BotController extends TelegramLongPollingBot {
 				" \nDescription " + taskStatusList.get(i).getDescription(), telegramUser.getChatId());	
 			}
 		}
-		
-		return taskStatusList;	
 	}
 
-
-
+	// Set all needed for Task Local
 	public Task setTask(){
 		
 		Task task = new Task();

@@ -1,6 +1,8 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.Project;
+import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.ProjectService;
+import com.springboot.MyTodoList.service.TaskStatusService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,30 +16,27 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectServices;
-    //@CrossOrigin
     
-    // ## Get ##
-    @GetMapping(value = "/project/{id}")
-    public ResponseEntity<Project> getItemById(@PathVariable int id){
+    // --------------------- Get All Projects ---------------------
+    @GetMapping(value = "/project/")
+    public ResponseEntity<String> findProjects(){
+        String info = "";
         try{
-            ResponseEntity<Project> responseEntity = projectServices.getItemById(id);
-            return new ResponseEntity<Project>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
+            List<Project> projectList = projectServices.findAllProjects();
+            for(int i = 0; i < projectList.size(); i++){
+                info += projectList.get(i).toString() + "\n";
+            }
+            return ResponseEntity.ok(info);
+        }
+        catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    // ## Update ##
-    @PutMapping(value = "project/{id}")
-    public ResponseEntity<Project> updateProject(@PathVariable int id, @RequestBody Project td){
-        try{
-            Project projectItem = projectServices.updateProject(id, td);
-            System.out.println(projectItem.toString());
-            return new ResponseEntity<>(projectItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    // --------------------- Post Project ---------------------
+    @GetMapping(value = "/project/{Project}")
+    public ResponseEntity<String> createProject(@PathVariable Project project){
+        return ResponseEntity.ok(projectServices.createNewProject(project));
     }
-
 
 }
