@@ -1,7 +1,6 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.service.ProjectService;
-import com.springboot.MyTodoList.controller.ToDoItemBotController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +14,6 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private ToDoItemBotController botController;
 
     // ##################### Project Controller Metods ##################### //
     
@@ -53,19 +49,5 @@ public class ProjectController {
 	// Create new project 
     // to do
 
-
-    // Print All Projects
-    public void printProjectList(Long chatId){
-        List<Project> projectList = List.of(new Project());
-        projectList = findAllProjects().getBody();
-        // Print all information form project
-        if(projectList != null){
-            for(int i = 0; i < projectList.size(); i++){
-                botController.sendMessage("Id " + projectList.get(i).getID().toString() +
-                " \nName " + projectList.get(i).getName() + 
-                " \nDescription " + projectList.get(i).getDescription(), chatId);
-            }
-        }
-    }
 
 }

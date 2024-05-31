@@ -19,9 +19,6 @@ public class UserTypeController {
     @Autowired
     private UserTypeService userTypeService;
 
-    @Autowired
-    private ToDoItemBotController botController;
-
     // ##################### User Type Controller Metods ##################### //
 
     // --------------------- Get All User Type Method ---------------------
@@ -53,19 +50,4 @@ public class UserTypeController {
         userTypeList = findAllUserType().getBody();
         return userTypeList;
     }
-
-    // Print All User Type
-    public void printUserTypeList(Long chatId){
-        List<UserType> userTypeList = List.of(new UserType());
-        userTypeList = findAllUserType().getBody();
-        // Print all information form project
-        if(userTypeList != null){
-            for(int i = 0; i < userTypeList.size(); i++){
-                botController.sendMessage("Id " + userTypeList.get(i).getID().toString() +
-                " \nName " + userTypeList.get(i).getName() + 
-                " \nDescription " + userTypeList.get(i).getDescription(), chatId);
-            }
-        }
-    }
-
 }

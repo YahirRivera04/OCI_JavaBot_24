@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.service.TaskStatusService;
-import com.springboot.MyTodoList.controller.ToDoItemBotController;
 
 import java.util.List;
 
@@ -15,9 +14,6 @@ import java.util.List;
 public class TaskStatusController {
     @Autowired
     private TaskStatusService taskStatusService;
-    
-    @Autowired
-    private ToDoItemBotController botController;
 
     // ##################### Task Status Controller Metods ##################### //
 
@@ -43,18 +39,4 @@ public class TaskStatusController {
 	public ResponseEntity<List<TaskStatus>> findAllTaskStatus(){
 		return ResponseEntity.ok(taskStatusService.findAllTaskStatus());
 	} 
-
-    // Print All Task Status
-	public void printTaskStatusList(Long chatId){
-		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
-		taskStatusList = findAllTaskStatus().getBody();
-
-		if(taskStatusList != null){
-			for(int i = 0; i < taskStatusList.size(); i++){
-				botController.sendMessage("Id " + taskStatusList.get(i).getID().toString() + 
-				" \nName " +  taskStatusList.get(i).getName() + 
-				" \nDescription " + taskStatusList.get(i).getDescription(), chatId);	
-			}
-		}
-	}
 }

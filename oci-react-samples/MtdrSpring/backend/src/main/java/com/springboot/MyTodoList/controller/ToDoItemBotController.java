@@ -181,13 +181,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 2:
 					// Test of methods to build a task
 					sendMessage("Test of Task Status", telegramUser.getChatId());
-					taskStatusController.printTaskStatusList(telegramUser.getChatId());
+					printTaskStatusList(telegramUser.getChatId());
 
 					sendMessage("Test of Project", telegramUser.getChatId());
-					projectController.printProjectList(telegramUser.getChatId());
+					printProjectList(telegramUser.getChatId());
 
 					sendMessage("Test User Type", telegramUser.getChatId());
-					userTypeController.printUserTypeList(telegramUser.getChatId());
+					printUserTypeList(telegramUser.getChatId());
 
 					break;
 				// Log in by default
@@ -292,4 +292,46 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
+
+	// Print All User Type
+    public void printUserTypeList(Long chatId){
+        List<UserType> userTypeList = List.of(new UserType());
+        userTypeList = userTypeController.findAllUserType().getBody();
+        // Print all information form project
+        if(userTypeList != null){
+            for(int i = 0; i < userTypeList.size(); i++){
+                sendMessage("Id " + userTypeList.get(i).getID().toString() +
+                " \nName " + userTypeList.get(i).getName() + 
+                " \nDescription " + userTypeList.get(i).getDescription(), chatId);
+            }
+        }
+    }
+
+	// Print All Task Status
+	public void printTaskStatusList(Long chatId){
+		List<TaskStatus> taskStatusList = List.of(new TaskStatus());
+		taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+
+		if(taskStatusList != null){
+			for(int i = 0; i < taskStatusList.size(); i++){
+				sendMessage("Id " + taskStatusList.get(i).getID().toString() + 
+				" \nName " +  taskStatusList.get(i).getName() + 
+				" \nDescription " + taskStatusList.get(i).getDescription(), chatId);	
+			}
+		}
+	}
+
+	// Print All Projects
+    public void printProjectList(Long chatId){
+        List<Project> projectList = List.of(new Project());
+        projectList = projectController.findAllProjects().getBody();
+        // Print all information form project
+        if(projectList != null){
+            for(int i = 0; i < projectList.size(); i++){
+                sendMessage("Id " + projectList.get(i).getID().toString() +
+                " \nName " + projectList.get(i).getName() + 
+                " \nDescription " + projectList.get(i).getDescription(), chatId);
+            }
+        }
+    }
 }
