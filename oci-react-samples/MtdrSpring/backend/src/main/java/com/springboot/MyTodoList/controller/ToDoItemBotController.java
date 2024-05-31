@@ -58,91 +58,83 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.botName = botName;
 	}
 
+	// Set Auxiliar Variable to iog in
+	int caseNumber = 0;
+	// // New UserType Objects
+	// UserType userTypeManager = new UserType();
+	// UserType userTypeDeveloper = new UserType();	
+
+	// New Telegram User Object
+	TelegramUser telegramUser = new TelegramUser();
+
 	@Override
 	public void onUpdateReceived(Update update) {
-
-		// Set Auxiliar Variable to iog in
-		int caseNumber = 0;
-
-		// New UserType Objects
-		UserType userTypeManager = new UserType();
-		UserType userTypeDeveloper = new UserType();	
-
-		// Get User Type Information
-		userTypeManager = setUserTypeInfo().get(0);
-		userTypeDeveloper = setUserTypeInfo().get(1);
-
-		// New Telegram User Object
-		TelegramUser telegramUser = new TelegramUser();
 
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
 			String messageTextFromTelegram = update.getMessage().getText();
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
-
-			sendMessage(messageTextFromTelegram, chatId);
-
+			
 			switch (caseNumber) {
 				// When already logged
 				case 1:
-
 					sendMessage("Case Number " + caseNumber, chatId);
 					sendMessage("Case Number using telegram user " + caseNumber, telegramUser.getChatId());
 					// After log in, menu for Dev and Manager	
-					//if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
+					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
-					//sendMessage("Si entre", chatId);
-					sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
-					// Developer Case
-					if(telegramUser.getUserType().getName().equals("Developer")){
-						
-						// Create variables necessaries to interact with telegram					
-						SendMessage messageToTelegram = new SendMessage();
-						messageToTelegram.setChatId(telegramUser.getChatId());
+						//sendMessage("Si entre", chatId);
+						sendMessage(telegramUser.getUserType().getName(),telegramUser.getChatId());
+						// Developer Case
+						if(telegramUser.getUserType().getName().equals("Developer")){
+							
+							// Create variables necessaries to interact with telegram					
+							SendMessage messageToTelegram = new SendMessage();
+							messageToTelegram.setChatId(telegramUser.getChatId());
 
-						// Message with all the information retrieved form the database
-						messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
-						" \nTelegram User Id " + telegramUser.getID().toString() + 
-						" \nUser Type " + telegramUser.getUserType().getName() +
-						" \nTelegram Name " + telegramUser.getTelegramName());
+							// Message with all the information retrieved form the database
+							messageToTelegram.setText("Chat Id " + telegramUser.getChatId().toString() + 
+							" \nTelegram User Id " + telegramUser.getID().toString() + 
+							" \nUser Type " + telegramUser.getUserType().getName() +
+							" \nTelegram Name " + telegramUser.getTelegramName());
 
-						ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-						List<KeyboardRow> keyboard = new ArrayList<>();
+							ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+							List<KeyboardRow> keyboard = new ArrayList<>();
 
-						// First Row
-						KeyboardRow row = new KeyboardRow();
-						row.add(BotLabels.SHOW_TASK.getLabel());
-						row.add(BotLabels.EDIT_TASK.getLabel());
-						
-						// Second Row
-						row = new KeyboardRow();
-						row.add(BotLabels.DELETE_TASK.getLabel());
-						row.add(BotLabels.CREATE_TASK.getLabel());
-						keyboard.add(row);
-						
-						// Add the first row to the keyboard
-						keyboard.add(row);
-						keyboardMarkup.setKeyboard(keyboard);
+							// First Row
+							KeyboardRow row = new KeyboardRow();
+							row.add(BotLabels.SHOW_TASK.getLabel());
+							row.add(BotLabels.EDIT_TASK.getLabel());
+							
+							// Second Row
+							row = new KeyboardRow();
+							row.add(BotLabels.DELETE_TASK.getLabel());
+							row.add(BotLabels.CREATE_TASK.getLabel());
+							keyboard.add(row);
+							
+							// Add the first row to the keyboard
+							keyboard.add(row);
+							keyboardMarkup.setKeyboard(keyboard);
 
-						// Add the keyboard markup
-						messageToTelegram.setReplyMarkup(keyboardMarkup);
+							// Add the keyboard markup
+							messageToTelegram.setReplyMarkup(keyboardMarkup);
 
-						try {
-							execute(messageToTelegram);
-						} 
-						catch (TelegramApiException e) {
-							logger.error(e.getLocalizedMessage(), e);
+							try {
+								execute(messageToTelegram);
+							} 
+							catch (TelegramApiException e) {
+								logger.error(e.getLocalizedMessage(), e);
+							}
+
+						}
+						// Manager Case
+						else if(telegramUser.getUserType().getName().equals("Manager")){
+							sendMessage(messageTextFromTelegram, telegramUser.getChatId());
 						}
 
 					}
-					// Manager Case
-					else if(telegramUser.getUserType().getName().equals("Manager")){
-						sendMessage(messageTextFromTelegram, telegramUser.getChatId());
-					}
-
-					//}
-					//break;
+					break;
 					
 				// Log in by default
 				default:
@@ -168,11 +160,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								// You have successfully logged in!!
 								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 								// Set Telegram User Information
-								telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, "");
+								telegramUser = setTelegramUser(chatId, "");
 								// Case Number to acces developer or manager methods
 								caseNumber++;
+								sendMessage("Case number updated to " + caseNumber, chatId);
+
 								// Continue Message /continue
-								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
+								//sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
 							}
 							else{
 								// Enter your Telegram Username with format /login:TelegramUsername
@@ -203,22 +197,26 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								ResponseEntity<String> response = updateChatId(getTelegramUserId(responseFromUser).getBody(), chatId);
 								sendMessage(response.getBody(), chatId);					
 								// Set local telegram user
-								telegramUser = setTelegramUser(chatId, userTypeDeveloper, userTypeManager, responseFromUser);
+								telegramUser = setTelegramUser(chatId, responseFromUser);
 								// Case Number to acces developer or manager methods
 								caseNumber++;
+								sendMessage("Case number updated to " + caseNumber, chatId);
+								
 								// Continue Message /continue
-								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
-
+								//sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage() + " ignorar", telegramUser.getChatId());
 							}
 							else {
+								// Log in fail message
 								sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
 							}
 						}
 						catch(TelegramApiException e){
+							// Log in fail message
+							sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
 							logger.error(e.getLocalizedMessage(), e);
 						}				
 					}
-					//break;
+					break;
 			}
 		}
 	}
@@ -306,10 +304,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 
-	public TelegramUser setTelegramUser(Long chatId, UserType dev, UserType man, String telegramUserName){
+	public TelegramUser setTelegramUser(Long chatId, String telegramUserName){
 
 		// Add db informaton to the local user
 		TelegramUser user = new TelegramUser();
+		// Get User Type Information
+		UserType dev = new UserType();
+		UserType man = new UserType();
+		// Fill with info
+		dev = setUserTypeInfo().get(0);
+		man = setUserTypeInfo().get(1);
 		
 		// Set Chat Id
 		user.setChatId(chatId);		
