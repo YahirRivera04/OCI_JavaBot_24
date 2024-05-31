@@ -72,7 +72,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 
 			// Set Auxiliar Variable to iog in
-			int caseNumber = 0;
+			Boolean caseNumber = false;
 
 			// New UserType Objects
 			UserType userTypeManager = new UserType();
@@ -88,7 +88,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			// If the bot detects the start command
 			// "/start"
-			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == 0){
+			if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand()) && caseNumber == false){
 
 				// Send Welcome Message
 				SendMessage messageToTelegram = new SendMessage();
@@ -116,7 +116,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
 
 						// Case Number to acces developer or manager methods
-						caseNumber++;
+						caseNumber = true;
 
 						sendMessage("Case Number " + caseNumber, chatId);
 
@@ -134,7 +134,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 			}
 			// If the bot detects the command /login:"TelegramUserName"
-			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == 0){
+			else if(messageTextFromTelegram.substring(0, 7).equals(BotCommands.RESPONSE_COMMAND.getCommand()) && caseNumber == false){
 				
 				// Extracts the User name from the message
 				String responseFromUser = messageTextFromTelegram.substring(7,messageTextFromTelegram.length());
@@ -160,7 +160,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						" \nTelegram Name " + telegramUser.getTelegramName(), chatId);
 
 						// Case Number to acces developer or manager methods
-						caseNumber++;
+						caseNumber = true;
 
 						sendMessage("Case Number " + caseNumber, chatId);
 
@@ -178,8 +178,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}				
 			}
 			// After log in, menu for Dev and Manager	
-			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == 1){
+			else if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand()) && caseNumber == true){
 
+				sendMessage("Si entre", chatId);
 				sendMessage(telegramUser.getUserType().getName(),chatId);
 				// Developer Case
 				if(telegramUser.getUserType().getName().equals("Developer")){
