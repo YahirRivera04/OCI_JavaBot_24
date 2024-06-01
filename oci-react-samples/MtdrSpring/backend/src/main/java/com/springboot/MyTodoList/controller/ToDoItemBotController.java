@@ -26,7 +26,7 @@ import com.springboot.MyTodoList.model.UserType;
 
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.UpdateType;
-
+import com.springboot.MyTodoList.model.UserTeam;
 // Task Needs
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
@@ -54,6 +54,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private UpdateTypeController updateTypeController;
 	private TeamTypeController teamTypeController;
 	private TeamController teamController;
+	private UserTeamController userTeamController;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
@@ -61,7 +62,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
 	ProjectController projectController, SprintController sprintController, 
 	UpdateTypeController updateTypeController, TeamTypeController teamTypeController, 
-	TeamController teamController) {
+	TeamController teamController, UserTeamController userTeamController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -74,6 +75,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.updateTypeController = updateTypeController;
 		this.teamTypeController = teamTypeController;
 		this.teamController = teamController;
+		this.userTeamController = userTeamController;
 		this.botName = botName;
 	}
 
@@ -83,10 +85,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<TeamType> teamTypeList = List.of(new TeamType());
 	// New List of Team
 	List<Team> teamList = List.of(new Team());
+	// New List of User Team
+	List<UserTeam> userTeamList = List.of(new UserTeam());
 	// New List of User Type
 	List<UserType> userTypeList = List.of(new UserType());
 	// New Telegram User Object
 	TelegramUser telegramUser = new TelegramUser();
+	// New List of Telegram Users
 	List<TelegramUser> telegramUserList = List.of(new TelegramUser());
 	// New List of Task Status
 	List<TaskStatus> taskStatusList = List.of(new TaskStatus());
@@ -216,17 +221,32 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sprintList = sprintController.findAllSprints().getBody();
 					updateTypeList = updateTypeController.findAllUpdateType().getBody();
 					teamTypeList = teamTypeController.findAllTeamType().getBody();
+					
 					teamList = teamController.findAllTeams().getBody();
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
+					userTeamList = userTeamController.findAllUserTeams().getBody();
 
-					sendMessage("Test Telegram Users", telegramUser.getChatId());
-					for(int i = 0; i < telegramUserList.size(); i++){
-						for(int j = 0; j < telegramUserList.get(i).getTeams().size(); j++){
-							sendMessage(telegramUserList.get(i).getTeams().get(j).getName(), telegramUser.getChatId());
+					sendMessage("Test for Team", telegramUser.getChatId());
+					if(teamList != null){
+						for(int i = 0; i < teamList.size(); i++){
+							sendMessage(teamController.printTeamList(teamList.get(i)) ,telegramUser.getChatId());
 						}
 					}
-					
 
+					sendMessage("Test for Telegram User", telegramUser.getChatId());
+					if(teamList != null){
+						for(int i = 0; i < telegramUserList.size(); i++){
+							sendMessage(telegramUserController.printTelegramUserList(telegramUserList.get(i)) ,telegramUser.getChatId());
+						}
+					}
+
+					
+					sendMessage("Test for User Team", telegramUser.getChatId());
+					if(teamList != null){
+						for(int i = 0; i < userTeamList.size(); i++){
+							sendMessage(userTeamController.printUserTeamList(userTeamList.get(i)) ,telegramUser.getChatId());
+						}
+					}
 
 					break;
 				// Log in by default

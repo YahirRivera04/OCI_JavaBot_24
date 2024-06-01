@@ -2,6 +2,9 @@ package com.springboot.MyTodoList.model;
 
 import java.util.Set;
 import javax.persistence.*;
+
+import org.apache.tomcat.jni.User;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,14 +36,8 @@ public class TelegramUser {
     @JoinColumn(name = "USERTYPEID")
     UserType userTypeIdFk;
     
-
-    @ManyToMany
-    @JoinTable(
-        name = "TODOUSER.USERTEAM",
-        joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
-        inverseJoinColumns = @JoinColumn(name = "TEAMID") 
-    )
-    private List<Team> teams;
+    @OneToMany(mappedBy = "telegramUser")
+    private List<UserTeam> userTeams;
 
     @OneToMany(mappedBy = "telegramUserIdFk", cascade = CascadeType.ALL)
     List<Task> taskId;
@@ -132,12 +129,12 @@ public class TelegramUser {
         this.chatId = chatID;
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public List<UserTeam> getUserTeams() {
+        return userTeams;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void setUserTeams(List<UserTeam> userTeam) {
+        this.userTeams = userTeam;
     }
 
     public List<Task> getTasks(){
@@ -167,13 +164,13 @@ public class TelegramUser {
            .append(", UserType=").append(userTypeIdFk != null ? userTypeIdFk.getName() : "None")
            .append(", ChatId=").append(chatId);
 
-        if (!teams.isEmpty()) {
+        if (!userTeams.isEmpty()) {
             sb.append(", Teams=[");
-            Iterator<Team> iterator = teams.iterator();
+            Iterator<UserTeam> iterator = userTeams.iterator();
             while (iterator.hasNext()) {
-                Team team = iterator.next();
-                sb.append("Team[Name=").append(team.getName())
-                   .append(", Description=").append(team.getDescription()).append("]");
+                UserTeam user = iterator.next();
+                sb.append("Team[Telegram User Id =").append(user.getTelegramUser().getID())
+                   .append(", Team Id=").append(user.getTeam().getID()).append("]");
                 if (iterator.hasNext()) {
                     sb.append(", "); 
                 }

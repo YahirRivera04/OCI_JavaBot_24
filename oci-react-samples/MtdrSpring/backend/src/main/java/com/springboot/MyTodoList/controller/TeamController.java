@@ -39,7 +39,7 @@ public class TeamController {
 	}
 
     // Print All User Type
-    public String printTeamTypeList(Team team){
+    public String printTeamList(Team team){
         // Print all information form user type
         String teamInfo = "Id " + team.getID().toString() + 
         " \nName " + team.getName() + 

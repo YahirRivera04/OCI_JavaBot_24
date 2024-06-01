@@ -23,13 +23,8 @@ public class Team {
     @JoinColumn(name = "TEAMTYPEID")
     TeamType teamTypeIdFk;
 
-    @ManyToMany
-    @JoinTable(
-        name = "TODOUSER.USERTEAM",
-        joinColumns = @JoinColumn(name = "TEAMID"),  
-        inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID") 
-    )
-    private List<TelegramUser> telegramUser;
+    @OneToMany(mappedBy = "team")
+    private List<UserTeam> userTeam;
 
     public Team(){
     }
@@ -71,8 +66,8 @@ public class Team {
         this.teamTypeIdFk = teamType;
     }
 
-    public List<TelegramUser> getTelegramUser(){
-        return telegramUser;
+    public List<UserTeam> getUserTeams(){
+        return userTeam;
     }
 
     @Override
@@ -83,14 +78,14 @@ public class Team {
            .append(", Description=").append(description)
            .append(", TeamType=").append(teamTypeIdFk != null ? teamTypeIdFk.getName() : "None");
 
-        if (telegramUser != null && !telegramUser.isEmpty()) {
+        if (userTeam != null && !userTeam.isEmpty()) {
             sb.append(", Users=[");
-            Iterator<TelegramUser> iterator = telegramUser.iterator();
+            Iterator<UserTeam> iterator = userTeam.iterator();
             while (iterator.hasNext()) {
-                TelegramUser user = iterator.next();
-                sb.append("User[ID=").append(user.getID())
-                   .append(", Name=").append(user.getName())
-                   .append(", TelegramName=").append(user.getTelegramName()).append("]");
+                UserTeam user = iterator.next();
+                sb.append("UserTeam[ID=").append(user.getID())
+                   .append(", Telegram User Id =").append(user.getTelegramUser().getID())
+                   .append(", Team Id =").append(user.getTeam().getID()).append("]");
                 if (iterator.hasNext()) {
                     sb.append(", ");
                 }
