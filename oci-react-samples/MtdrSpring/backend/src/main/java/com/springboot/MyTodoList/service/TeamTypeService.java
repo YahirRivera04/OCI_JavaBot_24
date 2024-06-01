@@ -18,33 +18,17 @@ import com.springboot.MyTodoList.repository.TeamTypeRepository;
 @Service
 public class TeamTypeService {
     @Autowired
-    private TeamTypeRepository repository;
+    private TeamTypeRepository teamTypeRepository;
+
+    public TeamTypeService(TeamTypeRepository teamTypeRepository){
+        this.teamTypeRepository = teamTypeRepository;
+    }
+
+    // --------------------- Get All User Type Method ---------------------
+    public List<TeamType> findAllTeamTypes(){
+        return teamTypeRepository.findAll();
+    }
     
-    // --------------------- Read Method ---------------------
 
-    public ResponseEntity<TeamType> getItemById(int id){
-        Optional<TeamType> data = repository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // --------------------- Update Method ---------------------
-
-    public TeamType updateTeamType(int id, TeamType td) {
-        Optional<TeamType> data = repository.findById(id);
-        if(data.isPresent()){
-            TeamType teamType = data.get();
-            // teamType.setID(id);
-            // teamType.setCreation_ts(td.getCreation_ts());
-            // teamType.setDescription(td.getDescription());
-            // teamType.setDone(td.isDone());
-            return repository.save(teamType);
-        }else{
-            return null;
-        }
-    }
 
 }

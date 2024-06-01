@@ -18,7 +18,15 @@ import com.springboot.MyTodoList.repository.UpdateTypeRepository;
 @Service
 public class UpdateTypeService {
     @Autowired
-    private UpdateTypeRepository UpdateTypeRepository;
+    private UpdateTypeRepository updateTypeRepository;
     
+    public UpdateTypeService(UpdateTypeRepository updateTypeRepository){
+        this.updateTypeRepository = updateTypeRepository;
+    }
+    
+    // --------------------- Get All User Type Method ---------------------
+    public List<UpdateType> findAllUpdateTypes(){
+        return updateTypeRepository.findAll();
+    }
 
 }

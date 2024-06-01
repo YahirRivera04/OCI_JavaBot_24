@@ -23,24 +23,20 @@ import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
 
 // Telegram User Needs
 import com.springboot.MyTodoList.model.UserType;
-import com.springboot.MyTodoList.controller.UserTypeController;
 
 import com.springboot.MyTodoList.model.TelegramUser;
-import com.springboot.MyTodoList.controller.TelegramUserController;
+import com.springboot.MyTodoList.model.UpdateType;
 
 // Task Needs
 import com.springboot.MyTodoList.model.Project;
-import com.springboot.MyTodoList.controller.ProjectController;
-
 import com.springboot.MyTodoList.model.Sprint;
-import com.springboot.MyTodoList.controller.SprintController;
-
 import com.springboot.MyTodoList.model.TaskStatus;
-import com.springboot.MyTodoList.controller.TaskStatusController;
-
+import com.springboot.MyTodoList.model.Team;
+import com.springboot.MyTodoList.model.TeamType;
 import com.springboot.MyTodoList.model.Task;
 import com.springboot.MyTodoList.service.TaskService;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
@@ -55,12 +51,17 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TaskService taskService;
 	private ProjectController projectController;
 	private SprintController sprintController;
+	private UpdateTypeController updateTypeController;
+	private TeamTypeController teamTypeController;
+	private TeamController teamController;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
 	TelegramUserController telegramUserController, TaskService taskService,
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
-	ProjectController projectController, SprintController sprintController) {
+	ProjectController projectController, SprintController sprintController, 
+	UpdateTypeController updateTypeController, TeamTypeController teamTypeController, 
+	TeamController teamController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -70,22 +71,31 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.taskStatusController = taskStatusController;
 		this.projectController = projectController;
 		this.sprintController = sprintController;
+		this.updateTypeController = updateTypeController;
+		this.teamTypeController = teamTypeController;
+		this.teamController = teamController;
 		this.botName = botName;
 	}
 
 	// Set Auxiliar Variable to log in
 	int caseNumber = 0;
-
+	// New List of Team Type
+	List<TeamType> teamTypeList = List.of(new TeamType());
+	// New List of Team
+	List<Team> teamList = List.of(new Team());
 	// New List of User Type
 	List<UserType> userTypeList = List.of(new UserType());
 	// New Telegram User Object
 	TelegramUser telegramUser = new TelegramUser();
+	List<TelegramUser> telegramUserList = List.of(new TelegramUser());
 	// New List of Task Status
 	List<TaskStatus> taskStatusList = List.of(new TaskStatus());
 	// New List of Projects
 	List<Project> projectList = List.of(new Project());
 	// New List of Sprints
 	List<Sprint> sprintList = List.of(new Sprint());
+	// New List of Update Type
+	List<UpdateType> updateTypeList = List.of(new UpdateType());
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -204,6 +214,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
 					projectList = projectController.findAllProjects().getBody();
 					sprintList = sprintController.findAllSprints().getBody();
+					updateTypeList = updateTypeController.findAllUpdateType().getBody();
+					teamTypeList = teamTypeController.findAllTeamType().getBody();
+					teamList = teamController.findAllTeams().getBody();
+					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 
 					// Print all info form models
 					sendMessage("Test of User Type", telegramUser.getChatId());
@@ -239,6 +253,38 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 					}
 
+					sendMessage("Test of Update Type", telegramUser.getChatId());
+					if(updateTypeList != null){
+						for(int i = 0; i < updateTypeList.size(); i++){
+							sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
+						}
+					}
+
+					sendMessage("Test of Team Type", telegramUser.getChatId());
+					if(teamTypeList != null){
+						for(int i = 0; i < teamTypeList.size(); i++){
+							sendMessage(teamTypeController.printTeamTypeList(teamTypeList.get(i)), telegramUser.getChatId());
+						}
+					}
+
+					sendMessage("Test of Team", telegramUser.getChatId());
+					if(teamList != null && teamTypeList != null){
+						for(int i = 0; i < teamList.size(); i++){
+							for(int j = 0; j < teamTypeList.size(); j++){
+								if(teamList.get(i).getTeamType().getID() == teamTypeList.get(j).getID()){
+									teamList.get(i).setTeamType(teamTypeList.get(j));
+								}
+							}
+							sendMessage(teamController.printTeamTypeList(teamList.get(i)), telegramUser.getChatId());
+						}
+					}
+
+					sendMessage("Test Telegram Users", telegramUser.getChatId());
+					if(telegramUserList != null){
+						for(int i = 0; i < telegramUserList.size(); i++){
+							sendMessage(telegramUserController.printTelegramUserList(telegramUserList.get(i)), telegramUser.getChatId());
+						}
+					}
 
 					break;
 				// Log in by default
@@ -343,5 +389,4 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
-
 }

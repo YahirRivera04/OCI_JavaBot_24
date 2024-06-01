@@ -25,7 +25,12 @@ public class TelegramUserService {
     public TelegramUserService(TelegramUserRepository telegramUserRepository) {
         this.telegramUserRepository = telegramUserRepository;
     }
-    
+
+    // --------------------- Find All Telegram Users Method ---------------------
+    public List<TelegramUser> findAllTelegramUsers(){
+        return telegramUserRepository.findAll();
+    }
+
     // --------------------- Find Chat Id by Telegram User Method ---------------------
     public Long findChatIdByChatId(Long chatId){
         return telegramUserRepository.findChatIdByChatId(chatId);

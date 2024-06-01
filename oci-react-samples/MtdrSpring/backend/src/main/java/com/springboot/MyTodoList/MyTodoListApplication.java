@@ -12,9 +12,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
+import com.springboot.MyTodoList.controller.UpdateTypeController;
 import com.springboot.MyTodoList.controller.ProjectController;
 import com.springboot.MyTodoList.controller.SprintController;
 import com.springboot.MyTodoList.controller.TaskStatusController;
+import com.springboot.MyTodoList.controller.TeamTypeController;
 import com.springboot.MyTodoList.controller.TelegramUserController;
 import com.springboot.MyTodoList.controller.UserTypeController;
 
@@ -28,8 +30,6 @@ import com.springboot.MyTodoList.service.SprintUpdateService;
 import com.springboot.MyTodoList.service.TaskService;
 import com.springboot.MyTodoList.service.TaskUpdateService;
 import com.springboot.MyTodoList.service.TeamService;
-import com.springboot.MyTodoList.service.TeamTypeService;
-import com.springboot.MyTodoList.service.UpdateTypeService;
 
 @SpringBootApplication
 public class MyTodoListApplication implements CommandLineRunner {
@@ -70,13 +70,13 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private TeamService teamService;
 
 	@Autowired
-	private TeamTypeService teamTypeService;
+	private TeamTypeController teamTypeController;
 
 	@Autowired
 	private TelegramUserController telegramUserController;
 
 	@Autowired
-	private UpdateTypeService updateTypeService;
+	private UpdateTypeController updateTypeController;
 
 	@Autowired
 	private UserTypeController userTypeController;
@@ -96,7 +96,8 @@ public class MyTodoListApplication implements CommandLineRunner {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, telegramUserController,
-			taskService, userTypeController, taskStatusController, projectController, sprintController));
+			taskService, userTypeController, taskStatusController, projectController, sprintController, updateTypeController, 
+			teamTypeController));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
