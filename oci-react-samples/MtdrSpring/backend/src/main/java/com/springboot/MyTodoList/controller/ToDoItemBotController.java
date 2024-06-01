@@ -244,22 +244,22 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Log in by default
 				default:
+					// Set information form db to user related models 
+					userTypeList = userTypeController.findAllUserType().getBody();
+					teamTypeList = teamTypeController.findAllTeamType().getBody();
+					teamList = teamController.findAllTeams().getBody();
+					userTeamList = userTeamController.findAllUserTeams().getBody();
+					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
+
+					// Set information form db to task related models 
+					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+					projectList = projectController.findAllProjects().getBody();
+					sprintList = sprintController.findAllSprints().getBody();
+					updateTypeList = updateTypeController.findAllUpdateType().getBody();
+
 					// If the bot detects the start command
 					// "/start"
 					if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
-
-						// Set information form db to user related models 
-						userTypeList = userTypeController.findAllUserType().getBody();
-						teamTypeList = teamTypeController.findAllTeamType().getBody();
-						teamList = teamController.findAllTeams().getBody();
-						userTeamList = userTeamController.findAllUserTeams().getBody();
-						telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
-
-						// Set information form db to task related models 
-						taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-						projectList = projectController.findAllProjects().getBody();
-						sprintList = sprintController.findAllSprints().getBody();
-						updateTypeList = updateTypeController.findAllUpdateType().getBody();
 
 						// Send Welcome Message
 						SendMessage messageToTelegram = new SendMessage();
@@ -288,11 +288,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-							}					
+							}		
+							// Enter your Telegram Username with format /login:TelegramUsername
+							sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);			
 						}
 						catch(TelegramApiException e){
-							// Enter your Telegram Username with format /login:TelegramUsername
-							sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
+							// Log In fail
+							sendMessage(BotMessages.LOG_IN_FAIL.getMessage() + e.toString(), chatId);
 							logger.error(e.getLocalizedMessage(), e);
 						}
 
@@ -309,7 +311,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						try{
 							execute(messageToTelegram);
-
 							for(int i = 0; i < telegramUserList.size(); i++){
 								if(telegramUserList.get(i).getTelegramName().equals(responseFromUser)){
 									// User Found Log in sucess
@@ -329,10 +330,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									break;
 								}
 							}
+							// Enter your Telegram Username with format /login:TelegramUsername
+							sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
 						}					
 						catch(TelegramApiException e){
 							// Log in fail message
-							sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
+							sendMessage(BotMessages.LOG_IN_FAIL.getMessage() + e.toString(), chatId);
 							logger.error(e.getLocalizedMessage(), e);
 						}				
 					}
