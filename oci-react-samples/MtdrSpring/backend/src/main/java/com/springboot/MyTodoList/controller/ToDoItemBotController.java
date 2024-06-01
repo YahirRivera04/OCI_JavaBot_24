@@ -288,9 +288,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
+							}
+							if(chatIdCompare != 0){
+								// Enter your Telegram Username with format /login:TelegramUsername
+								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
 							}		
-							// Enter your Telegram Username with format /login:TelegramUsername
-							sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);			
+									
 						}
 						catch(TelegramApiException e){
 							// Log In fail
@@ -330,8 +333,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									break;
 								}
 							}
-							// Enter your Telegram Username with format /login:TelegramUsername
-							sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
 						}					
 						catch(TelegramApiException e){
 							// Log in fail message
