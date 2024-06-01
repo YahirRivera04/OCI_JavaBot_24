@@ -39,7 +39,7 @@ public class TelegramUser {
         joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
         inverseJoinColumns = @JoinColumn(name = "TEAMID") 
     )
-    private Set<Team> teamId;
+    private List<Team> teamId;
 
     @OneToMany(mappedBy = "telegramUserIdFk", cascade = CascadeType.ALL)
     List<Task> taskId;
@@ -131,11 +131,11 @@ public class TelegramUser {
         this.chatId = chatID;
     }
 
-    public Set<Team> getTeams() {
+    public List<Team> getTeams() {
         return teamId;
     }
 
-    public void setTeams(Set<Team> teams) {
+    public void setTeams(List<Team> teams) {
         this.teamId = teams;
     }
 
