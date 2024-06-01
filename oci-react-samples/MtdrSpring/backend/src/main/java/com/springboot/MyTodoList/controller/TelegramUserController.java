@@ -193,11 +193,11 @@ public class TelegramUserController {
         " \nChat Id " + telegramUser.getChatId() + 
         " \nUser Type Id" + telegramUser.getUserType().getID() +
         " \nUser Type Name " + telegramUser.getUserType().getName() + 
-        " \nUser Type Description " + telegramUser.getUserType().getDescription() +
-        " \nAsignado a " + telegramUser.getTeams().size() + " equipos " +
+        " \nUser Type Description " + telegramUser.getUserType().getDescription() /*+
+        " \nAsignado a " + telegramUser.getTeams().size() + " equipos" +
         " \nTeam Id " + telegramUser.getTeams().get(0).getID() + 
         " \nTeam Name " + telegramUser.getTeams().get(0).getName() + 
-        " \nTeam Description " + telegramUser.getTeams().get(0).getDescription();
+        " \nTeam Description " + telegramUser.getTeams().get(0).getDescription()*/;
 
 
         return telegramUserInfo;
