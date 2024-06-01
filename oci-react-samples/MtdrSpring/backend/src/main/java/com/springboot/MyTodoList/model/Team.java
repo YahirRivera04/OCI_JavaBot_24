@@ -23,13 +23,13 @@ public class Team {
     @JoinColumn(name = "TEAMTYPEID")
     TeamType teamTypeIdFk;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "TODOUSER.USERTEAM", 
         joinColumns = @JoinColumn(name = "TEAMID"),  
         inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
     )
-    private List<TelegramUser> telegramUserId;
+    private List<TelegramUser> telegramUser;
 
     public Team(){
     }
@@ -71,6 +71,10 @@ public class Team {
         this.teamTypeIdFk = teamType;
     }
 
+    public List<TelegramUser> getTelegramUser(){
+        return telegramUser;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -79,9 +83,9 @@ public class Team {
            .append(", Description=").append(description)
            .append(", TeamType=").append(teamTypeIdFk != null ? teamTypeIdFk.getName() : "None");
 
-        if (telegramUserId != null && !telegramUserId.isEmpty()) {
+        if (telegramUser != null && !telegramUser.isEmpty()) {
             sb.append(", Users=[");
-            Iterator<TelegramUser> iterator = telegramUserId.iterator();
+            Iterator<TelegramUser> iterator = telegramUser.iterator();
             while (iterator.hasNext()) {
                 TelegramUser user = iterator.next();
                 sb.append("User[ID=").append(user.getID())

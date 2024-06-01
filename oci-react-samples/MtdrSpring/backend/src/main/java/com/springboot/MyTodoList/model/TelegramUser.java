@@ -33,7 +33,7 @@ public class TelegramUser {
     @JoinColumn(name = "USERTYPEID")
     UserType userTypeIdFk;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "TODOUSER.USERTEAM",
         joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
