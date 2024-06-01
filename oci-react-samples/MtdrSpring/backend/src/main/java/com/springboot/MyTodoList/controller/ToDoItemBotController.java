@@ -156,6 +156,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							try {
 								execute(messageToTelegram);
+								sendMessage("To continue please select any option from the buttons.", telegramUser.getChatId());
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -195,6 +196,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							try {
 								execute(messageToTelegram);
+								sendMessage("To continue please select any option from the buttons.", telegramUser.getChatId());
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -226,24 +228,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 					userTeamList = userTeamController.findAllUserTeams().getBody();
 
-					sendMessage("Test for User Team", telegramUser.getChatId());
-					if(teamList != null){
-						for(int i = 0; i < userTeamList.size(); i++){
-							sendMessage(userTeamController.printUserTeamList(userTeamList.get(i)) ,telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test for Team", telegramUser.getChatId());
-					if(teamList != null){
-						for(int i = 0; i < teamList.size(); i++){
-							sendMessage(teamController.printTeamList(teamList.get(i)) ,telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test for Telegram User", telegramUser.getChatId());
-					if(teamList != null){
+					sendMessage("Test for Telegram User with team and userTeam", telegramUser.getChatId());
+					if(telegramUserList != null && teamList != null && userTeamList != null){
 						for(int i = 0; i < telegramUserList.size(); i++){
-							sendMessage(telegramUserController.printTelegramUserList(telegramUserList.get(i)) ,telegramUser.getChatId());
+							for(int j = 0; j < telegramUserList.get(i).getUserTeams().size(); j++){
+								sendMessage(telegramUserList.get(i).getTelegramName() + " " +
+								telegramUserList.get(i).getUserTeams().get(j).getTeam().getName(), telegramUser.getChatId());
+							}
 						}
 					}
 
