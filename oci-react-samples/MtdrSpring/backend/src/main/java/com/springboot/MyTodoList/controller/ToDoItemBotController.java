@@ -157,6 +157,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							try {
 								execute(messageToTelegram);
 								sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
+								caseNumber++;
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -184,7 +185,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							// Second Row
 							row = new KeyboardRow();
-							row.add(BotLabels.CREATE_PROJECT.getLabel());
+							row.add(BotLabels.SHOW_PROJECT.getLabel());
 							row.add(BotLabels.LOGOUT.getLabel());
 							keyboard.add(row);
 							
@@ -197,6 +198,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							try {
 								execute(messageToTelegram);
 								sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
+								caseNumber++;
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -208,14 +210,37 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Log Out Message
 						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					}
-					else{
-						caseNumber++;
-						// Continue Message /continue
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
-				case 2:				
+				case 2:
+					// Developer Buttons
+					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Show Task", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Edit Task", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Delete Task", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Create Task", telegramUser.getChatId());
+					}
+					// Manager Button
+					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Create Sprint", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Create Project", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){
+						sendMessage("Show Project", telegramUser.getChatId());
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
+						caseNumber = 0;
+						// Log Out Message
+						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+					}
 					break;
 				// Log in by default
 				default:
@@ -229,7 +254,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						teamList = teamController.findAllTeams().getBody();
 						userTeamList = userTeamController.findAllUserTeams().getBody();
 						telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
-						
+
 						// Set information form db to task related models 
 						taskStatusList = taskStatusController.findAllTaskStatus().getBody();
 						projectList = projectController.findAllProjects().getBody();

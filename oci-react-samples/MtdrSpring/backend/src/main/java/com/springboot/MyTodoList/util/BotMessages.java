@@ -11,6 +11,7 @@ public enum BotMessages {
 	// Log Out messages
 	LOG_OUT_MESSAGE("See you next time"),
 
+
 	// Show tasks
 	SHOW_TASK_MESSAGE("Here are your tasks: \n"),
 
@@ -29,7 +30,19 @@ public enum BotMessages {
 
 	// Create task
 	CREATE_TASK_MESSAGE("Create a new task below:"),
-	CREATE_TASK_SUCCESS("Task created successfully!");
+	CREATE_TASK_SUCCESS("Task created successfully!"),
+
+	// Button Messages task
+	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
+	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),
+	DELETE_TASK_COMMAND_MESSAGE("Delete Task"),
+	CREATE_TASK_COMMAND_MESSAGE("Create Task"),
+	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
+	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
+	SHOW_PROJECT_COMMAND_MESSAGE("View Project"),
+
+	//Else Button Messages
+	LOG_OUT_COMMAND_MESSAGE("LogOut");
 
 
 	private String message;
