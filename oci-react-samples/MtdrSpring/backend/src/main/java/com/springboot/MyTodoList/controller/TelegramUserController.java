@@ -36,9 +36,6 @@ public class TelegramUserController {
         }
     }
 
-
-
-
     // --------------------- Exist Chat Id by Chat Id Method ---------------------
     // /telegramuser/chatid/1984472475
     @GetMapping(value = "/telegramuser/chatid/{chatId}")

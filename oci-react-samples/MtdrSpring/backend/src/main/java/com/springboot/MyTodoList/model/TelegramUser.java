@@ -35,11 +35,11 @@ public class TelegramUser {
     
     @ManyToMany
     @JoinTable(
-        name = "USERTEAM", 
+        name = "USERTEAM",
         joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
         inverseJoinColumns = @JoinColumn(name = "TEAMID") 
     )
-    private List<Team> teamId;
+    private List<Team> teams;
 
     @OneToMany(mappedBy = "telegramUserIdFk", cascade = CascadeType.ALL)
     List<Task> taskId;
@@ -132,11 +132,11 @@ public class TelegramUser {
     }
 
     public List<Team> getTeams() {
-        return teamId;
+        return teams;
     }
 
     public void setTeams(List<Team> teams) {
-        this.teamId = teams;
+        this.teams = teams;
     }
 
     public List<Task> getTasks(){
@@ -166,9 +166,9 @@ public class TelegramUser {
            .append(", UserType=").append(userTypeIdFk != null ? userTypeIdFk.getName() : "None")
            .append(", ChatId=").append(chatId);
 
-        if (!teamId.isEmpty()) {
+        if (!teams.isEmpty()) {
             sb.append(", Teams=[");
-            Iterator<Team> iterator = teamId.iterator();
+            Iterator<Team> iterator = teams.iterator();
             while (iterator.hasNext()) {
                 Team team = iterator.next();
                 sb.append("Team[Name=").append(team.getName())

@@ -217,7 +217,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					updateTypeList = updateTypeController.findAllUpdateType().getBody();
 					teamTypeList = teamTypeController.findAllTeamType().getBody();
 					teamList = teamController.findAllTeams().getBody();
-
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 
 					// Print all info form models
@@ -245,11 +244,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage("Test of Sprint", telegramUser.getChatId());
 					if(sprintList != null && projectList != null){
 						for(int i = 0; i < sprintList.size(); i++){
-							for(int j = 0; j < projectList.size(); j++){
-								if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
-									sprintList.get(i).setProject(projectList.get(j));
-								}
-							}
+							// for(int j = 0; j < projectList.size(); j++){
+							// 	if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
+							// 		sprintList.get(i).setProject(projectList.get(j));
+							// 	}
+							// }
 							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
 						}
 					}
@@ -271,12 +270,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage("Test of Team", telegramUser.getChatId());
 					if(teamList != null && teamTypeList != null){
 						for(int i = 0; i < teamList.size(); i++){
-							for(int j = 0; j < teamTypeList.size(); j++){
-								if(teamList.get(i).getTeamType().getID() == teamTypeList.get(j).getID()){
-									teamList.get(i).setTeamType(teamTypeList.get(j));
-								}
-							}
+							// for(int j = 0; j < teamTypeList.size(); j++){
+							// 	if(teamList.get(i).getTeamType().getID() == teamTypeList.get(j).getID()){
+							// 		teamList.get(i).setTeamType(teamTypeList.get(j));
+							// 	}
+							// }
 							sendMessage(teamController.printTeamTypeList(teamList.get(i)), telegramUser.getChatId());
+							
 						}
 					}
 
