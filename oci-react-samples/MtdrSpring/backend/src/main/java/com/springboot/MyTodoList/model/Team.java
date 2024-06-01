@@ -23,14 +23,13 @@ public class Team {
     @JoinColumn(name = "TEAMTYPEID")
     TeamType teamTypeIdFk;
 
-    @ManyToMany(mappedBy = "teams")
-    List<TelegramUser> telegramUser;
-    // @JoinTable(
-    //     name = "TODOUSER.USERTEAM", 
-    //     joinColumns = @JoinColumn(name = "TEAMID"),  
-    //     inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
-    // )
-    // public List<TelegramUser> telegramUser;
+    @ManyToMany
+    @JoinTable(
+        name = "TODOUSER.USERTEAM",
+        joinColumns = @JoinColumn(name = "TEAMID"),  
+        inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID") 
+    )
+    private List<TelegramUser> telegramUser;
 
     public Team(){
     }

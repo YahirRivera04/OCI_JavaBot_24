@@ -220,14 +220,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 
 					sendMessage("Test Telegram Users", telegramUser.getChatId());
-					if(telegramUserList != null){
-						for(int i = 0; i < telegramUserList.size(); i++){
-							sendMessage(telegramUserController.printTelegramUserList(telegramUserList.get(i)), telegramUser.getChatId());
+					for(int i = 0; i < telegramUserList.size(); i++){
+						for(int j = 0; j < telegramUserList.get(i).getTeams().size(); j++){
+							sendMessage(telegramUserList.get(i).getTeams().get(j).getName(), telegramUser.getChatId());
 						}
 					}
-
-					sendMessage(telegramUserList.get(0).getTeams().get(0).getName(), telegramUser.getChatId());
 					
+
+
 					break;
 				// Log in by default
 				default:

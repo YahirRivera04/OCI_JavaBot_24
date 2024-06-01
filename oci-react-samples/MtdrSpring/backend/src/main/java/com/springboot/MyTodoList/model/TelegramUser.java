@@ -33,13 +33,14 @@ public class TelegramUser {
     @JoinColumn(name = "USERTYPEID")
     UserType userTypeIdFk;
     
+
     @ManyToMany
     @JoinTable(
         name = "TODOUSER.USERTEAM",
         joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
         inverseJoinColumns = @JoinColumn(name = "TEAMID") 
     )
-    public List<Team> teams;
+    private List<Team> teams;
 
     @OneToMany(mappedBy = "telegramUserIdFk", cascade = CascadeType.ALL)
     List<Task> taskId;
