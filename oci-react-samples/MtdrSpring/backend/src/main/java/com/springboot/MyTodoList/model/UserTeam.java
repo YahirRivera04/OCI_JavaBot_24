@@ -1,6 +1,4 @@
 package com.springboot.MyTodoList.model;
-import java.util.List;
-import java.util.Iterator;
 import javax.persistence.*;
 
 @Entity

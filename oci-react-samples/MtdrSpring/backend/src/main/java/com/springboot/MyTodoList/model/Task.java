@@ -124,8 +124,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "ToDoItem{" +
-                "ID=" + taskId +
+        return "Task{" +
+                "ID =" + taskId +
                 ", Name='" + name + '\'' +
                 ", Description=" + description +
                 ", Estimated Hours=" + estimatedHours +

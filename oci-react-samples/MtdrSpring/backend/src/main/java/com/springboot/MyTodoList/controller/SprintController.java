@@ -16,7 +16,7 @@ public class SprintController {
     
      // ##################### Sprint Controller Metods ##################### //
     
-    // --------------------- Get All Projects ---------------------
+    // --------------------- Get All Sprints ---------------------
     @GetMapping(value = "/sprints/")
     public ResponseEntity<String> findSprints(){
         String info = "";
@@ -32,7 +32,7 @@ public class SprintController {
         }
     }
 
-    // --------------------- Post Project ---------------------
+    // --------------------- Post Sprint ---------------------
     @GetMapping(value = "/sprint/{Sprint}")
     public ResponseEntity<String> createSprint(@PathVariable Sprint sprint){
         return ResponseEntity.ok(sprintService.createNewSprint(sprint));
@@ -40,7 +40,7 @@ public class SprintController {
 
     // ##################### Bot Controller Metods ##################### //
 
-    // Get All projects
+    // Get All Sprints
 	public ResponseEntity<List<Sprint>> findAllSprints(){
 		return ResponseEntity.ok(sprintService.findAllSprints());
 	}

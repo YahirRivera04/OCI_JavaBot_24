@@ -1,4 +1,5 @@
 package com.springboot.MyTodoList.controller;
+import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.Task;
 import com.springboot.MyTodoList.service.TaskService;
 
@@ -14,52 +15,56 @@ import java.util.List;
 @RestController
 public class TaskController {
     @Autowired
-    private TaskService TaskService;
-    //@CrossOrigin
-    // ## Post ##
-    @PostMapping(value = "/task")
-    public ResponseEntity addTask(@RequestBody Task taskItem) throws Exception{
-        Task td = TaskService.addTask(taskItem);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("location",""+td.getID());
-        responseHeaders.set("Access-Control-Expose-Headers","location");
-        //URI location = URI.create(""+td.getID())
+    private TaskService taskService;
+    
+    // ##################### Task Controller Metods ##################### //
 
-        return ResponseEntity.ok()
-                .headers(responseHeaders).build();
-    }
-
-    // ## Get ##
-    @GetMapping(value = "/task/tasklist/{id}")
-    public ResponseEntity<List<String>> findTaskList(@PathVariable int TelegramUserId){
-        return ResponseEntity.ok(TaskService.findTaskList(TelegramUserId));
-    }
-
-    // ## Update ##
-    @PutMapping(value = "tasks/{id}")
-    public ResponseEntity updateTask(@PathVariable int id, @RequestBody Task td){
+ // --------------------- Get All Tasks ---------------------
+    @GetMapping(value = "/tasks/")
+    public ResponseEntity<String> findTasks(){
+        String info = "";
         try{
-            Task taskItem = TaskService.updateTask(id, td);
-            System.out.println(taskItem.toString());
-            return new ResponseEntity<>(taskItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            List<Task> taskList = taskService.findAllTask();
+            for(int i = 0; i < taskList.size(); i++){
+                info += taskList.get(i).toString() + "\n";
+            }
+            return ResponseEntity.ok(info);
         }
-    }
-    // ## Delete ##
-    @DeleteMapping(value = "task/{id}")
-    public ResponseEntity<Boolean> deleteTask(@PathVariable("id") int id){
-        Boolean flag = false;
-        try{
-            flag = TaskService.deleteTask(id);
-            return new ResponseEntity<>(flag, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(flag,HttpStatus.NOT_FOUND);
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    // ##################### Bot Controller Metods ##################### //
+
+   // Get All Tasks
+    public ResponseEntity<List<Task>> findAllTasks(){
+        return ResponseEntity.ok(taskService.findAllTask());
+    }
+
+    public ResponseEntity<List<Task>> findAllTaskByTelegramUserId(Iterable<Long> telegramUserId){
+        return ResponseEntity.ok(taskService.findAllTaskByTelegramUserId(telegramUserId));
+    }
+
+    public ResponseEntity<String> createTask(Task newTask){
+        return ResponseEntity.ok(taskService.createTask(newTask));
+    }
 
 
+
+    // Print All Sprints
+    public String printSprintList(Task task){
+        String taskInfo = "Id " + task.getID().toString() +
+                " \nName " + task.getName() + 
+                " \nDescription " + task.getDescription() + 
+                " \nEstimated Hours " + task.getEstimatedHours() + 
+                " \nPriority " + task.getPriority() + 
+                " \nTelegram User Id " + task.getTelegramUser().getID() + 
+                " \nSprint Id " + task.getSprint().getID() + 
+                " \nTask Status Id " + task.getTaskStatus().getID();
+
+        return taskInfo;
+    }
 
     
     

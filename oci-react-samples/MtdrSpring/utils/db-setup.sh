@@ -264,6 +264,7 @@ CREATE TABLE $U.BOTOPTION (
 #######################################################| Presets |#######################################################
 
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Creation', 'A task or sprint is created.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');

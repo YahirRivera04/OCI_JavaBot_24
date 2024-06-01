@@ -14,8 +14,8 @@ import javax.transaction.Transactional;
 @Transactional
 @EnableTransactionManagement
 
-public interface TaskRepository extends JpaRepository<Task,Integer> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
- @Query(value = "SELECT name FROM TODOUSER.TASK WHERE telegramUserId = ?1", nativeQuery = true)
-    List <String> findByTelegramUserId(int telegramUserId);
+
+
 }

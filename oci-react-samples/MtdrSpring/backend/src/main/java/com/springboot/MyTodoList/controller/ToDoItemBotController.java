@@ -48,7 +48,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TelegramUserController telegramUserController;
 	private UserTypeController userTypeController;
 	private TaskStatusController taskStatusController;
-	private TaskService taskService;
+	private TaskController taskController;
 	private ProjectController projectController;
 	private SprintController sprintController;
 	private UpdateTypeController updateTypeController;
@@ -58,7 +58,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
-	TelegramUserController telegramUserController, TaskService taskService,
+	TelegramUserController telegramUserController, TaskController taskController,
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
 	ProjectController projectController, SprintController sprintController, 
 	UpdateTypeController updateTypeController, TeamTypeController teamTypeController, 
@@ -68,7 +68,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		logger.info("Bot name: " + botName);
 		this.telegramUserController = telegramUserController;
 		this.userTypeController = userTypeController;
-		this.taskService = taskService;
+		this.taskController = taskController;
 		this.taskStatusController = taskStatusController;
 		this.projectController = projectController;
 		this.sprintController = sprintController;
@@ -101,6 +101,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<Sprint> sprintList = List.of(new Sprint());
 	// New List of Update Type
 	List<UpdateType> updateTypeList = List.of(new UpdateType());
+	// New List of Tasks
+	List<Task> taskList = List.of(new Task());
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -209,6 +211,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						caseNumber = 0;
 						// Log Out Message
 						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
@@ -224,7 +227,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Delete Task", telegramUser.getChatId());
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Create Task", telegramUser.getChatId());
+						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage(BotMessages.CREATE_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+						caseNumber = 3;
 					}
 					// Manager Button
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
@@ -240,8 +245,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						caseNumber = 0;
 						// Log Out Message
 						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					}
 					break;
+				case 3:
+					// Create task case
+					
+
+
+
+				break;
 				// Log in by default
 				default:
 					// Set information form db to user related models 

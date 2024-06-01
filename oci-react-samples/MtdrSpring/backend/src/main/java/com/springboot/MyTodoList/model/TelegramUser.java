@@ -1,10 +1,5 @@
 package com.springboot.MyTodoList.model;
-
-import java.util.Set;
 import javax.persistence.*;
-
-import org.apache.tomcat.jni.User;
-
 import java.util.Iterator;
 import java.util.List;
 

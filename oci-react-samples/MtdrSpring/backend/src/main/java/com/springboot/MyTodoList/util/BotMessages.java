@@ -18,20 +18,18 @@ public enum BotMessages {
 	// Continue 
 	CONTINUE_MESSAGE("To continue, please use the command /continue"),
 
-	// Edit task
-	EDIT_TASK_MESSAGE("Edit your task below:"),
+	// Edit or Create Task
+	EDIT_TASK_MESSAGE("EDIT TASK"),
+	CREATE_TASK_MESSAGE("CREATE TASK \nPlease follow the next format:"),
+	CREATE_TASK_FORMAT("Name: \nDescription: \nEstimated Hours: \nPriority: \nSprint Name: \nTask Status: \nType of Update:"),
 	EDIT_TASK_NAME("Name:"),
 	EDIT_TASK_DESCRIPTION("Description:"),
 	EDIT_TASK_ESTIMATED_HOURS("Estimated Hours:"),
 	EDIT_TASK_PRIORITY("Priority:"),
-	EDIT_TASK_STATUS("Select the status: \n"),
-	TASK_UPDATE("Select the update type: \n"),
-	EDIT_TASK_SUCCESS("Task edited successfully!"),
-
-	// Create task
-	CREATE_TASK_MESSAGE("Create a new task below:"),
-	CREATE_TASK_SUCCESS("Task created successfully!"),
-
+	EDIT_TASK_SPRINT("Sprint Name:"),
+	EDIT_TASK_STATUS("Task Status:"),
+	EDIT_TASK_UPDATE("Type of Update:"),
+	
 	// Button Messages task
 	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
 	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),

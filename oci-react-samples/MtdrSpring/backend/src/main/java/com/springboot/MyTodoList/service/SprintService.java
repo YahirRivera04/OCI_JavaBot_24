@@ -19,25 +19,13 @@ import com.springboot.MyTodoList.repository.SprintRepository;
 public class SprintService {
     @Autowired
     private SprintRepository sprintRepository;
+
+    public SprintService(SprintRepository sprintRepository){
+        this.sprintRepository = sprintRepository;
+    }
     
        // --------------------- Get All Sprint Method ---------------------
     public List<Sprint> findAllSprints(){
-        // List<Project> projectList = List.of(new Project());
-        // projectList = projectService.findAllProjects();
-        
-        // List<Sprint> sprintList = List.of(new Sprint());
-        // sprintList = sprintRepository.findAll();
-
-        // if(projectList != null && sprintList != null){
-        //     for(int i = 0; i < sprintList.size(); i++){
-        //         for(int j = 0; i < projectList.size(); j++){
-        //             if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
-        //                 sprintList.get(i).setProject(projectList.get(j));
-        //             }
-        //         }
-        //     }
-        // }
-
         return sprintRepository.findAll();
     }
 
@@ -45,10 +33,10 @@ public class SprintService {
     public String createNewSprint(Sprint newSprint){
         try{
             sprintRepository.save(newSprint);
-            return "Project " + newSprint.getName() + " created succesfully";
+            return "Project " + newSprint.getName() + " created succesfully.";
         }
         catch (Exception e){
-            return "Project " + newSprint.getName() + " fail in creation " + e;   
+            return "Project " + newSprint.getName() + " fail. \nERROR: " + e;   
         }
     }
 
