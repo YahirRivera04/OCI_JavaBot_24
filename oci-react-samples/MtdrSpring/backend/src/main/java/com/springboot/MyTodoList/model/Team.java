@@ -70,6 +70,11 @@ public class Team {
         return userTeam;
     }
 
+    public void setUserTeam(List<UserTeam> userTeam){
+        this.userTeam = userTeam;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

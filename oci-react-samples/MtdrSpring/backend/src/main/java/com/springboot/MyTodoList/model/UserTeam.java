@@ -43,8 +43,16 @@ public class UserTeam {
         return telegramUser;
     }
 
+    public void setTelegramUser(TelegramUser telegramUser){
+        this.telegramUser = telegramUser;
+    }
+
     public Team getTeam(){
         return team;
+    }
+
+    public void setTeams(Team team){
+        this.team = team;
     }
 
 

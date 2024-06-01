@@ -156,7 +156,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							try {
 								execute(messageToTelegram);
-								sendMessage("To continue please select any option from the buttons.", telegramUser.getChatId());
+								sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -196,7 +196,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							try {
 								execute(messageToTelegram);
-								sendMessage("To continue please select any option from the buttons.", telegramUser.getChatId());
+								sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
 							} 
 							catch (TelegramApiException e) {
 								logger.error(e.getLocalizedMessage(), e);
@@ -215,38 +215,26 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
-				case 2:
-					// Set information form db to models 
-					userTypeList = userTypeController.findAllUserType().getBody();
-					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-					projectList = projectController.findAllProjects().getBody();
-					sprintList = sprintController.findAllSprints().getBody();
-					updateTypeList = updateTypeController.findAllUpdateType().getBody();
-					teamTypeList = teamTypeController.findAllTeamType().getBody();
-					
-					teamList = teamController.findAllTeams().getBody();
-					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
-					userTeamList = userTeamController.findAllUserTeams().getBody();
-
-					sendMessage("Test for Telegram User with team and userTeam", telegramUser.getChatId());
-					if(telegramUserList != null && teamList != null && userTeamList != null){
-						for(int i = 0; i < telegramUserList.size(); i++){
-							for(int j = 0; j < telegramUserList.get(i).getUserTeams().size(); j++){
-								sendMessage(telegramUserList.get(i).getTelegramName() + " " +
-								telegramUserList.get(i).getUserTeams().get(j).getTeam().getName(), telegramUser.getChatId());
-							}
-						}
-					}
-
-					
-					
-
+				case 2:				
 					break;
 				// Log in by default
 				default:
 					// If the bot detects the start command
 					// "/start"
 					if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
+
+						// Set information form db to user related models 
+						userTypeList = userTypeController.findAllUserType().getBody();
+						teamTypeList = teamTypeController.findAllTeamType().getBody();
+						teamList = teamController.findAllTeams().getBody();
+						userTeamList = userTeamController.findAllUserTeams().getBody();
+						telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
+						
+						// Set information form db to task related models 
+						taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+						projectList = projectController.findAllProjects().getBody();
+						sprintList = sprintController.findAllSprints().getBody();
+						updateTypeList = updateTypeController.findAllUpdateType().getBody();
 
 						// Send Welcome Message
 						SendMessage messageToTelegram = new SendMessage();
@@ -257,29 +245,28 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							execute(messageToTelegram);
 
 							// Check if the chatId exists in the database
-							Long chatIdResponse = telegramUserController.findChatIdByChatId(chatId).getBody();
-							int chatIdCompare = -1;
-							// Compare the chatId from the database with the chatId from the user
-							if(chatIdResponse != null )	chatIdCompare = Long.compare(chatIdResponse, chatId);
-							// Verify the chatId content
-							if(chatIdCompare == 0){
-								// You have successfully logged in!!
-								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-								// Set Telegram User Information
-								telegramUser = telegramUserController.setTelegramUser(chatId, "");
-								// Case Number to acces developer or manager methods
-								caseNumber++;
-								//sendMessage("Case number updated to " + caseNumber, chatId);
+							for(int i = 0; i < telegramUserList.size(); i++){
+								if(telegramUserList.get(i).getChatId() == chatId){
+									// You have successfully logged in!!
+									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+									// Set Telegram User Information
+									telegramUser = telegramUserList.get(i);
+									// Case Number to acces developer or manager methods
+									caseNumber++;
+									//sendMessage("Case number updated to " + caseNumber, chatId);
 
-								// Continue Message /continue
-								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-							}
-							else{
-								// Enter your Telegram Username with format /login:TelegramUsername
-								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
+									// Continue Message /continue
+									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+								}
+								else{
+									// Enter your Telegram Username with format /login:TelegramUsername
+									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
+								}
 							}
 						}
 						catch(TelegramApiException e){
+							// Enter your Telegram Username with format /login:TelegramUsername
+							sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
 							logger.error(e.getLocalizedMessage(), e);
 						}
 
@@ -296,26 +283,30 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						try{
 							execute(messageToTelegram);
-							if(telegramUserController.getTelegramUserId(responseFromUser).getBody() != null){
-								// User Found Log in sucess
-								sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
-								// Update Chat Id in db
-								ResponseEntity<String> response = telegramUserController.updateChatId(telegramUserController.getTelegramUserId(responseFromUser).getBody(), chatId);
-								sendMessage(response.getBody(), chatId);					
-								// Set local telegram user
-								telegramUser = telegramUserController.setTelegramUser(chatId, responseFromUser);
-								// Case Number to acces developer or manager methods
-								caseNumber++;
-								//sendMessage("Case number updated to " + caseNumber, chatId);
-								
-								// Continue Message /continue
-								sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+
+							for(int i = 0; i < telegramUserList.size(); i++){
+								if(telegramUserList.get(i).getTelegramName() == responseFromUser){
+									// User Found Log in sucess
+									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+									// Set Telegram User Information
+									telegramUser = telegramUserList.get(i);
+									telegramUser.setChatId(chatId);
+									// Update Chat Id in db
+									ResponseEntity<String> response = telegramUserController.updateChatId(telegramUser.getID(), telegramUser.getChatId());
+									sendMessage(response.getBody(), telegramUser.getChatId());
+									// Case Number to acces developer or manager methods
+									caseNumber++;
+									//sendMessage("Case number updated to " + caseNumber, chatId);
+									
+									// Continue Message /continue
+									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+								}
+								else {
+									// Log in fail message
+									sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
+								}
 							}
-							else {
-								// Log in fail message
-								sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
-							}
-						}
+						}					
 						catch(TelegramApiException e){
 							// Log in fail message
 							sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
