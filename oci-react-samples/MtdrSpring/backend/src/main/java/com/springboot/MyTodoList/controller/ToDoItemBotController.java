@@ -219,67 +219,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					teamList = teamController.findAllTeams().getBody();
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 
-					// Print all info form models
-					sendMessage("Test of User Type", telegramUser.getChatId());
-					if(userTypeList != null){
-						for(int i = 0; i < userTypeList.size(); i++){
-							sendMessage(userTypeController.printUserTypeList(userTypeList.get(i)), telegramUser.getChatId());
-						}
-					}
-					
-					sendMessage("Test of Task Status", telegramUser.getChatId());
-					if(taskStatusList != null){
-						for(int i = 0; i < taskStatusList.size(); i++){
-							sendMessage(taskStatusController.printTaskStatusList(taskStatusList.get(i)), telegramUser.getChatId());
-						}
-					}
-					
-					sendMessage("Test of Project", telegramUser.getChatId());
-					if(projectList != null){
-						for(int i = 0; i < projectList.size(); i++){
-							sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test of Sprint", telegramUser.getChatId());
-					if(sprintList != null && projectList != null){
-						for(int i = 0; i < sprintList.size(); i++){
-							// for(int j = 0; j < projectList.size(); j++){
-							// 	if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
-							// 		sprintList.get(i).setProject(projectList.get(j));
-							// 	}
-							// }
-							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test of Update Type", telegramUser.getChatId());
-					if(updateTypeList != null){
-						for(int i = 0; i < updateTypeList.size(); i++){
-							sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test of Team Type", telegramUser.getChatId());
-					if(teamTypeList != null){
-						for(int i = 0; i < teamTypeList.size(); i++){
-							sendMessage(teamTypeController.printTeamTypeList(teamTypeList.get(i)), telegramUser.getChatId());
-						}
-					}
-
-					sendMessage("Test of Team", telegramUser.getChatId());
-					if(teamList != null && teamTypeList != null){
-						for(int i = 0; i < teamList.size(); i++){
-							// for(int j = 0; j < teamTypeList.size(); j++){
-							// 	if(teamList.get(i).getTeamType().getID() == teamTypeList.get(j).getID()){
-							// 		teamList.get(i).setTeamType(teamTypeList.get(j));
-							// 	}
-							// }
-							sendMessage(teamController.printTeamTypeList(teamList.get(i)), telegramUser.getChatId());
-							
-						}
-					}
-
 					sendMessage("Test Telegram Users", telegramUser.getChatId());
 					if(telegramUserList != null){
 						for(int i = 0; i < telegramUserList.size(); i++){

@@ -35,7 +35,7 @@ public class TelegramUser {
     
     @ManyToMany
     @JoinTable(
-        name = "USERTEAM",
+        name = "TODOUSER.USERTEAM",
         joinColumns = @JoinColumn(name = "TELEGRAMUSERID"),  
         inverseJoinColumns = @JoinColumn(name = "TEAMID") 
     )

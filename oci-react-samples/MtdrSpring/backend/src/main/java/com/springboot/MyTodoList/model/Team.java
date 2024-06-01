@@ -1,7 +1,7 @@
 package com.springboot.MyTodoList.model;
 
 
-import java.util.Set;
+import java.util.List;
 import java.util.Iterator;
 import javax.persistence.*;
 @Entity
@@ -25,11 +25,11 @@ public class Team {
 
     @ManyToMany
     @JoinTable(
-        name = "USERTEAM", 
+        name = "TODOUSER.USERTEAM", 
         joinColumns = @JoinColumn(name = "TEAMID"),  
         inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
     )
-    private Set<TelegramUser> telegramUserId;
+    private List<TelegramUser> telegramUserId;
 
     public Team(){
     }
