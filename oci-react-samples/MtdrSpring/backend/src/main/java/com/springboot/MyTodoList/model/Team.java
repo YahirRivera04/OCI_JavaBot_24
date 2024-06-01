@@ -23,13 +23,13 @@ public class Team {
     @JoinColumn(name = "TEAMTYPEID")
     TeamType teamTypeIdFk;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
         name = "TODOUSER.USERTEAM", 
         joinColumns = @JoinColumn(name = "TEAMID"),  
         inverseJoinColumns = @JoinColumn(name = "TELEGRAMUSERID")
     )
-    private List<TelegramUser> telegramUser;
+    public List<TelegramUser> telegramUser;
 
     public Team(){
     }
