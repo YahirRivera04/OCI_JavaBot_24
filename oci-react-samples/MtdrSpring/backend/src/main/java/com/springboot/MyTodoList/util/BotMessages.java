@@ -42,7 +42,7 @@ public enum BotMessages {
 	SHOW_PROJECT_COMMAND_MESSAGE("View Project"),
 
 	//Else Button Messages
-	LOG_OUT_COMMAND_MESSAGE("LogOut");
+	LOG_OUT_COMMAND_MESSAGE("Log Out");
 
 
 	private String message;

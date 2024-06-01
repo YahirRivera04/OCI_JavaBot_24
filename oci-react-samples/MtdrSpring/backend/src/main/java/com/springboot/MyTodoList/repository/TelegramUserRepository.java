@@ -1,14 +1,8 @@
 package com.springboot.MyTodoList.repository;
-
 import com.springboot.MyTodoList.model.TelegramUser;
-import com.springboot.MyTodoList.model.UserType;
-
-import org.hibernate.annotations.ParamDef;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.QueryHints;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.transaction.Transactional;
@@ -19,30 +13,9 @@ import javax.transaction.Transactional;
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
 
-    // Get Chat Id by Chat Id
-    @Query(value = "SELECT ChatId FROM TODOUSER.TELEGRAMUSER WHERE ChatId = ?1", nativeQuery = true)
-    Long findChatIdByChatId(Long chatId);
-
-    // Get Telegram User Id by telegram user name
-    @Query(value = "SELECT TelegramUserId FROM TODOUSER.TELEGRAMUSER WHERE TelegramName = ?1", nativeQuery = true)
-    Long findTelegramUserIdByTelegramName(String telegramName);
-
     // Set Chat Id by telegram user id
     @Modifying
     @Query(value = "UPDATE TODOUSER.TELEGRAMUSER SET ChatId = ?2 WHERE TelegramUserId = ?1", nativeQuery = true)
     void setChatIdByTelegramUserId(Long telegramUserId, Long chatId);
-
-    // Get Telegram User Id by chat id
-    @Query(value = "SELECT TelegramUserId FROM TODOUSER.TELEGRAMUSER WHERE ChatId = ?1", nativeQuery = true)
-    Long findUserIdByChatId(Long chatId);
-
-    // Get User type id by telegram user id
-    @Query(value = "SELECT UserTypeId FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
-    Long findUserTypeId(Long telegramUserId);
-
-    // Get Telegram Name by telegram user id
-    @Query(value = "SELECT TelegramName FROM TODOUSER.TELEGRAMUSER WHERE TelegramUserId = ?1", nativeQuery = true)
-    String findTelegramNameByTelegramUserId(Long telegramUserId);
-
 
 }

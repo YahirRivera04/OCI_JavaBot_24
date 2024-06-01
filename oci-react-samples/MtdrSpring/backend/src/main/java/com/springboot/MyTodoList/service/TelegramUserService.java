@@ -31,16 +31,6 @@ public class TelegramUserService {
         return telegramUserRepository.findAll();
     }
 
-    // --------------------- Find Chat Id by Telegram User Method ---------------------
-    public Long findChatIdByChatId(Long chatId){
-        return telegramUserRepository.findChatIdByChatId(chatId);
-    }
-
-    // --------------------- Get Telegram User ID by Telegram User name Method  ---------------------
-    public Long findTelegramUserId(String TelegramName){
-        return telegramUserRepository.findTelegramUserIdByTelegramName(TelegramName);
-    }
-
     // --------------------- Update ChatId Method ---------------------
     public String updateChatId(Long telegramUserId, Long chatId) {
         try{
@@ -51,21 +41,5 @@ public class TelegramUserService {
             return "ChatId update failed " + e.getMessage();
         }
     }
-
-    // --------------------- Get Telegram User Id by Chat Id Method  ---------------------
-    public Long findUserIdByChatId(Long chatId){
-        return telegramUserRepository.findUserIdByChatId(chatId);
-    }
-
-
-    // --------------------- Get User Type id by User Id ---------------------
-    public Long findUserTypeId(Long userId){
-        return telegramUserRepository.findUserTypeId(userId);
-    }
-
-    // --------------------- Get Telegram Name by User Id ---------------------
-    public String findTelegramNameByTelegramUserId(Long id){
-        return telegramUserRepository.findTelegramNameByTelegramUserId(id);
-    } 
 
 }

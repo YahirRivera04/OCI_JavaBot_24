@@ -272,8 +272,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 							int chatIdCompare = -1;
 							for(int i = 0; i < telegramUserList.size(); i++){
-								// Print Users test
-								sendMessage(telegramUserController.printTelegramUserList(telegramUserList.get(i)), chatId); // BORRAR
 								// Compare Chat id from Users in the Db
 								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
 								
@@ -288,6 +286,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+									break;
 								}
 							}					
 						}
@@ -327,6 +326,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
+									break;
 								}
 							}
 						}					
