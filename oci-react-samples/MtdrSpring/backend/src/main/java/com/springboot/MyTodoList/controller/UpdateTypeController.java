@@ -15,29 +15,5 @@ import java.util.List;
 public class UpdateTypeController {
     @Autowired
     private UpdateTypeService UpdateTypeService;
-    //@CrossOrigin
-
-    // ## Get ##
-    @GetMapping(value = "/updatetype/{id}")
-    public ResponseEntity<UpdateType> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<UpdateType> responseEntity = UpdateTypeService.getItemById(id);
-            return new ResponseEntity<UpdateType>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // ## Update ##
-    @PutMapping(value = "updatetype/{id}")
-    public ResponseEntity updateUpdateType(@PathVariable int id, @RequestBody UpdateType td){
-        try{
-            UpdateType updateItem = UpdateTypeService.updateUpdateType(id, td);
-            System.out.println(updateItem.toString());
-            return new ResponseEntity<>(updateItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
+    
 }

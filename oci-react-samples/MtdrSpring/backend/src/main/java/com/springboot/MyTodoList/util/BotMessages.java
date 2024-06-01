@@ -1,7 +1,5 @@
 package com.springboot.MyTodoList.util;
 
-import org.assertj.core.error.ShouldBeWritable;
-
 public enum BotMessages {
 	
 	BOT_REGISTERED_STARTED("Bot registered and started succesfully!"),

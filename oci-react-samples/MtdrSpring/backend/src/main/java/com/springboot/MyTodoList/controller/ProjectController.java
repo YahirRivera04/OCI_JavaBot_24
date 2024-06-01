@@ -50,4 +50,13 @@ public class ProjectController {
     // to do
 
 
+    // Print Projects
+    public String printProjectList(Project project){
+        String projectInfo = "Id " + project.getID().toString() +
+                " \nName " + project.getName() + 
+                " \nDescription " + project.getDescription();
+
+        return projectInfo;
+    }
+
 }

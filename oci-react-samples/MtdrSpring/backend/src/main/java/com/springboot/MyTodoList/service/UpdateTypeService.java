@@ -20,31 +20,5 @@ public class UpdateTypeService {
     @Autowired
     private UpdateTypeRepository UpdateTypeRepository;
     
-    // --------------------- Read Method ---------------------
-
-    public ResponseEntity<UpdateType> getItemById(int id){
-        Optional<UpdateType> data = UpdateTypeRepository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // --------------------- Update Method ---------------------
-
-    public UpdateType updateUpdateType(int id, UpdateType td) {
-        Optional<UpdateType> data = UpdateTypeRepository.findById(id);
-        if(data.isPresent()){
-            UpdateType updateType = data.get();
-            // updateType.setID(id);
-            // updateType.setCreation_ts(td.getCreation_ts());
-            // updateType.setDescription(td.getDescription());
-            // updateType.setDone(td.isDone());
-            return UpdateTypeRepository.save(updateType);
-        }else{
-            return null;
-        }
-    }
 
 }

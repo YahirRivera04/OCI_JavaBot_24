@@ -38,5 +38,13 @@ public class TaskStatusController {
     // Get all Task Status
 	public ResponseEntity<List<TaskStatus>> findAllTaskStatus(){
 		return ResponseEntity.ok(taskStatusService.findAllTaskStatus());
-	} 
+    } 
+    
+	// Print All Task Status
+	public String printTaskStatusList(TaskStatus taskStatus){
+        String taskStatusInfo = "Id " + taskStatus.getID().toString() + 
+        " \nName " +  taskStatus.getName() + 
+        " \nDescription " + taskStatus.getDescription();
+        return taskStatusInfo;
+	}
 }

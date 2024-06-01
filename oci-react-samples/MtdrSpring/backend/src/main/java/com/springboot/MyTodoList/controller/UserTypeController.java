@@ -50,4 +50,15 @@ public class UserTypeController {
         userTypeList = findAllUserType().getBody();
         return userTypeList;
     }
+
+    // Print All User Type
+    public String printUserTypeList(UserType userType){
+        // Print all information form user type
+        String userInfo = "Id " + userType.getID().toString() + 
+        " \nName " + userType.getName() + 
+        " \nDescription " + userType.getDescription();
+        return userInfo;
+    }
+
+
 }

@@ -1,4 +1,3 @@
-
 package com.springboot.MyTodoList.controller;
 import org.apache.tomcat.jni.User;
 import org.aspectj.weaver.ast.And;
@@ -189,26 +188,57 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					else if(messageTextFromTelegram.equals(BotCommands.LOG_OUT_COMMAND.getCommand())){
 						caseNumber = 0;
+						// Log Out Message
 						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					}
 					else{
 						caseNumber++;
+						// Continue Message /continue
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
 				case 2:
-					// Test of methods to build a task
-					sendMessage("Test of Task Status", telegramUser.getChatId());
-					printTaskStatusList(telegramUser.getChatId());
+					// Set information form db to models 
+					userTypeList = userTypeController.findAllUserType().getBody();
+					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+					projectList = projectController.findAllProjects().getBody();
+					sprintList = sprintController.findAllSprints().getBody();
 
-					sendMessage("Test of Project", telegramUser.getChatId());
-					printProjectList(telegramUser.getChatId());
-
+					// Print all info form models
 					sendMessage("Test of User Type", telegramUser.getChatId());
-					printUserTypeList(telegramUser.getChatId());
+					if(userTypeList != null){
+						for(int i = 0; i < userTypeList.size(); i++){
+							sendMessage(userTypeController.printUserTypeList(userTypeList.get(i)), telegramUser.getChatId());
+						}
+					}
+					
+					sendMessage("Test of Task Status", telegramUser.getChatId());
+					if(taskStatusList != null){
+						for(int i = 0; i < taskStatusList.size(); i++){
+							sendMessage(taskStatusController.printTaskStatusList(taskStatusList.get(i)), telegramUser.getChatId());
+						}
+					}
+					
+					sendMessage("Test of Project", telegramUser.getChatId());
+					if(projectList != null){
+						for(int i = 0; i < projectList.size(); i++){
+							sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
+						}
+					}
 
 					sendMessage("Test of Sprint", telegramUser.getChatId());
-					printSprintList(telegramUser.getChatId());
+					if(sprintList != null && projectList != null){
+						for(int i = 0; i < sprintList.size(); i++){
+							for(int j = 0; j < projectList.size(); j++){
+								if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
+									sprintList.get(i).setProject(projectList.get(j));
+								}
+							}
+							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
+						}
+					}
+
 
 					break;
 				// Log in by default
@@ -312,67 +342,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		catch(Exception e){
 			logger.error(e.getLocalizedMessage(), e);
 		}
-	}
-
-	// Print All User Type
-    public void printUserTypeList(Long chatId){
-        userTypeList = userTypeController.findAllUserType().getBody();
-        // Print all information form project
-        if(userTypeList != null){
-            for(int i = 0; i < userTypeList.size(); i++){
-                sendMessage("Id " + userTypeList.get(i).getID().toString() +
-                " \nName " + userTypeList.get(i).getName() + 
-                " \nDescription " + userTypeList.get(i).getDescription(), chatId);
-            }
-        }
-    }
-
-	// Print All Task Status
-	public void printTaskStatusList(Long chatId){
-		taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-		if(taskStatusList != null){
-			for(int i = 0; i < taskStatusList.size(); i++){
-				sendMessage("Id " + taskStatusList.get(i).getID().toString() + 
-				" \nName " +  taskStatusList.get(i).getName() + 
-				" \nDescription " + taskStatusList.get(i).getDescription(), chatId);	
-			}
-		}
-	}
-
-	// Print All Projects
-    public void printProjectList(Long chatId){
-        projectList = projectController.findAllProjects().getBody();
-        // Print all information form project
-        if(projectList != null){
-            for(int i = 0; i < projectList.size(); i++){
-                sendMessage("Id " + projectList.get(i).getID().toString() +
-                " \nName " + projectList.get(i).getName() + 
-                " \nDescription " + projectList.get(i).getDescription(), chatId);
-            }
-        }
-    }
-
-	// Print All Sprints
-	public void printSprintList(Long chatId){
-		sprintList = sprintController.findAllSprints().getBody();
-		if(sprintList != null && projectList != null){
-            for(int i = 0; i < sprintList.size(); i++){
-				for(int j = 0; j < projectList.size(); j++){
-					if(sprintList.get(i).getProject().getID() == projectList.get(j).getID()){
-						sprintList.get(i).setProject(projectList.get(j));
-					}
-				}
-
-                sendMessage("Id " + sprintList.get(i).getID().toString() +
-                " \nName " + sprintList.get(i).getName() + 
-                " \nDescription " + sprintList.get(i).getDescription() + 
-				" \nStart Date " + sprintList.get(i).getStartDate() + 
-				" \nEnd Date " + sprintList.get(i).getEndDate() + 
-				" \nProject Id " + sprintList.get(i).getProject().getID() +
-				" \n Project Name " + sprintList.get(i).getProject().getName() +
-				" \n Project Description " + sprintList.get(i).getProject().getDescription(), chatId);
-            }
-        }
 	}
 
 }
