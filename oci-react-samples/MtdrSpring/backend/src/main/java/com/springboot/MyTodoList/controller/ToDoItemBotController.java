@@ -217,6 +217,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					updateTypeList = updateTypeController.findAllUpdateType().getBody();
 					teamTypeList = teamTypeController.findAllTeamType().getBody();
 					teamList = teamController.findAllTeams().getBody();
+
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
 
 					// Print all info form models
