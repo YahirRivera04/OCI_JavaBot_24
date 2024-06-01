@@ -268,10 +268,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						try{
 							execute(messageToTelegram);
-
 							// Check if the chatId exists in the database
+
+							int chatIdCompare = -1;
 							for(int i = 0; i < telegramUserList.size(); i++){
-								if(telegramUserList.get(i).getChatId() == chatId){
+								// Print Users test
+								telegramUserController.printTelegramUserList(telegramUserList.get(i)); // BORRAR
+								// Compare Chat id from Users in the Db
+								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getID(), chatId);
+								
+								if(chatIdCompare == 0){
 									// You have successfully logged in!!
 									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 									// Set Telegram User Information
@@ -283,11 +289,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 								}
-								else{
-									// Enter your Telegram Username with format /login:TelegramUsername
-									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
-								}
-							}
+							}					
 						}
 						catch(TelegramApiException e){
 							// Enter your Telegram Username with format /login:TelegramUsername
@@ -310,7 +312,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							execute(messageToTelegram);
 
 							for(int i = 0; i < telegramUserList.size(); i++){
-								if(telegramUserList.get(i).getTelegramName() == responseFromUser){
+								if(telegramUserList.get(i).getTelegramName().equals(responseFromUser)){
 									// User Found Log in sucess
 									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 									// Set Telegram User Information
@@ -325,10 +327,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
-								}
-								else {
-									// Log in fail message
-									sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
 								}
 							}
 						}					
