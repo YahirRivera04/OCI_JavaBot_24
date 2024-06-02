@@ -1,6 +1,7 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.Task;
+import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.service.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class TaskController {
     
     // ##################### Task Controller Metods ##################### //
 
- // --------------------- Get All Tasks ---------------------
+    // --------------------- Get All Tasks ---------------------
     @GetMapping(value = "/tasks/")
     public ResponseEntity<String> findTasks(){
         String info = "";
@@ -35,24 +36,38 @@ public class TaskController {
         }
     }
 
+    // --------------------- Get All Tasks By Telegram User Id ---------------------
+    @GetMapping(value = "/tasks/{TelegramUserId}")
+    public ResponseEntity<String> findTasksByTelegramUserId(@PathVariable Long telegramUserId){
+        String info = "";
+        try{
+            List<Task> taskList = taskService.findAllTaskByTelegramUserId(telegramUserId);
+            for(int i = 0; i < taskList.size(); i++){
+                info += taskList.get(i).toString() + "\n";
+            }
+            return ResponseEntity.ok(info);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     // ##################### Bot Controller Metods ##################### //
 
    // Get All Tasks
     public ResponseEntity<List<Task>> findAllTasks(){
         return ResponseEntity.ok(taskService.findAllTask());
     }
-
-    public ResponseEntity<List<Task>> findAllTaskByTelegramUserId(Iterable<Long> telegramUserId){
+    // Get All Tasks By Telegram User Id
+    public ResponseEntity<List<Task>> findAllTaskByTelegramUserId(Long telegramUserId){
         return ResponseEntity.ok(taskService.findAllTaskByTelegramUserId(telegramUserId));
     }
-
+    // Post Task
     public ResponseEntity<String> createTask(Task newTask){
         return ResponseEntity.ok(taskService.createTask(newTask));
     }
-
-
-
-    // Print All Sprints
+    // Print All Tasks
     public String printTask(Task task){
         String taskInfo = "Name " + task.getName() + 
                 " \nDescription " + task.getDescription() + 

@@ -24,9 +24,9 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    // Get All Tasks
-    public List<Task> findAllTaskByTelegramUserId(Iterable<Long> telegramUserId){
-        return taskRepository.findAllById(telegramUserId);
+    // Get All Tasks By Telegram User Id
+    public List<Task> findAllTaskByTelegramUserId(Long telegramUserId){
+        return taskRepository.findAllTasksByTelegramUserId(telegramUserId);
     }
 
     // Get All Tasks

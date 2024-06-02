@@ -224,20 +224,24 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
 				case 2:
-					taskList = taskController.findAllTasks().getBody();
 					// Developer Buttons
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
-						// Message header
-						sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
-						int idCompare = 0;
-						// Show all tasks that belongs to the user
-						for(int i = 0; i < taskList.size(); i++){
-							idCompare = Long.compare(taskList.get(i).getTelegramUser().getID(), telegramUser.getID());
-							if(idCompare == 0){
-								taskController.printTask(taskList.get(i));
+						
+						try{
+							// Get Tasks from Data Base
+							taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();
+							// Message header
+							sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
+							// Show all tasks that belongs to the user
+							for(int i = 0; i < taskList.size(); i++){
+								sendMessage(taskController.printTask(taskList.get(i)), telegramUser.getChatId());
 							}
 						}
-
+						catch(Exception e){
+							sendMessage(e.getMessage() , telegramUser.getChatId());
+						}
+						
+						
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Edit Task", telegramUser.getChatId());
