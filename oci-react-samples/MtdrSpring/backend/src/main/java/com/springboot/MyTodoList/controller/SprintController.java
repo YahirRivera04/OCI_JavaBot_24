@@ -45,7 +45,7 @@ public class SprintController {
 		return ResponseEntity.ok(sprintService.findAllSprints());
 	}
 
-    // Print All Sprints
+    // Print Sprints
 	public String printSprintList(Sprint sprint){
         String sprintInfo = /* "Id " + sprint.getID().toString() +*/
                 " \nName " + sprint.getName() + 

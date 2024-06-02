@@ -16,6 +16,7 @@ import com.springboot.MyTodoList.controller.UpdateTypeController;
 import com.springboot.MyTodoList.controller.UserTeamController;
 import com.springboot.MyTodoList.controller.ProjectController;
 import com.springboot.MyTodoList.controller.SprintController;
+import com.springboot.MyTodoList.controller.SprintUpdateController;
 import com.springboot.MyTodoList.controller.TaskController;
 import com.springboot.MyTodoList.controller.TaskStatusController;
 import com.springboot.MyTodoList.controller.TaskUpdateController;
@@ -30,10 +31,6 @@ import com.springboot.MyTodoList.service.BotMenuService;
 import com.springboot.MyTodoList.service.BotOptionService;
 import com.springboot.MyTodoList.service.ConversationService;
 import com.springboot.MyTodoList.service.MessageService;
-import com.springboot.MyTodoList.service.SprintUpdateService;
-import com.springboot.MyTodoList.service.TaskService;
-import com.springboot.MyTodoList.service.TaskUpdateService;
-import com.springboot.MyTodoList.service.TeamService;
 
 @SpringBootApplication
 public class MyTodoListApplication implements CommandLineRunner {
@@ -59,7 +56,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private SprintController sprintController;
 
 	@Autowired
-	private SprintUpdateService sprintUpdateService;
+	private SprintUpdateController sprintUpdateController;
 
 	@Autowired
 	private TaskController taskController;
@@ -104,7 +101,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, telegramUserController,
 			taskController, userTypeController, taskStatusController, projectController, sprintController, updateTypeController, 
-			teamTypeController, teamController, userTeamController, taskUpdateController));
+			teamTypeController, teamController, userTeamController, taskUpdateController, sprintUpdateController));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

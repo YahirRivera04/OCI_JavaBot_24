@@ -27,10 +27,10 @@ public class TaskUpdateService {
     public String createNewTaskUpdate(TaskUpdate taskUpdate){
         try{
             taskUpdateRepository.save(taskUpdate);
-            return "Task Update with timestamp " + taskUpdate.getTimeStamp() + ", created successfuly";
+            return "Task Update log with timestamp " + taskUpdate.getTimeStamp() + " created successfuly";
         }
         catch(Exception e){
-            return "Task Update with timestamp " + taskUpdate.getTimeStamp() + ", fail. " + e.toString();
+            return "Task Update log with timestamp " + taskUpdate.getTimeStamp() + " fail. " + e.toString();
         }
     }
 

@@ -31,6 +31,7 @@ import com.springboot.MyTodoList.model.UserTeam;
 // Task Needs
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.model.SprintUpdate;
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.model.TaskUpdate;
 import com.springboot.MyTodoList.model.Team;
@@ -58,6 +59,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TeamController teamController;
 	private UserTeamController userTeamController;
 	private TaskUpdateController taskUpdateController;
+	private SprintUpdateController sprintUpdateController;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
@@ -66,7 +68,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	ProjectController projectController, SprintController sprintController, 
 	UpdateTypeController updateTypeController, TeamTypeController teamTypeController, 
 	TeamController teamController, UserTeamController userTeamController,
-	TaskUpdateController taskUpdateController) {
+	TaskUpdateController taskUpdateController, SprintUpdateController sprintUpdateController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -81,6 +83,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.teamController = teamController;
 		this.userTeamController = userTeamController;
 		this.taskUpdateController = taskUpdateController;
+		this.sprintUpdateController = sprintUpdateController;
 		this.botName = botName;
 	}
 
@@ -221,9 +224,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
 				case 2:
+					taskList = taskController.findAllTasks().getBody();
 					// Developer Buttons
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Show Task", telegramUser.getChatId());
+						// Message header
+						sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
+					
+						// Show all tasks that belongs to the user
+						if(messageTextFromTelegram.equals(BotMessages.SHOW_ALL_TASKS_MESSAGE.getMessage())){
+							for(int i = 0; i < taskList.size(); i++){
+								if(taskList.get(i).getTelegramUser().getID() == telegramUser.getID()){
+									taskController.printTask(taskList.get(i));
+								}
+							}
+						}
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Edit Task", telegramUser.getChatId());
@@ -237,7 +251,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Delete Task", telegramUser.getChatId());
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
-						
 						// Option Message
 						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Format message
@@ -278,6 +291,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Create task case
 					Task newTask = new Task();
 					TaskUpdate newTaskUpdate = new TaskUpdate();
+					SprintUpdate newSprintUpdate = new SprintUpdate();
 
 					try{
 						String[] taskData = messageTextFromTelegram.split("\n");
@@ -300,6 +314,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								newTask.setSprint(new Sprint());
 							}
 						}
+
 						// Set Task Status
 						String taskStatusName = taskData[5].split(" ")[2];
 						for(int i = 0; i < taskStatusList.size(); i++){
@@ -311,23 +326,38 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								newTask.setTaskStatus(new TaskStatus());
 							}
 						}
-						// Set Update Type for TASK UPDATE TABLE
+
+						// Set Update Type for TASK UPDATE TABLE && Sprint Update for SPRINT UPDATE TABLE
 						for(int i = 0; i < updateTypeList.size(); i++){
 							if(updateTypeList.get(i).getName().equals("Creation")){
 								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+								// Task Update
 								newTaskUpdate.setTimeStamp(timeStamp);
 								newTaskUpdate.setUpdateType(updateTypeList.get(i));
 								newTaskUpdate.setTask(newTask);
 								newTaskUpdate.setTelegramUser(telegramUser);
+								
+								// Sprint Update
+								newSprintUpdate.setTimeStamp(timeStamp);
+								newSprintUpdate.setUpdateType(updateTypeList.get(i));
+								newSprintUpdate.setSprint(newTask.getSprint());
+								newSprintUpdate.setTelegramUser(telegramUser);
+
 								break;
 							}
 						}
+
 						// Post Task to Data Base
 						ResponseEntity<String> taskResponse = taskController.createTask(newTask);
 						sendMessage(taskResponse.getBody(), telegramUser.getChatId());
 						// Post Task Update to Data Base
-						ResponseEntity<String> taskUpdateResponse = taskUpdateController.createTaskUpdate(newTaskUpdate);
-						sendMessage(taskUpdateResponse.getBody(), telegramUser.getChatId());
+						taskUpdateController.createTaskUpdate(newTaskUpdate);
+						// Post Sprint Update to Data Base
+						sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
+						//ResponseEntity<String> taskUpdateResponse = taskUpdateController.createTaskUpdate(newTaskUpdate);
+						//sendMessage(taskUpdateResponse.getBody(), telegramUser.getChatId());
+						// ResponseEntity<String> sprintUpdateResponse = sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
+						// sendMessage(sprintUpdateResponse.getBody(), chatId);
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());

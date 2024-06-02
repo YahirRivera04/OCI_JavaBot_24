@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 @Transactional
 @EnableTransactionManagement
 
-public interface SprintUpdateRepository extends JpaRepository<SprintUpdate,Integer> {
+public interface SprintUpdateRepository extends JpaRepository<SprintUpdate, Long> {
 
 
 }

@@ -1,13 +1,7 @@
 package com.springboot.MyTodoList.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
-
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.repository.SprintRepository;
 
@@ -33,10 +27,10 @@ public class SprintService {
     public String createNewSprint(Sprint newSprint){
         try{
             sprintRepository.save(newSprint);
-            return "Project " + newSprint.getName() + " created succesfully.";
+            return "Sprint " + newSprint.getName() + " created succesfully.";
         }
         catch (Exception e){
-            return "Project " + newSprint.getName() + " fail. \nERROR: " + e;   
+            return "Sprint " + newSprint.getName() + " fail. \nERROR: " + e;   
         }
     }
 

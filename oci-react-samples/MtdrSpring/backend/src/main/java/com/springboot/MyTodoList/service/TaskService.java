@@ -38,10 +38,10 @@ public class TaskService {
     public String createTask(Task task){
         try{
             taskRepository.save(task);
-            return "Task with Id " + task.getID() + "created succesfully.";
+            return "Task " + task.getName() + " created succesfully.";
         }
         catch(Exception e){
-            return "Task with Id " + task.getID() + "fail.\nERROR: " + e.toString();
+            return "Task with Id " + task.getID() + " fail.\nERROR: " + e.toString();
         }
     }
     

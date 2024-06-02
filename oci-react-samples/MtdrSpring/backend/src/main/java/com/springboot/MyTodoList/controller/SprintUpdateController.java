@@ -3,8 +3,6 @@ import com.springboot.MyTodoList.model.SprintUpdate;
 import com.springboot.MyTodoList.service.SprintUpdateService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,28 +13,29 @@ import java.util.List;
 public class SprintUpdateController {
     @Autowired
     private SprintUpdateService sprintUpdateService;
-    //@CrossOrigin
+    
+    // ##################### Sprint Update Controller Metods ##################### //
 
-    // ## Get ##
-    @GetMapping(value = "/sprintupdate/{id}")
-    public ResponseEntity<SprintUpdate> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<SprintUpdate> responseEntity = sprintUpdateService.getItemById(id);
-            return new ResponseEntity<SprintUpdate>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+     // --------------------- Post Sprint Update ---------------------
+    @GetMapping(value = "/sprint/{SprintUpdate}")
+    public ResponseEntity<String> createSprintUpdate(@PathVariable SprintUpdate sprintUpdate){
+        return ResponseEntity.ok(sprintUpdateService.createNewSprintUpdate(sprintUpdate));
     }
 
-    // ## Update ##
-    @PutMapping(value = "sprintupdate/{id}")
-    public ResponseEntity<SprintUpdate> updateSprintUpdate(@PathVariable int id, @RequestBody SprintUpdate td){
-        try{
-            SprintUpdate sprintUpdateItem = sprintUpdateService.updateSprintUpdate(id, td);
-            System.out.println(sprintUpdateItem.toString());
-            return new ResponseEntity<>(sprintUpdateItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    // ##################### Bot Controller Metods ##################### //
+
+    public ResponseEntity<String> createNewSprintUpdate(SprintUpdate sprintUpdate){
+        return ResponseEntity.ok(sprintUpdateService.createNewSprintUpdate(sprintUpdate));
     }
+
+    // Print Sprint Update Info
+    public String printSptintUpdate(SprintUpdate sprintUpdate){
+        String sprintUpdateInfo = "Time Stamp: " + sprintUpdate.getTimeStamp() + 
+        " \nUpdate Type Id: " + sprintUpdate.getUpdateType().getID() +
+        " \nSprint Id: " + sprintUpdate.getSprint().getID() +
+        " \nUser Id: " + sprintUpdate.getTelegramUser().getID();
+        
+        return sprintUpdateInfo;
+    }
+
 }

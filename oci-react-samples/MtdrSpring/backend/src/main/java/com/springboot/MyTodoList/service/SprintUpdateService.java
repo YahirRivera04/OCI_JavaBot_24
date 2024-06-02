@@ -1,13 +1,6 @@
 package com.springboot.MyTodoList.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
 import com.springboot.MyTodoList.model.SprintUpdate;
 import com.springboot.MyTodoList.repository.SprintUpdateRepository;
 
@@ -18,32 +11,20 @@ import com.springboot.MyTodoList.repository.SprintUpdateRepository;
 @Service
 public class SprintUpdateService {
     @Autowired
-    private SprintUpdateRepository repository;
+    private SprintUpdateRepository sprintUpdateRepository;
     
-    // --------------------- Read Method ---------------------
-
-    public ResponseEntity<SprintUpdate> getItemById(int id){
-        Optional<SprintUpdate> data = repository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public SprintUpdateService(SprintUpdateRepository sprintUpdateRepository){
+        this.sprintUpdateRepository = sprintUpdateRepository;
     }
 
-    // --------------------- Update Method ---------------------
-
-    public SprintUpdate updateSprintUpdate(int id, SprintUpdate td) {
-        Optional<SprintUpdate> data = repository.findById(id);
-        if(data.isPresent()){
-            SprintUpdate sprintUpdate = data.get();
-            // sprintUpdate.setID(id);
-            // sprintUpdate.setCreation_ts(td.getCreation_ts());
-            // sprintUpdate.setDescription(td.getDescription());
-            // sprintUpdate.setDone(td.isDone());
-            return repository.save(sprintUpdate);
-        }else{
-            return null;
+    // --------------------- Create New Sprint Update Method ---------------------
+    public String createNewSprintUpdate(SprintUpdate newSprintUpdate){
+        try{
+            sprintUpdateRepository.save(newSprintUpdate);
+            return "Sprint Update with timestamp " + newSprintUpdate.getTimeStamp() + " created succesfully.";
+        }
+        catch (Exception e){
+            return "Sprint Update with timestamp " + newSprintUpdate.getTimeStamp() + " fail. \nERROR: " + e;   
         }
     }
 
