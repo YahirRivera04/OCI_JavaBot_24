@@ -47,14 +47,14 @@ public class SprintController {
 
     // Print All Sprints
 	public String printSprintList(Sprint sprint){
-        String sprintInfo = "Id " + sprint.getID().toString() +
+        String sprintInfo = /* "Id " + sprint.getID().toString() +*/
                 " \nName " + sprint.getName() + 
                 " \nDescription " + sprint.getDescription() + 
 				" \nStart Date " + sprint.getStartDate() + 
 				" \nEnd Date " + sprint.getEndDate() + 
-				" \nProject Id " + sprint.getProject().getID() +
-				" \nProject Name " + sprint.getProject().getName() +
-				" \nProject Description " + sprint.getProject().getDescription();
+			/*  " \nProject Id " + sprint.getProject().getID() +*/
+				" \nAssigned Project " + sprint.getProject().getName()/*+
+				" \nProject Description " + sprint.getProject().getDescription()*/;
         return sprintInfo;
     }
 	

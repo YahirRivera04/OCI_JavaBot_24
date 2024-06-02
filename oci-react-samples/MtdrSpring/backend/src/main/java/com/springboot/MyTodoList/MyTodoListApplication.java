@@ -18,6 +18,7 @@ import com.springboot.MyTodoList.controller.ProjectController;
 import com.springboot.MyTodoList.controller.SprintController;
 import com.springboot.MyTodoList.controller.TaskController;
 import com.springboot.MyTodoList.controller.TaskStatusController;
+import com.springboot.MyTodoList.controller.TaskUpdateController;
 import com.springboot.MyTodoList.controller.TeamController;
 import com.springboot.MyTodoList.controller.TeamTypeController;
 import com.springboot.MyTodoList.controller.TelegramUserController;
@@ -67,7 +68,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private TaskStatusController taskStatusController;
 
 	@Autowired
-	private TaskUpdateService taskUpdateService;
+	private TaskUpdateController taskUpdateController;
 
 	@Autowired
 	private TeamController teamController;
@@ -103,7 +104,7 @@ public class MyTodoListApplication implements CommandLineRunner {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, telegramUserController,
 			taskController, userTypeController, taskStatusController, projectController, sprintController, updateTypeController, 
-			teamTypeController, teamController, userTeamController));
+			teamTypeController, teamController, userTeamController, taskUpdateController));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();

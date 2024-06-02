@@ -12,6 +12,6 @@ import javax.transaction.Transactional;
 @Transactional
 @EnableTransactionManagement
 
-public interface TaskUpdateRepository extends JpaRepository<TaskUpdate,Integer> {
+public interface TaskUpdateRepository extends JpaRepository<TaskUpdate, Long> {
 
 }

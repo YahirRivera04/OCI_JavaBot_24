@@ -1,9 +1,7 @@
 package com.springboot.MyTodoList.model;
-
-
-import java.time.OffsetDateTime;
-
+import java.sql.Timestamp;
 import javax.persistence.*;
+
 @Entity
 @Table(name = "TASKUPDATE")
 public class TaskUpdate {
@@ -14,7 +12,7 @@ public class TaskUpdate {
     Long taskUpdateId;
     
     @Column(name = "TIMESTAMP")
-    OffsetDateTime timeStamp;
+    Timestamp timeStamp;
     
     @ManyToOne
     @JoinColumn(name = "UPDATETYPEID")
@@ -31,7 +29,7 @@ public class TaskUpdate {
     public TaskUpdate(){
 
     }
-    public TaskUpdate(Long ID, OffsetDateTime timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
+    public TaskUpdate(Long ID, Timestamp timeStamp, UpdateType updateType, Task task, TelegramUser telegramUser) {
         this.taskUpdateId = ID;
         this.timeStamp = timeStamp;
         this.updateTypeIdFk = updateType;
@@ -47,11 +45,11 @@ public class TaskUpdate {
         this.taskUpdateId = ID;
     }
 
-    public OffsetDateTime getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(OffsetDateTime timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 

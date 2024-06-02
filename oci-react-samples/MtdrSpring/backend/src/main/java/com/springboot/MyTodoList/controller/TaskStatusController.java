@@ -42,9 +42,9 @@ public class TaskStatusController {
     
 	// Print All Task Status
 	public String printTaskStatusList(TaskStatus taskStatus){
-        String taskStatusInfo = "Id " + taskStatus.getID().toString() + 
-        " \nName " +  taskStatus.getName() + 
-        " \nDescription " + taskStatus.getDescription();
+        String taskStatusInfo = /*"Id " + taskStatus.getID().toString()  + */ 
+        " \nName " +  taskStatus.getName()/* +
+        " \nDescription " + taskStatus.getDescription() */;
         return taskStatusInfo;
 	}
 }

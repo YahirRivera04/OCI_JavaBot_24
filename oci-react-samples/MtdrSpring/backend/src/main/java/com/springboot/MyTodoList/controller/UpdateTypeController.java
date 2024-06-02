@@ -42,9 +42,10 @@ public class UpdateTypeController {
     // Print All User Type
     public String printUpdateTypeList(UpdateType updateType){
         // Print all information form user type
-        String updateTypeInfo = "Id " + updateType.getID().toString() + 
-        " \nName " + updateType.getName() + 
+        String updateTypeInfo =  /*"Id " + updateType.getID().toString() + */ 
+        " \nName " + updateType.getName() +
         " \nDescription " + updateType.getDescription();
+        
         return updateTypeInfo;
     }   
 }

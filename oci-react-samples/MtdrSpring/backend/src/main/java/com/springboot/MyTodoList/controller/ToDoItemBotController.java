@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.sql.Timestamp;
 
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
@@ -31,6 +32,7 @@ import com.springboot.MyTodoList.model.UserTeam;
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.TaskStatus;
+import com.springboot.MyTodoList.model.TaskUpdate;
 import com.springboot.MyTodoList.model.Team;
 import com.springboot.MyTodoList.model.TeamType;
 import com.springboot.MyTodoList.model.Task;
@@ -55,6 +57,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private TeamTypeController teamTypeController;
 	private TeamController teamController;
 	private UserTeamController userTeamController;
+	private TaskUpdateController taskUpdateController;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, 
@@ -62,7 +65,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	UserTypeController userTypeController,TaskStatusController taskStatusController, 
 	ProjectController projectController, SprintController sprintController, 
 	UpdateTypeController updateTypeController, TeamTypeController teamTypeController, 
-	TeamController teamController, UserTeamController userTeamController) {
+	TeamController teamController, UserTeamController userTeamController,
+	TaskUpdateController taskUpdateController) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -76,6 +80,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.teamTypeController = teamTypeController;
 		this.teamController = teamController;
 		this.userTeamController = userTeamController;
+		this.taskUpdateController = taskUpdateController;
 		this.botName = botName;
 	}
 
@@ -227,18 +232,25 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Delete Task", telegramUser.getChatId());
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
+						
 						// Option Message
 						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Format message
 						sendMessage(BotMessages.CREATE_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+						
 						// Sprint Info
+						sendMessage("\nSprint List", telegramUser.getChatId());
 						for(int i = 0; i < sprintList.size(); i++){
 							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
 						}
+
 						// Task Status Info
+						sendMessage("\nTask Status List", telegramUser.getChatId());
 						for(int i = 0; i < taskStatusList.size(); i++){
 							sendMessage(taskStatusController.printTaskStatusList(taskStatusList.get(i)), telegramUser.getChatId());
 						}
+						// Type of Update Info
+						sendMessage("\nType of Update List", telegramUser.getChatId());
 						for(int i = 0; i < updateTypeList.size(); i++){
 							sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
 						}
@@ -264,14 +276,52 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 3:
 					// Create task case
 					Task newTask = new Task();
+					TaskUpdate newTaskUpdate = new TaskUpdate();
 
-					String[] taskData = messageTextFromTelegram.split("\n");
-					for(String data : taskData){
-						sendMessage(data, telegramUser.getChatId());
+					try{
+						String[] taskData = messageTextFromTelegram.split("\n");
+					
+						newTask.setName(taskData[0].split(" ")[1]);
+						newTask.setDescription(taskData[1].split(" ")[1]);
+						newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[1]));
+						newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[1]));
+	
+						// Set Sprint
+						for(int i = 0; i < sprintList.size(); i++){
+							if(sprintList.get(i).getName().equals(taskData[4].split(" ")[1])){
+								newTask.setSprint(sprintList.get(i));
+								break;
+							}
+						}
+						// Set Task Status
+						for(int i = 0; i < taskStatusList.size(); i++){
+							if(taskStatusList.get(i).getName().equals(taskData[4].split(" ")[1])){
+								newTask.setTaskStatus(taskStatusList.get(i));
+								break;
+							}
+						}
+						// Set Update Type for TASK UPDATE TABLE
+						for(int i = 0; i < updateTypeList.size(); i++){
+							if(updateTypeList.get(i).getName().equals(taskData[5].split(" ")[1])){
+								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+								newTaskUpdate.setTimeStamp(timeStamp);
+								newTaskUpdate.setUpdateType(updateTypeList.get(i));
+								newTaskUpdate.setTask(newTask);
+								newTaskUpdate.setTelegramUser(telegramUser);
+								break;
+							}
+						}
+						
+						sendMessage(taskController.printTask(newTask), telegramUser.getChatId());
+						sendMessage(taskUpdateController.printTaskUpdate(newTaskUpdate), telegramUser.getChatId());
+					}
+					catch(Exception e){
+						sendMessage(e.toString(), telegramUser.getChatId());
 					}
 
+					
 
-				break;
+					break;
 				// Log in by default
 				default:
 					// Set information form db to user related models 

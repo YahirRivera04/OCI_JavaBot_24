@@ -1,4 +1,5 @@
 package com.springboot.MyTodoList.controller;
+import com.springboot.MyTodoList.model.Task;
 import com.springboot.MyTodoList.model.TaskUpdate;
 import com.springboot.MyTodoList.service.TaskUpdateService;
 
@@ -15,28 +16,30 @@ import java.util.List;
 public class TaskUpdateController {
     @Autowired
     private TaskUpdateService taskUpdateService;
-    //@CrossOrigin
 
-    // ## Get ##
-    @GetMapping(value = "/taskupdate/{id}")
-    public ResponseEntity<TaskUpdate> getItemById(@PathVariable int id){
-        try{
-            ResponseEntity<TaskUpdate> responseEntity = taskUpdateService.getItemById(id);
-            return new ResponseEntity<TaskUpdate>(responseEntity.getBody(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    // ##################### Task Update Controller Metods ##################### //
+    
+    // Post Task Update
+    @GetMapping(value = "/taskupdate/{TaskUpdate}")
+    public ResponseEntity<String> createTaskUpdate(@PathVariable TaskUpdate taskUpdate){
+        return ResponseEntity.ok(taskUpdateService.createNewTaskUpdate(taskUpdate));
     }
 
-    // ## Update ##
-    @PutMapping(value = "taskupdate/{id}")
-    public ResponseEntity<TaskUpdate> updateTaskUpdate(@PathVariable int id, @RequestBody TaskUpdate td){
-        try{
-            TaskUpdate taskUpdateItem = taskUpdateService.updateTaskUpdate(id, td);
-            System.out.println(taskUpdateItem.toString());
-            return new ResponseEntity<>(taskUpdateItem,HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    // ##################### Bot Controller Metods ##################### //
+    
+    // Post Task Update
+    public ResponseEntity<String> postTaskUpdate(TaskUpdate taskUpdate){
+        return ResponseEntity.ok(taskUpdateService.createNewTaskUpdate(taskUpdate));
     }
+
+    public String printTaskUpdate(TaskUpdate taskUpdate){
+        String info = "Id: " + taskUpdate.getID() + 
+        " \nTime Stamp: " + taskUpdate.getTimeStamp() +
+        " \nUpdate Type: " + taskUpdate.getUpdateType().getName() +
+        " \nTask Name: " + taskUpdate.getTask().getName() +
+        " \nTelegram User Name: " + taskUpdate.getTelegramUser().getName();
+
+        return info;
+    }
+
 }

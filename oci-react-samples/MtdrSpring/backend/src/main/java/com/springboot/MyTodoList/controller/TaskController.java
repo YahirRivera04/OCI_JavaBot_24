@@ -53,7 +53,7 @@ public class TaskController {
 
 
     // Print All Sprints
-    public String printSprintList(Task task){
+    public String printTask(Task task){
         String taskInfo = "Id " + task.getID().toString() +
                 " \nName " + task.getName() + 
                 " \nDescription " + task.getDescription() + 

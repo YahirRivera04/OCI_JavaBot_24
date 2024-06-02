@@ -18,40 +18,20 @@ import com.springboot.MyTodoList.repository.TaskUpdateRepository;
 @Service
 public class TaskUpdateService {
     @Autowired
-    private TaskUpdateRepository repository;
+    private TaskUpdateRepository taskUpdateRepository;
     
-    // --------------------- Read Method ---------------------
+    public TaskUpdateService(TaskUpdateRepository taskUpdateRepository){
+        this.taskUpdateRepository = taskUpdateRepository;
+    }    
 
-    public ResponseEntity<TaskUpdate> getItemById(int id){
-        Optional<TaskUpdate> data = repository.findById(id);
-        if (data.isPresent()){
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public String createNewTaskUpdate(TaskUpdate taskUpdate){
+        try{
+            taskUpdateRepository.save(taskUpdate);
+            return "Task Update with timestamp " + taskUpdate.getTimeStamp() + ", created successfuly";
+        }
+        catch(Exception e){
+            return "Task Update with timestamp " + taskUpdate.getTimeStamp() + ", fail. " + e.toString();
         }
     }
-
-    // --------------------- Update Method ---------------------
-
-    public TaskUpdate updateTaskUpdate(int id, TaskUpdate td) {
-        Optional<TaskUpdate> data = repository.findById(id);
-        if(data.isPresent()){
-            TaskUpdate taskUpdate = data.get();
-            // taskUpdate.setID(id);
-            // taskUpdate.setCreation_ts(td.getCreation_ts());
-            // taskUpdate.setDescription(td.getDescription());
-            // taskUpdate.setDone(td.isDone());
-            return repository.save(taskUpdate);
-        }else{
-            return null;
-        }
-    }
-
-    // --------------------- Create Method ---------------------    
-    public TaskUpdate addTaskUpdate(TaskUpdate taskUpdate) {
-        return repository.save(taskUpdate);
-    }
-
-    
 
 }
