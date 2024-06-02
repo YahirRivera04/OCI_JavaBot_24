@@ -281,6 +281,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					try{
 						String[] taskData = messageTextFromTelegram.split("\n");
 						
+						// Set Name, Description, Estimated Hours, Priority
 						newTask.setName(taskData[0].split(" ")[1]);
 						newTask.setDescription(taskData[1].split(" ")[1]);
 						newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[2]));
@@ -288,8 +289,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	
 						// Set Sprint
 						String sprintName = taskData[4].split(" ")[2];
-						sendMessage(sprintName, chatId); // BORRAR
-						
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(sprintName)){
 								newTask.setSprint(sprintList.get(i));
@@ -301,8 +300,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						// Set Task Status
 						String taskStatusName = taskData[5].split(" ")[2];
-						sendMessage(taskStatusName, chatId); // BORRAR
-
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskStatusName)){
 								newTask.setTaskStatus(taskStatusList.get(i));
@@ -314,8 +311,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						// Set Update Type for TASK UPDATE TABLE
 						String updateTypeName = taskData[6].split(" ")[3];
-						sendMessage(updateTypeName, chatId); // BORRAR
-
 						for(int i = 0; i < updateTypeList.size(); i++){
 							if(updateTypeList.get(i).getName().equals(updateTypeName)){
 								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -333,9 +328,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
-
-					
-
+					caseNumber = 2;
 					break;
 				// Log in by default
 				default:

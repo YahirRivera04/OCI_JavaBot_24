@@ -54,8 +54,7 @@ public class TaskController {
 
     // Print All Sprints
     public String printTask(Task task){
-        String taskInfo = "Id " + task.getID().toString() +
-                " \nName " + task.getName() + 
+        String taskInfo = "Name " + task.getName() + 
                 " \nDescription " + task.getDescription() + 
                 " \nEstimated Hours " + task.getEstimatedHours() + 
                 " \nPriority " + task.getPriority() + 
