@@ -21,7 +21,7 @@ public enum BotMessages {
 	// Edit or Create Task
 	EDIT_TASK_MESSAGE("EDIT TASK"),
 	CREATE_TASK_MESSAGE("CREATE TASK \nPlease follow the next format:"),
-	CREATE_TASK_FORMAT("Name: \nDescription: \nEstimated Hours: \nPriority: \nSprint Name: \nTask Status: \nType of Update:"),
+	CREATE_TASK_FORMAT("Name: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: \nType of Update:"),
 	EDIT_TASK_NAME("Name:"),
 	EDIT_TASK_DESCRIPTION("Description:"),
 	EDIT_TASK_ESTIMATED_HOURS("Estimated Hours:"),

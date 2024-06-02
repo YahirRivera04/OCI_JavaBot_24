@@ -227,8 +227,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Delete Task", telegramUser.getChatId());
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
+						// Option Message
 						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+						// Format message
 						sendMessage(BotMessages.CREATE_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+						// Sprint Info
+						for(int i = 0; i < sprintList.size(); i++){
+							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
+						}
+						// Task Status Info
+						for(int i = 0; i < taskStatusList.size(); i++){
+							sendMessage(taskStatusController.printTaskStatusList(taskStatusList.get(i)), telegramUser.getChatId());
+						}
+						for(int i = 0; i < updateTypeList.size(); i++){
+							sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
+						}
 						caseNumber = 3;
 					}
 					// Manager Button
@@ -250,8 +263,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3:
 					// Create task case
-					
+					Task newTask = new Task();
 
+					String[] taskData = messageTextFromTelegram.split("\n");
+					for(String data : taskData){
+						sendMessage(data, telegramUser.getChatId());
+					}
 
 
 				break;
