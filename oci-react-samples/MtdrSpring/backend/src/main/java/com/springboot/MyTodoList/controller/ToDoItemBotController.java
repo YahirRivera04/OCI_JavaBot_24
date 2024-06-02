@@ -287,7 +287,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						newTask.setDescription(taskData[1].split(" ")[1]);
 						newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[2]));
 						newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[2]));
-	
+						newTask.setTelegramUser(telegramUser);
+						
 						// Set Sprint
 						String sprintName = taskData[4].split(" ")[2];
 						for(int i = 0; i < sprintList.size(); i++){
