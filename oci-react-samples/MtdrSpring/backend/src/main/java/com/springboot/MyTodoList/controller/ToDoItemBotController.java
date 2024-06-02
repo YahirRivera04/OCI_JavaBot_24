@@ -280,40 +280,52 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 					try{
 						String[] taskData = messageTextFromTelegram.split("\n");
-					
-						newTask.setName(taskData[0].split(" ")[1]);
-						newTask.setDescription(taskData[1].split(" ")[1]);
-						newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[2]));
-						newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[2]));
+						
+						//Name
+						sendMessage(taskData[0].split(" ")[1], telegramUser.getChatId());
+						//Description
+						sendMessage(taskData[1].split(" ")[1], telegramUser.getChatId());
+						//Estimated Hours
+						sendMessage(taskData[2].split(" ")[2], telegramUser.getChatId());
+						//Priority
+						sendMessage(taskData[3].split(" ")[2], telegramUser.getChatId());						
+
+						// newTask.setName(taskData[0].split(" ")[1]);
+						// newTask.setDescription(taskData[1].split(" ")[1]);
+						// newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[2]));
+						// newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[2]));
 	
 						// Set Sprint
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(taskData[4].split(" ")[2] + taskData[4].split(" ")[3])){
-								newTask.setSprint(sprintList.get(i));
+								//newTask.setSprint(sprintList.get(i));
+								sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
 								break;
 							}
 						}
 						// Set Task Status
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskData[4].split(" ")[2])){
-								newTask.setTaskStatus(taskStatusList.get(i));
+								//newTask.setTaskStatus(taskStatusList.get(i));
 								break;
 							}
 						}
 						// Set Update Type for TASK UPDATE TABLE
 						for(int i = 0; i < updateTypeList.size(); i++){
 							if(updateTypeList.get(i).getName().equals(taskData[5].split(" ")[3])){
-								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-								newTaskUpdate.setTimeStamp(timeStamp);
-								newTaskUpdate.setUpdateType(updateTypeList.get(i));
-								newTaskUpdate.setTask(newTask);
-								newTaskUpdate.setTelegramUser(telegramUser);
+								
+								// Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+								// newTaskUpdate.setTimeStamp(timeStamp);
+								// newTaskUpdate.setUpdateType(updateTypeList.get(i));
+								// newTaskUpdate.setTask(newTask);
+								// newTaskUpdate.setTelegramUser(telegramUser);
+								
 								break;
 							}
 						}
 						
-						sendMessage(taskController.printTask(newTask), telegramUser.getChatId());
-						sendMessage(taskUpdateController.printTaskUpdate(newTaskUpdate), telegramUser.getChatId());
+						// sendMessage(taskController.printTask(newTask), telegramUser.getChatId());
+						// sendMessage(taskUpdateController.printTaskUpdate(newTaskUpdate), telegramUser.getChatId());
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
