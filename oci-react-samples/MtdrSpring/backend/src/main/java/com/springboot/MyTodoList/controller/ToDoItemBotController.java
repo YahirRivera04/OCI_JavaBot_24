@@ -252,7 +252,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("\nTask Status List", telegramUser.getChatId());
 						String info = "";
 						for(int i = 0; i < taskStatusList.size(); i++){
-							info += taskStatusController.printTaskStatusList(taskStatusList.get(i)) + "\n";
+							info += taskStatusController.printTaskStatusList(taskStatusList.get(i));
 						}
 						sendMessage(info, telegramUser.getChatId());
 						caseNumber = 3;
@@ -292,7 +292,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String sprintName = taskData[4].split(" ")[2];
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(sprintName)){
-								
+
 								sendMessage("Sprint found", chatId); // BORRAR
 								newTask.setSprint(sprintList.get(i));
 								break;

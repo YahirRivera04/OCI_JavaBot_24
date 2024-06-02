@@ -57,11 +57,27 @@ public class TaskController {
         String taskInfo = "Name " + task.getName() + 
                 " \nDescription " + task.getDescription() + 
                 " \nEstimated Hours " + task.getEstimatedHours() + 
-                " \nPriority " + task.getPriority() + 
-                " \nTelegram User Id " + task.getTelegramUser().getID() + 
-                " \nSprint Id " + task.getSprint().getID() + 
-                " \nTask Status Id " + task.getTaskStatus().getID();
-
+                " \nPriority " + task.getPriority();
+        
+        if (task.getTelegramUser() != null) {
+            taskInfo += " \nTelegram User Id " + task.getTelegramUser().getID();
+        } else {
+            taskInfo += " \nTelegram User is null";
+        }
+    
+        if (task.getSprint() != null) {
+            taskInfo += " \nSprint Id " + task.getSprint().getID();
+        } else {
+            taskInfo += " \nSprint is null";
+        }
+    
+        if (task.getTaskStatus() != null) {
+            taskInfo += " \nTask Status Id " + task.getTaskStatus().getID();
+        } else {
+            taskInfo += " \nTask Status is null";
+        }
+            
+                
         return taskInfo;
     }
 
