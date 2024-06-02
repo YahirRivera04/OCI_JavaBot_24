@@ -229,15 +229,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
 						// Message header
 						sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
-					
+						int idCompare = 0;
 						// Show all tasks that belongs to the user
-						if(messageTextFromTelegram.equals(BotMessages.SHOW_ALL_TASKS_MESSAGE.getMessage())){
-							for(int i = 0; i < taskList.size(); i++){
-								if(taskList.get(i).getTelegramUser().getID() == telegramUser.getID()){
-									taskController.printTask(taskList.get(i));
-								}
+						for(int i = 0; i < taskList.size(); i++){
+							idCompare = Long.compare(taskList.get(i).getTelegramUser().getID(), telegramUser.getID());
+							if(idCompare == 0){
+								taskController.printTask(taskList.get(i));
 							}
 						}
+
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Edit Task", telegramUser.getChatId());

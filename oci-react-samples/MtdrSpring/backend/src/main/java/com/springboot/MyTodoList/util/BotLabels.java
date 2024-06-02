@@ -23,11 +23,7 @@ public enum BotLabels {
 	// Manager buttons
 	SHOW_PROJECT("View Project"),
 	CREATE_PROJECT("Create Project"),
-	CREATE_SPRINT("Create Sprint"),
-
-	// Task Buttons
-	SHOW_TASK_SPRINT("Show Tasks by Sprint"),
-	SHOW_ALL_TASKS("Show All Tasks");
+	CREATE_SPRINT("Create Sprint");
 
 
 	private String label;

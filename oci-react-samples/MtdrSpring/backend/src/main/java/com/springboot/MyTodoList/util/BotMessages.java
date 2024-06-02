@@ -13,7 +13,7 @@ public enum BotMessages {
 
 
 	// Show tasks
-	SHOW_TASK_MESSAGE("SHOW TASK"),
+	SHOW_TASK_MESSAGE("SHOW TASKS \nHere are all your tasks: "),
 
 	// Continue 
 	CONTINUE_MESSAGE("To continue, please use the command /continue"),
@@ -40,12 +40,7 @@ public enum BotMessages {
 	SHOW_PROJECT_COMMAND_MESSAGE("View Project"),
 
 	//Else Button Messages
-	LOG_OUT_COMMAND_MESSAGE("Log Out"),
-
-	// Task Buttons
-	SHOW_TASK_SPRINT_MESSAGE("Show Tasks by Sprint"),
-	SHOW_ALL_TASKS_MESSAGE("Show All Tasks");
-
+	LOG_OUT_COMMAND_MESSAGE("Log Out");
 
 	private String message;
 
