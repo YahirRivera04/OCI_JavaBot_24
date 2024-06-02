@@ -287,29 +287,42 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[2]));
 	
 						// Set Sprint
+						String sprintName = taskData[4].split(" ")[2];
+						sendMessage(sprintName, chatId); // BORRAR
+						
 						for(int i = 0; i < sprintList.size(); i++){
-							if(sprintList.get(i).getName().equals(taskData[4].split(" ")[2])){
+							if(sprintList.get(i).getName().equals(sprintName)){
 								newTask.setSprint(sprintList.get(i));
 								break;
 							}
+							else{
+								newTask.setSprint(new Sprint());
+							}
 						}
 						// Set Task Status
+						String taskStatusName = taskData[5].split(" ")[2];
+						sendMessage(taskStatusName, chatId); // BORRAR
+
 						for(int i = 0; i < taskStatusList.size(); i++){
-							if(taskStatusList.get(i).getName().equals(taskData[5].split(" ")[2])){
+							if(taskStatusList.get(i).getName().equals(taskStatusName)){
 								newTask.setTaskStatus(taskStatusList.get(i));
 								break;
 							}
+							else{
+								newTask.setTaskStatus(new TaskStatus());
+							}
 						}
 						// Set Update Type for TASK UPDATE TABLE
+						String updateTypeName = taskData[6].split(" ")[3];
+						sendMessage(updateTypeName, chatId); // BORRAR
+
 						for(int i = 0; i < updateTypeList.size(); i++){
-							if(updateTypeList.get(i).getName().equals(taskData[6].split(" ")[3])){
-								
+							if(updateTypeList.get(i).getName().equals(updateTypeName)){
 								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 								newTaskUpdate.setTimeStamp(timeStamp);
 								newTaskUpdate.setUpdateType(updateTypeList.get(i));
 								newTaskUpdate.setTask(newTask);
 								newTaskUpdate.setTelegramUser(telegramUser);
-								
 								break;
 							}
 						}
