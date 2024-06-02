@@ -227,6 +227,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Edit Task", telegramUser.getChatId());
+						// // Type of Update Info
+						// sendMessage("\nType of Update List", telegramUser.getChatId());
+						// for(int i = 0; i < updateTypeList.size(); i++){
+						// 	sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
+						// }
 					}
 					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Delete Task", telegramUser.getChatId());
@@ -243,17 +248,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						for(int i = 0; i < sprintList.size(); i++){
 							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
 						}
-
 						// Task Status Info
 						sendMessage("\nTask Status List", telegramUser.getChatId());
+						String info = "";
 						for(int i = 0; i < taskStatusList.size(); i++){
-							sendMessage(taskStatusController.printTaskStatusList(taskStatusList.get(i)), telegramUser.getChatId());
+							info += taskStatusController.printTaskStatusList(taskStatusList.get(i)) + "\n";
 						}
-						// Type of Update Info
-						sendMessage("\nType of Update List", telegramUser.getChatId());
-						for(int i = 0; i < updateTypeList.size(); i++){
-							sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
-						}
+						sendMessage(info, telegramUser.getChatId());
 						caseNumber = 3;
 					}
 					// Manager Button
@@ -291,6 +292,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String sprintName = taskData[4].split(" ")[2];
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(sprintName)){
+								
+								sendMessage("Sprint found", chatId); // BORRAR
 								newTask.setSprint(sprintList.get(i));
 								break;
 							}
@@ -302,6 +305,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String taskStatusName = taskData[5].split(" ")[2];
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskStatusName)){
+
+								sendMessage("Task Status found", chatId); // BORRAR
 								newTask.setTaskStatus(taskStatusList.get(i));
 								break;
 							}
@@ -310,9 +315,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 						}
 						// Set Update Type for TASK UPDATE TABLE
-						String updateTypeName = taskData[6].split(" ")[3];
 						for(int i = 0; i < updateTypeList.size(); i++){
-							if(updateTypeList.get(i).getName().equals(updateTypeName)){
+							if(updateTypeList.get(i).getName().equals("Creation")){
+
+								sendMessage("Update Type found", chatId); // BORRAR
 								Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 								newTaskUpdate.setTimeStamp(timeStamp);
 								newTaskUpdate.setUpdateType(updateTypeList.get(i));
