@@ -1,0 +1,29 @@
+git clone -b master --single-branch https://github.com/YahirRivera04/OCI_JavaBot_24.git
+
+6819037667:AAGrpKOofjw8t2PCr_c91l6KiF0d4tBsLJU
+Oracle_team24_bot
+
+http://t.me/Oracle_team24_bot
+
+Contraseña puesta en terraform (Team41, Cisco12341234)
+
+// Comandos para actualizar el repo (estando en reacttodo/oci-react-samples/MtdrSpring/backend/)
+
+
+source undeploy.sh
+cd
+cd OCI_JavaBot_24/
+git fetch
+git pull
+cd
+cp -r OCI_JavaBot_24/oci-react-samples/MtdrSpring/backend/src/main/java/com/springboot/MyTodoList/ reacttodo/oci-react-samples/MtdrSpring/backend/src/main/java/com/springboot/
+cd reacttodo/oci-react-samples/MtdrSpring/backend/
+source build.sh
+./deploy.sh
+
+
+kubectl -n mtdrworkshop logs -f 
+
+cat src/main/java/com/springboot/MyTodoList/controller/ToDoItemBotController.java
+
+nano src/main/java/com/springboot/MyTodoList/controller/ToDoItemBotController.java

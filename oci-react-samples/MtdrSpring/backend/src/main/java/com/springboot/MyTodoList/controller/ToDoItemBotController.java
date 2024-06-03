@@ -300,19 +300,17 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					try{
 						String[] taskData = messageTextFromTelegram.split("\n");
 						
-						sendMessage("Lengh of name field " + taskData[0].length(), chatId);
 						// Set Name
 						String name = "";
-						for(int i = 1; i <= taskData[0].length(); i++){
+						for(int i = 0; i <  taskData[0].split(" ").length; i++){
 							name += taskData[0].split(" ")[i] + " ";
 						}	
 						sendMessage(name, chatId); // BORRAR
-											
 						newTask.setName(name);
 
 						// Description
 						String description = "";
-						for(int i = 1; i <= taskData[1].length(); i++){
+						for(int i = 1; i <= taskData[1].split(" ").length; i++){
 							description += taskData[1].split(" ")[i] + " ";
 						}		
 						sendMessage(description, chatId); // BORRAR
