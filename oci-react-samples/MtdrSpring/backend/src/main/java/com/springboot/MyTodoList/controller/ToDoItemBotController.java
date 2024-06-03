@@ -226,10 +226,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 2:
 					// Developer Buttons
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
-						
 						try{
+
 							// Get Tasks from Data Base
-							taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();
+							taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();				
 							// Message header
 							sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
 							// Show all tasks that belongs to the user
@@ -240,20 +240,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						catch(Exception e){
 							sendMessage(e.getMessage() , telegramUser.getChatId());
 						}
-						
-						
 					}
+					// Edit Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Edit Task", telegramUser.getChatId());
-						// // Type of Update Info
-						// sendMessage("\nType of Update List", telegramUser.getChatId());
-						// for(int i = 0; i < updateTypeList.size(); i++){
-						// 	sendMessage(updateTypeController.printUpdateTypeList(updateTypeList.get(i)), telegramUser.getChatId());
-						// }
 					}
+					// Delete Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Delete Task", telegramUser.getChatId());
+						// Send Message
+						sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
+						// Mesasge header
+						sendMessage(BotMessages.DELETE_TASK_INFORMATION_MESSAGE.getMessage(), telegramUser.getChatId());
+						// Send to new case
+						caseNumber = 3;
 					}
+					// Create Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
 						// Option Message
 						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
@@ -272,7 +273,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							info += taskStatusController.printTaskStatusList(taskStatusList.get(i));
 						}
 						sendMessage(info, telegramUser.getChatId());
-						caseNumber = 3;
+						caseNumber = 4;
 					}
 					// Manager Button
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
@@ -292,6 +293,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					break;
 				case 3:
+					String taskName = messageTextFromTelegram;
+					sendMessage("Tawsk name " + taskName, chatId);
+					caseNumber = 2;
+				break;
+				case 4:
 					// Create task case
 					Task newTask = new Task();
 					TaskUpdate newTaskUpdate = new TaskUpdate();
@@ -323,7 +329,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Sprint
 						String sprintName = "";
-						for(int i = 2; i <= taskData[4].length(); i++){
+						for(int i = 2; i <= taskData[4].split(" ").length; i++){
 							sprintName += taskData[4].split(" ")[i] + " ";
 						}
 						sendMessage(sprintName, chatId); // BORRAR
@@ -340,7 +346,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Set Task Status
 						String taskStatusName = "";
-						for(int i = 2; i <= taskData[5].length(); i++){
+						for(int i = 2; i <= taskData[5].split(" ").length; i++){
 							taskStatusName += taskData[5].split(" ")[i] + " ";
 						}
 						sendMessage(taskStatusName, chatId); // BORRAR
@@ -489,6 +495,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							sendMessage(BotMessages.LOG_IN_FAIL.getMessage() + e.toString(), chatId);
 							logger.error(e.getLocalizedMessage(), e);
 						}				
+					}
+					else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
+						caseNumber = 0;
+						// Log Out Message
+						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					}
 					break;
 			}
