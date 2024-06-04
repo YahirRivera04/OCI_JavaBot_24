@@ -38,7 +38,7 @@ public class TaskController {
 
     // --------------------- Get All Tasks By TelegramUserId ---------------------
     @GetMapping(value = "/tasks/{TelegramUserId}")
-    public ResponseEntity<String> findTaskByTelegramUserId(Long telegramUserId){
+    public ResponseEntity<String> findTaskByTelegramUserId(@PathVariable Long telegramUserId){
         String info = "";
         try{
             List<Task> taskList = taskService.findAllTaskByTelegramUserId(telegramUserId);
@@ -54,7 +54,7 @@ public class TaskController {
 
     // --------------------- Create Task ---------------------
     @GetMapping(value = "/tasks/{Task}")
-    public ResponseEntity<String> createNewTask(Task newTask){
+    public ResponseEntity<String> createNewTask(@PathVariable Task newTask){
         String info = "";
         try{
             info = taskService.createTask(newTask);
@@ -67,7 +67,7 @@ public class TaskController {
 
     // --------------------- Delete Task ---------------------
     @GetMapping(value = "/tasks/{telegramUserId}/{name}")
-    public ResponseEntity<String> findTaskByTelegramUserId(Long telegramUserId, String name){
+    public ResponseEntity<String> findTaskByTelegramUserId(@PathVariable Long telegramUserId, @PathVariable String name){
         String info = "";
         try{
             info = taskService.deleteTask(telegramUserId, name);
@@ -77,23 +77,6 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // --------------------- Get All Tasks By Telegram User Id ---------------------
-    @GetMapping(value = "/tasks/{TelegramUserId}")
-    public ResponseEntity<String> findTasksByTelegramUserId(@PathVariable Long telegramUserId){
-        String info = "";
-        try{
-            List<Task> taskList = taskService.findAllTaskByTelegramUserId(telegramUserId);
-            for(int i = 0; i < taskList.size(); i++){
-                info += taskList.get(i).toString() + "\n";
-            }
-            return ResponseEntity.ok(info);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
 
     // ##################### Bot Controller Metods ##################### //
 
