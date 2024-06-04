@@ -66,11 +66,11 @@ public class TaskController {
     }
 
     // --------------------- Delete Task ---------------------
-    @GetMapping(value = "/tasks/{telegramUserId}/{name}")
-    public ResponseEntity<String> findTaskByTelegramUserId(@PathVariable Long telegramUserId, @PathVariable String name){
+    @GetMapping(value = "/tasks/{telegramUserId}/{name}/{taskId}")
+    public ResponseEntity<String> findTaskByTelegramUserId(@PathVariable Long telegramUserId, @PathVariable String name, @PathVariable Long taskId){
         String info = "";
         try{
-            info = taskService.deleteTask(telegramUserId, name);
+            info = taskService.deleteTask(telegramUserId, name, taskId);
             return ResponseEntity.ok(info);
         }
         catch(Exception e){
@@ -93,8 +93,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.createTask(newTask));
     }
     // Delete Task
-    public ResponseEntity<String> deleteTask(Long telegramUserId, String name){
-        return ResponseEntity.ok(taskService.deleteTask(telegramUserId, name));
+    public ResponseEntity<String> deleteTask(Long telegramUserId, String name, Long taskId){
+        return ResponseEntity.ok(taskService.deleteTask(telegramUserId, name, taskId));
     }
 
     // Print All Tasks
@@ -103,9 +103,9 @@ public class TaskController {
                 " \nDescription " + task.getDescription() + 
                 " \nEstimated Hours " + task.getEstimatedHours() + 
                 " \nPriority " + task.getPriority() + 
-                " \nTelegram User Id " + task.getTelegramUser().getID() + 
-                " \nSprint Id " + task.getSprint().getID() + 
-                " \nTask Status Id " + task.getTaskStatus().getID();
+                " \nTelegram User Name " + task.getTelegramUser().getName() + 
+                " \nSprint Name " + task.getSprint().getName() + 
+                " \nTask Status " + task.getTaskStatus().getName();
 
         return taskInfo;
     }

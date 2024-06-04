@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import com.springboot.MyTodoList.model.Task;
 import com.springboot.MyTodoList.repository.TaskRepository;
+import com.springboot.MyTodoList.repository.TaskUpdateRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
@@ -19,6 +20,9 @@ import com.springboot.MyTodoList.repository.TaskRepository;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskUpdateRepository taskUpdateRepository;
     
     public TaskService(TaskRepository taskRepository){
         this.taskRepository = taskRepository;
@@ -46,8 +50,9 @@ public class TaskService {
     }
     
     // Delete Task
-    public String deleteTask(Long telegramUserId, String name){
+    public String deleteTask(Long telegramUserId, String name, Long taskId){
         try{
+            taskUpdateRepository.deleteTasksUpdateByTaskId(taskId);
             taskRepository.deleteTasksByTelegramUserIdAndTaskName(telegramUserId, name);
             return "Task deleted successfully";
         }

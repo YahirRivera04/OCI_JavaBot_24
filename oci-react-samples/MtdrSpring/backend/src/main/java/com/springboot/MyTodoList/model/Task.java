@@ -41,7 +41,6 @@ public class Task {
     TaskStatus taskStatusIdFk;
     
     @OneToMany(mappedBy = "taskIdFk", cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     List<TaskUpdate> taskUpdatesId;
 
     public Task(){

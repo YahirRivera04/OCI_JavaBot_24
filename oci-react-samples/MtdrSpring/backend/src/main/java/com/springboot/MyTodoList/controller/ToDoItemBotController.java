@@ -224,6 +224,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
 				case 2:
+					sendMessage("Welcome to your menu " + telegramUser.getName(), telegramUser.getChatId());
 					// Developer Buttons
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
 						try{
@@ -292,8 +293,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3:
 					String taskName = messageTextFromTelegram;
-
-					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getChatId(), taskName);
+					Long taskId = null;
+					for(int i = 0; i < taskList.size(); i++){
+						if(taskList.get(i).getName().equals(taskName)){
+							taskId = taskList.get(i).getID();
+						}
+					}
+					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getChatId(), taskName, taskId);
 					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
 
 					caseNumber = 2;
