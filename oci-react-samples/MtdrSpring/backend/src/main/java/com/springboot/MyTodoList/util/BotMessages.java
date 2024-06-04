@@ -10,6 +10,7 @@ public enum BotMessages {
 	LOG_IN_FAIL("Login failed! Please try again!"),
 	// Log Out messages
 	LOG_OUT_MESSAGE("See you next time"),
+	LOG_OUT_COMMAND_MESSAGE("Log Out"),
 
 	// Show tasks
 	SHOW_TASK_MESSAGE("SHOW TASKS \nHere are all your tasks: "),
@@ -21,6 +22,7 @@ public enum BotMessages {
 	EDIT_TASK_MESSAGE("EDIT TASK"),
 	CREATE_TASK_MESSAGE("CREATE TASK \nPlease follow the next format:"),
 	CREATE_TASK_FORMAT("Name: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: "),
+
 	EDIT_TASK_NAME("Name:"),
 	EDIT_TASK_DESCRIPTION("Description:"),
 	EDIT_TASK_ESTIMATED_HOURS("Estimated Hours:"),
@@ -32,15 +34,18 @@ public enum BotMessages {
 	// Button Messages task
 	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
 	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),
-	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
+
 	DELETE_TASK_MESSAGE("Delete Task"),
+	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
+
 	CREATE_TASK_COMMAND_MESSAGE("Create Task"),
 	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
-	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
-	SHOW_PROJECT_COMMAND_MESSAGE("View Project"),
 
-	//Else Button Messages
-	LOG_OUT_COMMAND_MESSAGE("Log Out");
+	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
+	CREATE_PROJECT_MESSAGE("CREATE PROJECT \nPlease follow the next format:"),
+	CREATE_PROJECT_FORMAT("Name: \nDescription: "),
+	
+	SHOW_PROJECT_COMMAND_MESSAGE("Show Project");
 
 	private String message;
 

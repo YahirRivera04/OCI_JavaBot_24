@@ -30,9 +30,9 @@ public class ProjectController {
         }
     }
 
-    // --------------------- Post Project ---------------------
+    // --------------------- Create New Project ---------------------
     @GetMapping(value = "/project/{Project}")
-    public ResponseEntity<String> createProject(@PathVariable Project project){
+    public ResponseEntity<String> createNewProject(@PathVariable Project project){
         return ResponseEntity.ok(projectService.createNewProject(project));
     }
 
@@ -44,8 +44,9 @@ public class ProjectController {
 	}
 
 	// Create new project 
-    // to do
-
+    public ResponseEntity<String> createProject(@PathVariable Project project){
+        return ResponseEntity.ok(projectService.createNewProject(project));
+    }
 
     // Print Projects
     public String printProjectList(Project project){

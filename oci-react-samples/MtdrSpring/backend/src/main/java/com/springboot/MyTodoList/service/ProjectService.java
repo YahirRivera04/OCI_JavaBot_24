@@ -7,11 +7,9 @@ import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.repository.ProjectRepository;
-import com.springboot.MyTodoList.repository.UserTypeRepository;
 
 // Marks the class as a Spring service component, 
 // allowing it to be automatically detected and instantiated by Spring container
@@ -38,7 +36,7 @@ public class ProjectService {
             return "Project " + newProject.getName() + " created succesfully";
         }
         catch (Exception e){
-            return "Project " + newProject.getName() + " fail in creation " + e;   
+            return "Project " + newProject.getName() + " fail in creation. \nERROR: " + e;   
         }
     }
 }
