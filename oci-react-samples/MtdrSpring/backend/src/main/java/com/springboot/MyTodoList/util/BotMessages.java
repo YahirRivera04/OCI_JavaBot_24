@@ -13,6 +13,7 @@ public enum BotMessages {
 	LOG_OUT_COMMAND_MESSAGE("Log Out"),
 
 	// Show tasks
+	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
 	SHOW_TASK_MESSAGE("SHOW TASKS \nHere are all your tasks: "),
 
 	// Continue 
@@ -33,7 +34,6 @@ public enum BotMessages {
 	EDIT_TASK_UPDATE("Type of Update:"),
 	
 	// Button Messages task
-	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
 	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),
 
 	DELETE_TASK_MESSAGE("Delete Task"),
@@ -47,7 +47,9 @@ public enum BotMessages {
 	CREATE_PROJECT_MESSAGE("CREATE PROJECT \nPlease follow the next format:"),
 	CREATE_PROJECT_FORMAT("Name: \nDescription: "),
 	
-	SHOW_PROJECT_COMMAND_MESSAGE("Show Project");
+	SHOW_PROJECT_COMMAND_MESSAGE("Show Project"),
+	SHOW_PROJECT_MESSAGE("SHOW PROJECT \nHere are all your projects");
+
 
 	private String message;
 

@@ -124,12 +124,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			switch (caseNumber) {
 				// When already logged
 				case 1:
-					// Set information form db to task related models 
-					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-					projectList = projectController.findAllProjects().getBody();
-					sprintList = sprintController.findAllSprints().getBody();
-					updateTypeList = updateTypeController.findAllUpdateType().getBody();
-
 					// After log in, menu for Dev and Manager	
 					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
@@ -230,21 +224,23 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
 				case 2:
+					try{
+						// Set information form db to task related models 
+						projectList = projectController.findAllProjects().getBody();
+						sprintList = sprintController.findAllSprints().getBody();
+						taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();	
+					}
+					catch(Exception e){
+						sendMessage(e.getMessage() , telegramUser.getChatId());
+					}
 					// Developer Buttons
+					//Show Task Command
 					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
-						try{
-
-							// Get Tasks from Data Base
-							taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();				
-							// Message header
-							sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
-							// Show all tasks that belongs to the user
-							for(int i = 0; i < taskList.size(); i++){
-								sendMessage(taskController.printTask(taskList.get(i)), telegramUser.getChatId());
-							}
-						}
-						catch(Exception e){
-							sendMessage(e.getMessage() , telegramUser.getChatId());
+						// Message header
+						sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
+						// Show all tasks that belongs to the user
+						for(int i = 0; i < taskList.size(); i++){
+							sendMessage(taskController.printTask(taskList.get(i)), telegramUser.getChatId());
 						}
 					}
 					// Edit Task Command
@@ -280,7 +276,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						caseNumber = 4;
 					}
 					// Manager Button
-					// Create Sprint
+					// Create Sprint Command
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
 						// Home Message
 						sendMessage(BotMessages.CREATE_SPRINT_MESSAGE.getMessage(), telegramUser.getChatId());
@@ -292,7 +288,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						caseNumber = 5;
 					}
-					// Create Project
+					// Create Project Command
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage())){
 						// Home Message
 						sendMessage(BotMessages.CREATE_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
@@ -300,10 +296,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.CREATE_PROJECT_FORMAT.getMessage(), telegramUser.getChatId());
 						caseNumber = 6;
 					}
-					// Show Project 
+					// Show Project Command
 					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Show Project", telegramUser.getChatId());
+						// Header message
+						sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+						for(int i = 0; i < projectList.size(); i++){
+							sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
+						}
 					}
+					// Log Out Message
 					else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
 						caseNumber = 0;
 						// Log Out Message
@@ -335,33 +336,17 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String[] taskData = messageTextFromTelegram.split("\n");
 						
 						// Set Name
-						String name = "";
-						for(int i = 1; i <  taskData[0].split(" ").length; i++){
-							name += taskData[0].split(" ")[i] + " ";
-						}	
-						// sendMessage(name, chatId); // BORRAR
-						newTask.setName(name);
-
+						newTask.setName(taskData[0].substring(6, taskData[0].length()).trim());
 						// Description
-						String description = "";
-						for(int i = 1; i < taskData[1].split(" ").length; i++){
-							description += taskData[1].split(" ")[i] + " ";
-						}		
-						// sendMessage(description, chatId); // BORRAR
-						newTask.setDescription(description);
+						newTask.setDescription(taskData[1].substring(13, taskData[1].length()).trim());
 
 						// Estimated Hours, Priority and Telegram User
-						newTask.setEstimatedHours(Float.parseFloat(taskData[2].split(" ")[2]));
-						newTask.setPriority(Integer.parseInt(taskData[3].split(" ")[2]));
+						newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length()).trim()));
+						newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length()).trim()));
 						newTask.setTelegramUser(telegramUser);
 						
 						// Set Sprint
-						String sprintName = "";
-						for(int i = 2; i < taskData[4].split(" ").length; i++){
-							sprintName += taskData[4].split(" ")[i] + " ";
-						}
-						sprintName = sprintName.substring(0, sprintName.length() - 1);
-						// sendMessage(sprintName, chatId); // BORRAR
+						String sprintName = taskData[4].substring(13, taskData[4].length()).trim();
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(sprintName)){
 								newTask.setSprint(sprintList.get(i));
@@ -373,12 +358,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 
 						// Set Task Status
-						String taskStatusName = "";
-						for(int i = 2; i < taskData[5].split(" ").length; i++){
-							taskStatusName += taskData[5].split(" ")[i] + " ";
-						}
-						taskStatusName = taskStatusName.substring(0, taskStatusName.length() - 1);
-						// sendMessage(taskStatusName, chatId); // BORRAR
+						String taskStatusName = taskData[5].substring(13, taskData[5].length()).trim();
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskStatusName)){
 								newTask.setTaskStatus(taskStatusList.get(i));
@@ -442,31 +422,30 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String[] userResponser = messageTextFromTelegram.split("\n");
 						
 						// Set Name, Description to the project
-						newSprint.setName(userResponser[0].substring(5, userResponser[0].length()).trim());
+						newSprint.setName(userResponser[0].substring(6, userResponser[0].length()).trim());
 						//sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
-						
-						newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()).trim());
+						newSprint.setDescription(userResponser[1].substring(13, userResponser[1].length()).trim());
 						//sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
 						// Formatter for Date
 						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()).trim());
 						OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
-						sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
-						//newSprint.setStartDate(dateTimeStart);
+						//sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
+						newSprint.setStartDate(dateTimeStart);
 						
 
 						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()).trim());
 						OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
-						sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
-						//newSprint.setEndDate(dateTimeEnd);
+						//sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
+						newSprint.setEndDate(dateTimeEnd);
 
 						projectName = userResponser[4].substring(14, userResponser[4].length()).trim();
 						sendMessage(projectName, telegramUser.getChatId());
-						// for(int i = 0; i < projectList.size(); i++){
-						// 	if(projectList.get(i).getName().equals(projectName)){
-						// 		newSprint.setProject(projectList.get(i));
-						//	}
-						// }
+						for(int i = 0; i < projectList.size(); i++){
+							if(projectList.get(i).getName().equals(projectName)){
+								newSprint.setProject(projectList.get(i));
+							}
+						}
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
@@ -496,6 +475,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					teamList = teamController.findAllTeams().getBody();
 					userTeamList = userTeamController.findAllUserTeams().getBody();
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
+					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+					updateTypeList = updateTypeController.findAllUpdateType().getBody();
 					
 					// If the bot detects the start command
 					// "/start"
@@ -559,8 +540,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									telegramUser = telegramUserList.get(i);
 									telegramUser.setChatId(chatId);
 									// Update Chat Id in db
-									ResponseEntity<String> response = telegramUserController.updateChatId(telegramUser.getID(), telegramUser.getChatId());
-									sendMessage(response.getBody(), telegramUser.getChatId());
+									telegramUserController.updateChatId(telegramUser.getID(), telegramUser.getChatId());
+									//ResponseEntity<String> response = telegramUserController.updateChatId(telegramUser.getID(), telegramUser.getChatId());
+									//sendMessage(response.getBody(), telegramUser.getChatId());
 									// Case Number to acces developer or manager methods
 									caseNumber++;									
 									// Continue Message /continue
