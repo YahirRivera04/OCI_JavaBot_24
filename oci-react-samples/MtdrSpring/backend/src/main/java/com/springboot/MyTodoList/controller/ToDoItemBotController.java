@@ -507,6 +507,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					else if(messageTextFromTelegram.equals(BotMessages.SHOW_ALL_PROJECTS_MESSAGE.getMessage())){
 						for(int i = 0; i < projectList.size(); i++){
 							sendMessage(projectController.printProjectList(projectList.get(i)), chatId);
+							caseNumber = 1;
 						}
 					}
 					// Cancel
@@ -514,18 +515,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Operation aborted", telegramUser.getChatId());
 						caseNumber = 1;
 					}
-					caseNumber = 1;
 					break;
 				// Show Users in Project
 				case 8:
 					String showProjectResponse = messageTextFromTelegram;
-
-					for(int i = 0; i < telegramUserList.size(); i++){
-						for(int j = 0; j < telegramUserList.get(i).getSprintUpdates().size(); j++){
-							if(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject().getName().equals(showProjectResponse)){
-								sendMessage(projectController.printProjectList(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject()), telegramUser.getChatId());
+					try{
+						for(int i = 0; i < telegramUserList.size(); i++){
+							for(int j = 0; j < telegramUserList.get(i).getSprintUpdates().size(); j++){
+								if(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject().getName().equals(showProjectResponse)){
+									sendMessage(projectController.printProjectList(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject()), telegramUser.getChatId());
+								}
 							}
 						}
+					}
+					catch(Exception e){
+						sendMessage(e.toString(), telegramUser.getChatId());
 					}
 					caseNumber = 1;
 					break;
