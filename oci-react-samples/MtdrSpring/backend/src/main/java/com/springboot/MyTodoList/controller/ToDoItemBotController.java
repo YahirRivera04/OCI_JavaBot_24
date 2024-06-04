@@ -314,7 +314,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Description
 						String description = "";
-						for(int i = 0; i < taskData[1].split(" ").length; i++){
+						for(int i = 1; i < taskData[1].split(" ").length; i++){
 							description += taskData[1].split(" ")[i] + " ";
 						}		
 						sendMessage(description, chatId); // BORRAR
@@ -327,7 +327,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Sprint
 						String sprintName = "";
-						for(int i = 0; i < taskData[4].split(" ").length; i++){
+						for(int i = 2; i < taskData[4].split(" ").length; i++){
 							sprintName += taskData[4].split(" ")[i] + " ";
 						}
 						sendMessage(sprintName, chatId); // BORRAR
@@ -339,7 +339,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 							else{
 								newTask.setSprint(new Sprint());
-								break;
 							}
 						}
 
@@ -358,7 +357,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 							else{
 								newTask.setTaskStatus(new TaskStatus());
-								break;
 							}
 						}
 
