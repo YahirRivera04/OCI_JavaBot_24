@@ -441,10 +441,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					
 					// Set Name, Description to the project
 					//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
-					sendMessage(userResponser[0].substring(5, userResponser[0].length()), telegramUser.getChatId());
+					sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
 					
 					//newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
-					sendMessage(userResponser[1].substring(12, userResponser[1].length()), telegramUser.getChatId());
+					sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
 					// Formatter for Date
 					LocalDate dateStart = LocalDate.parse(userResponser[2].substring(25, userResponser[2].length()));
@@ -464,7 +464,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// 		newSprint.setProject(projectList.get(i));
 					// 	}
 					// }
-
+					caseNumber = 2;
 					break;
 				// Create Project
 				case 6:
@@ -473,16 +473,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Split the message into a array
 					String[] userResponse = messageTextFromTelegram.split("\n");
 					// Set values to the project
-					newProject.setName(userResponse[0].substring(5, userResponse[0].length()));
-					newProject.setDescription(userResponse[1].substring(12, userResponse[0].length()));
+					newProject.setName(userResponse[0].substring(6, userResponse[0].length()));
+					newProject.setDescription(userResponse[1].substring(13, userResponse[1].length()));
 					
 					// Debug Message BORRAR
-					sendMessage("Name: " + userResponse[0].substring(5, userResponse[0].length()) + "\nDescription: " +
-					userResponse[1].substring(12, userResponse[0].length()), telegramUser.getChatId());
+					sendMessage(newProject.getName() + " " + newProject.getDescription(), telegramUser.getChatId());
 
 					// ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
 					// sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
-					
+					caseNumber = 2;
 					break;
 				// Log in by default
 				default:
