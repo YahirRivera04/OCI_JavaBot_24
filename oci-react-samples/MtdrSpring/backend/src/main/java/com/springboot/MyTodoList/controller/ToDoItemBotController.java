@@ -306,10 +306,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Name
 						String name = "";
-						for(int i = 0; i <  taskData[0].split(" ").length; i++){
+						for(int i = 1; i <  taskData[0].split(" ").length; i++){
 							name += taskData[0].split(" ")[i] + " ";
 						}	
-						sendMessage(name, chatId); // BORRAR
+						sendMessage(name + taskData[0].split(" ").length, chatId); // BORRAR
 						newTask.setName(name);
 
 						// Description
@@ -339,6 +339,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 							else{
 								newTask.setSprint(new Sprint());
+								break;
 							}
 						}
 
@@ -349,6 +350,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						sendMessage(taskStatusName, chatId); // BORRAR
 
+
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskStatusName)){
 								newTask.setTaskStatus(taskStatusList.get(i));
@@ -356,6 +358,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 							else{
 								newTask.setTaskStatus(new TaskStatus());
+								break;
 							}
 						}
 
@@ -374,7 +377,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								newSprintUpdate.setUpdateType(updateTypeList.get(i));
 								newSprintUpdate.setSprint(newTask.getSprint());
 								newSprintUpdate.setTelegramUser(telegramUser);
-
 								break;
 							}
 						}
@@ -382,14 +384,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Post Task to Data Base
 						ResponseEntity<String> taskResponse = taskController.createTask(newTask);
 						sendMessage(taskResponse.getBody(), telegramUser.getChatId());
+						
 						// Post Task Update to Data Base
-						taskUpdateController.createTaskUpdate(newTaskUpdate);
+						//taskUpdateController.createTaskUpdate(newTaskUpdate);
+						ResponseEntity<String> taskUpdateResponse = taskUpdateController.createTaskUpdate(newTaskUpdate);
+						sendMessage(taskUpdateResponse.getBody(), telegramUser.getChatId());
+						
 						// Post Sprint Update to Data Base
-						sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
-						//ResponseEntity<String> taskUpdateResponse = taskUpdateController.createTaskUpdate(newTaskUpdate);
-						//sendMessage(taskUpdateResponse.getBody(), telegramUser.getChatId());
-						// ResponseEntity<String> sprintUpdateResponse = sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
-						// sendMessage(sprintUpdateResponse.getBody(), chatId);
+						//sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
+						
+						
+						ResponseEntity<String> sprintUpdateResponse = sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
+						sendMessage(sprintUpdateResponse.getBody(), chatId);
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
