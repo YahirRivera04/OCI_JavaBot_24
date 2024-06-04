@@ -4,7 +4,6 @@ import org.aspectj.weaver.ast.And;
 import org.mockito.internal.matchers.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -18,6 +17,7 @@ import java.sql.Timestamp;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+import java.time.OffsetDateTime;
 
 import io.swagger.models.Response;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
@@ -37,13 +37,10 @@ import com.springboot.MyTodoList.model.TaskUpdate;
 import com.springboot.MyTodoList.model.Team;
 import com.springboot.MyTodoList.model.TeamType;
 import com.springboot.MyTodoList.model.Task;
-import com.springboot.MyTodoList.service.TaskService;
 
 import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 public class ToDoItemBotController extends TelegramLongPollingBot {
 
@@ -428,13 +425,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 5:
 					// New sprint instance
 					Sprint newSprint = new Sprint();
+					// Date variable
+					OffsetDateTime startDate;
+					OffsetDateTime endDate;
 					// Split the message into a array
 					String[] userResponser = messageTextFromTelegram.split("\n");
 					// Set values to the project
 					newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
 					newSprint.setDescription(userResponser[1].substring(11, userResponser[1].length()));
 					
-
 
 					break;
 				// Create Project
@@ -499,7 +498,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-								else if(i == telegramUserList.size()){
+								else if(i == telegramUserList.size()-1){
 									// Enter your Telegram Username with format /login:TelegramUsername
 									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
 								}
@@ -535,9 +534,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									ResponseEntity<String> response = telegramUserController.updateChatId(telegramUser.getID(), telegramUser.getChatId());
 									sendMessage(response.getBody(), telegramUser.getChatId());
 									// Case Number to acces developer or manager methods
-									caseNumber++;
-									//sendMessage("Case number updated to " + caseNumber, chatId);
-									
+									caseNumber++;									
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
