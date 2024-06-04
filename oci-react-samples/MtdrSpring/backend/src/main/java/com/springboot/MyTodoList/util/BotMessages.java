@@ -48,7 +48,12 @@ public enum BotMessages {
 	CREATE_PROJECT_FORMAT("Name: \nDescription: "),
 	
 	SHOW_PROJECT_COMMAND_MESSAGE("Show Project"),
-	SHOW_PROJECT_MESSAGE("SHOW PROJECT \nHere are all your projects");
+	SHOW_USERS_IN_PROJECT_MESSAGE("Show Users in Project"),
+	SHOW_USERS_MESSAGE("SHOW USERS IN PROJECT\nHere are all the Users in the Project"),
+	SHOW_ALL_PROJECTS_MESSAGE("Show all Projects"),
+	SHOW_PROJECT_MESSAGE("SHOW PROJECT \nHere are all your projects"),
+
+	CANCEL_MESSAGE("Cancel");
 
 
 	private String message;
