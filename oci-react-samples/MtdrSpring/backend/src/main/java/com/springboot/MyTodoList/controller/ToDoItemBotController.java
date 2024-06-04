@@ -313,7 +313,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				// Delete Task
 				case 3:
-					String taskName = messageTextFromTelegram;
+					String taskName = messageTextFromTelegram.trim();
 					Long taskId = null;
 					for(int i = 0; i < taskList.size(); i++){
 						if(taskList.get(i).getName().equals(taskName)){
@@ -442,10 +442,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String[] userResponser = messageTextFromTelegram.split("\n");
 						
 						// Set Name, Description to the project
-						newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
+						newSprint.setName(userResponser[0].substring(5, userResponser[0].length()).trim());
 						//sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
 						
-						newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
+						newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()).trim());
 						//sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
 						// Formatter for Date
@@ -460,7 +460,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
 						//newSprint.setEndDate(dateTimeEnd);
 
-						projectName = userResponser[4].substring(14, userResponser[4].length());
+						projectName = userResponser[4].substring(14, userResponser[4].length()).trim();
 						sendMessage(projectName, telegramUser.getChatId());
 						// for(int i = 0; i < projectList.size(); i++){
 						// 	if(projectList.get(i).getName().equals(projectName)){
@@ -481,8 +481,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Split the message into a array
 					String[] userResponse = messageTextFromTelegram.split("\n");
 					// Set values to the project
-					newProject.setName(userResponse[0].substring(6, userResponse[0].length()));
-					newProject.setDescription(userResponse[1].substring(13, userResponse[1].length()));
+					newProject.setName(userResponse[0].substring(6, userResponse[0].length()).trim());
+					newProject.setDescription(userResponse[1].substring(13, userResponse[1].length()).trim());
 					// Sedn data to data base
 					ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
 					sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
@@ -526,7 +526,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-								sendMessage("chat id comapre " + chatIdCompare, chatId);
 							}	
 							// If the values are equal
 							if(chatIdCompare != 0){

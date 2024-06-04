@@ -33,10 +33,10 @@ public class ProjectService {
     public String createNewProject(Project newProject){
         try{
             projectRepository.save(newProject);
-            return "Project " + newProject.getName() + " created succesfully";
+            return "Project " + newProject.getName() + "created succesfully";
         }
         catch (Exception e){
-            return "Project " + newProject.getName() + " fail in creation. \nERROR: " + e;   
+            return "Project " + newProject.getName() + "fail in creation. \nERROR: " + e;   
         }
     }
 }
