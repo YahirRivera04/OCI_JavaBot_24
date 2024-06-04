@@ -20,6 +20,7 @@ public enum BotMessages {
 
 	// Edit or Create Task
 	EDIT_TASK_MESSAGE("EDIT TASK"),
+	CREATE_TASK_COMMAND_MESSAGE("Create Task"),
 	CREATE_TASK_MESSAGE("CREATE TASK \nPlease follow the next format:"),
 	CREATE_TASK_FORMAT("Name: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: "),
 
@@ -38,8 +39,9 @@ public enum BotMessages {
 	DELETE_TASK_MESSAGE("Delete Task"),
 	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
 
-	CREATE_TASK_COMMAND_MESSAGE("Create Task"),
 	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
+	CREATE_SPRINT_MESSAGE("CREATE SPRINT \nPlease follow the next format:"),
+	CREATE_SPRINT_FORMAT("Name: \nDescription: \nStart Date: \nEnd Date: \nProject Name: "),
 
 	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
 	CREATE_PROJECT_MESSAGE("CREATE PROJECT \nPlease follow the next format:"),

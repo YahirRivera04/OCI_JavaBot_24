@@ -240,7 +240,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						catch(Exception e){
 							sendMessage(e.getMessage() , telegramUser.getChatId());
 						}
-						sendMessage("Welcome to your menu " + telegramUser.getName(), telegramUser.getChatId());
 					}
 					// Edit Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
@@ -275,17 +274,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						caseNumber = 4;
 					}
 					// Manager Button
+					// Create Sprint
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Create Sprint", telegramUser.getChatId());
-
+						// Home Message
+						sendMessage(BotMessages.CREATE_SPRINT_MESSAGE.getMessage(), telegramUser.getChatId());
+						// Format Message
+						sendMessage(BotMessages.CREATE_SPRINT_FORMAT.getMessage(), telegramUser.getChatId());
+						// Project List
+						for(int i = 0; i < projectList.size(); i++){
+							sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
+						}
+						caseNumber = 5;
 					}
+					// Create Project
 					else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage())){
 						// Home Message
 						sendMessage(BotMessages.CREATE_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Format Message
 						sendMessage(BotMessages.CREATE_PROJECT_FORMAT.getMessage(), telegramUser.getChatId());
-						caseNumber = 5;
+						caseNumber = 6;
 					}
+					// Show Project 
 					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){
 						sendMessage("Show Project", telegramUser.getChatId());
 					}
@@ -308,7 +317,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getID(), taskName, taskId);
 					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
 					caseNumber = 2;
-					sendMessage("Welcome to your menu " + telegramUser.getName(), telegramUser.getChatId());
 					break;
 				// Create Task
 				case 4:
@@ -415,10 +423,22 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
 					caseNumber = 2;
-					sendMessage("Welcome to your menu " + telegramUser.getName(), telegramUser.getChatId());
+					break;
+				// Create Sprint
+				case 5:
+					// New sprint instance
+					Sprint newSprint = new Sprint();
+					// Split the message into a array
+					String[] userResponser = messageTextFromTelegram.split("\n");
+					// Set values to the project
+					newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
+					newSprint.setDescription(userResponser[1].substring(11, userResponser[1].length()));
+					
+
+
 					break;
 				// Create Project
-				case 5:
+				case 6:
 					// New project instance
 					Project newProject = new Project();
 					// Split the message into a array
@@ -431,8 +451,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage("Name: " + userResponse[0].substring(5, userResponse[0].length()) + "\nDescription: " +
 					userResponse[1].substring(12, userResponse[0].length()), telegramUser.getChatId());
 
-					//ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
-					//sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
+					// ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
+					// sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
 					
 					break;
 				// Log in by default
@@ -467,7 +487,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							for(int i = 0; i < telegramUserList.size(); i++){
 								// Compare Chat id from Users in the Db
 								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
-								
+								// If the values are equal
 								if(chatIdCompare == 0){
 									// You have successfully logged in!!
 									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
@@ -475,18 +495,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									telegramUser = telegramUserList.get(i);
 									// Case Number to acces developer or manager methods
 									caseNumber++;
-									//sendMessage("Case number updated to " + caseNumber, chatId);
-
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-							}
-							if(chatIdCompare != 0){
-								// Enter your Telegram Username with format /login:TelegramUsername
-								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
+								else if(i == telegramUserList.size()){
+									// Enter your Telegram Username with format /login:TelegramUsername
+									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
+								}
 							}		
-									
 						}
 						catch(TelegramApiException e){
 							// Log In fail
