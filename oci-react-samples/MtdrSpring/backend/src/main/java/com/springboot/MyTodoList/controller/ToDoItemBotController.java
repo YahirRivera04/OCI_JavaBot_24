@@ -18,9 +18,9 @@ import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 
 import io.swagger.models.Response;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
@@ -443,13 +443,17 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
 					sendMessage(userResponser[0].substring(5, userResponser[0].length()), telegramUser.getChatId());
 					
-					//newSprint.setDescription(userResponser[1].substring(11, userResponser[1].length()));
-					sendMessage(userResponser[1].substring(11, userResponser[1].length()), telegramUser.getChatId());
+					//newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
+					sendMessage(userResponser[1].substring(12, userResponser[1].length()), telegramUser.getChatId());
 
 					// Formatter for Date
-					OffsetDateTime dateTimeStart = OffsetDateTime.parse(userResponser[2].substring(25, userResponser[2].length()));
+					LocalDate dateStart = LocalDate.parse(userResponser[2].substring(25, userResponser[2].length()));
+					OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
 					sendMessage("start " + dateTimeStart, telegramUser.getChatId());
-					OffsetDateTime dateTimeEnd = OffsetDateTime.parse(userResponser[3].substring(23, userResponser[3].length()));
+					
+
+					LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(23, userResponser[3].length()));
+					OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
 					sendMessage("end " + dateTimeEnd, telegramUser.getChatId());
 					//newSprint.setStartDate(dateTime);
 
@@ -507,7 +511,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								// Compare Chat id from Users in the Db
 								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
 								// If the values are equal
-								if(chatIdCompare == 0){
+								if(i == telegramUserList.size()-1){
+									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
+								}
+								else if(chatIdCompare == 0){
 									// You have successfully logged in!!
 									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 									// Set Telegram User Information
@@ -517,10 +524,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									// Continue Message /continue
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
-								}
-								else if(i == telegramUserList.size()-1 && chatIdCompare != 0){
-									// Enter your Telegram Username with format /login:TelegramUsername
-									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
 								}
 							}		
 						}
