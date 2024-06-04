@@ -436,34 +436,42 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					Sprint newSprint = new Sprint();
 					// String for project name
 					String projectName = "";
-					// Split the message into a array
-					String[] userResponser = messageTextFromTelegram.split("\n");
-					
-					// Set Name, Description to the project
-					//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
-					sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
-					
-					//newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
-					sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
-					// Formatter for Date
-					LocalDate dateStart = LocalDate.parse(userResponser[2].substring(25, userResponser[2].length()));
-					OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
-					sendMessage("start " + dateTimeStart, telegramUser.getChatId());
+					try{
+						// Split the message into a array
+						String[] userResponser = messageTextFromTelegram.split("\n");
+						
+						// Set Name, Description to the project
+						//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
+						sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
+						
+						//newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
+						sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
+
+						// Formatter for Date
+						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()));
+						OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
+						sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
+						newSprint.setStartDate(dateTimeStart);
+						
+
+						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()));
+						OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
+						sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
+						newSprint.setEndDate(dateTimeEnd);
+
+						projectName = userResponser[4].substring(14, userResponser[4].length());
+						sendMessage(projectName, telegramUser.getChatId());
+						// for(int i = 0; i < projectList.size(); i++){
+						// 	if(projectList.get(i).getName().equals(projectName)){
+						// 		newSprint.setProject(projectList.get(i));
+						//	}
+						// }
+					}
+					catch(Exception e){
+						sendMessage(e.toString(), telegramUser.getChatId());
+					}
 					
-
-					LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(23, userResponser[3].length()));
-					OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
-					sendMessage("end " + dateTimeEnd, telegramUser.getChatId());
-					//newSprint.setStartDate(dateTime);
-
-					projectName = userResponser[4].substring(13, userResponser[4].length());
-					sendMessage(projectName, telegramUser.getChatId());
-					// for(int i = 0; i < projectList.size(); i++){
-					// 	if(projectList.get(i).getName().equals(projectName)){
-					// 		newSprint.setProject(projectList.get(i));
-					// 	}
-					// }
 					caseNumber = 2;
 					break;
 				// Create Project
@@ -475,12 +483,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Set values to the project
 					newProject.setName(userResponse[0].substring(6, userResponse[0].length()));
 					newProject.setDescription(userResponse[1].substring(13, userResponse[1].length()));
-					
-					// Debug Message BORRAR
-					sendMessage(newProject.getName() + " " + newProject.getDescription(), telegramUser.getChatId());
-
-					// ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
-					// sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
+					// Sedn data to data base
+					ResponseEntity<String> newProjectResponse = projectController.createNewProject(newProject);
+					sendMessage(newProjectResponse.getBody(), telegramUser.getChatId());
 					caseNumber = 2;
 					break;
 				// Log in by default
@@ -521,6 +526,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
+								sendMessage("chat id comapre " + chatIdCompare, chatId);
 							}	
 							// If the values are equal
 							if(chatIdCompare != 0){
