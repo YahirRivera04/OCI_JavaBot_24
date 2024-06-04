@@ -41,7 +41,7 @@ public enum BotMessages {
 
 	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
 	CREATE_SPRINT_MESSAGE("CREATE SPRINT \nPlease follow the next format:"),
-	CREATE_SPRINT_FORMAT("Name: \nDescription: \nStart Date: \nEnd Date: \nProject Name: "),
+	CREATE_SPRINT_FORMAT("Name: \nDescription: \nStart Date('YYYY-MM-DD'): \nEnd Date('YYYY-MM-DD'): \nProject Name: "),
 
 	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
 	CREATE_PROJECT_MESSAGE("CREATE PROJECT \nPlease follow the next format:"),

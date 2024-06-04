@@ -17,7 +17,10 @@ import java.sql.Timestamp;
 import com.springboot.MyTodoList.util.BotCommands;
 import com.springboot.MyTodoList.util.BotLabels;
 import com.springboot.MyTodoList.util.BotMessages;
+
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import io.swagger.models.Response;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
@@ -121,6 +124,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			switch (caseNumber) {
 				// When already logged
 				case 1:
+					// Set information form db to task related models 
+					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
+					projectList = projectController.findAllProjects().getBody();
+					sprintList = sprintController.findAllSprints().getBody();
+					updateTypeList = updateTypeController.findAllUpdateType().getBody();
+
 					// After log in, menu for Dev and Manager	
 					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
@@ -425,15 +434,32 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 5:
 					// New sprint instance
 					Sprint newSprint = new Sprint();
-					// Date variable
-					OffsetDateTime startDate;
-					OffsetDateTime endDate;
+					// String for project name
+					String projectName = "";
 					// Split the message into a array
 					String[] userResponser = messageTextFromTelegram.split("\n");
-					// Set values to the project
-					newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
-					newSprint.setDescription(userResponser[1].substring(11, userResponser[1].length()));
 					
+					// Set Name, Description to the project
+					//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
+					sendMessage(userResponser[0].substring(5, userResponser[0].length()), telegramUser.getChatId());
+					
+					//newSprint.setDescription(userResponser[1].substring(11, userResponser[1].length()));
+					sendMessage(userResponser[1].substring(11, userResponser[1].length()), telegramUser.getChatId());
+
+					// Formatter for Date
+					OffsetDateTime dateTimeStart = OffsetDateTime.parse(userResponser[2].substring(25, userResponser[2].length()));
+					sendMessage("start " + dateTimeStart, telegramUser.getChatId());
+					OffsetDateTime dateTimeEnd = OffsetDateTime.parse(userResponser[3].substring(23, userResponser[3].length()));
+					sendMessage("end " + dateTimeEnd, telegramUser.getChatId());
+					//newSprint.setStartDate(dateTime);
+
+					projectName = userResponser[4].substring(13, userResponser[4].length());
+					sendMessage(projectName, telegramUser.getChatId());
+					// for(int i = 0; i < projectList.size(); i++){
+					// 	if(projectList.get(i).getName().equals(projectName)){
+					// 		newSprint.setProject(projectList.get(i));
+					// 	}
+					// }
 
 					break;
 				// Create Project
@@ -462,13 +488,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					teamList = teamController.findAllTeams().getBody();
 					userTeamList = userTeamController.findAllUserTeams().getBody();
 					telegramUserList = telegramUserController.findAllTelegramUsers().getBody();
-
-					// Set information form db to task related models 
-					taskStatusList = taskStatusController.findAllTaskStatus().getBody();
-					projectList = projectController.findAllProjects().getBody();
-					sprintList = sprintController.findAllSprints().getBody();
-					updateTypeList = updateTypeController.findAllUpdateType().getBody();
-
+					
 					// If the bot detects the start command
 					// "/start"
 					if(messageTextFromTelegram.equals(BotCommands.START_COMMAND.getCommand())){
@@ -498,7 +518,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-								else if(i == telegramUserList.size()-1){
+								else if(i == telegramUserList.size()-1 && chatIdCompare != 0){
 									// Enter your Telegram Username with format /login:TelegramUsername
 									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
 								}
