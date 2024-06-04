@@ -509,8 +509,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							for(int i = 0; i < telegramUserList.size(); i++){
 								// Compare Chat id from Users in the Db
 								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
+								
 								// If the values are equal
-								if(i == telegramUserList.size()-1){
+								if(i == telegramUserList.size()-1 && chatIdCompare != 0){
 									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
 								}
 								else if(chatIdCompare == 0){
