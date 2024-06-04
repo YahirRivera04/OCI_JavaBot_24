@@ -297,42 +297,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						caseNumber = 6;
 					}
 					// Show Project Command
-					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){
-
-						// Create variables necessaries to interact with telegram					
-						SendMessage messageToTelegram = new SendMessage();
-						messageToTelegram.setChatId(telegramUser.getChatId());
-						// Message with information retrieved form the database
-						messageToTelegram.setText(BotMessages.SHOW_PROJECT_MESSAGE.getMessage());
-
-						ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-						List<KeyboardRow> keyboard = new ArrayList<>();
-
-						// First Row
-						KeyboardRow row = new KeyboardRow();
-						row.add(BotLabels.SHOW_USERS_IN_PROJECT.getLabel());
-						row.add(BotLabels.SHOW_ALL_PROJECTS.getLabel());
-						keyboard.add(row);
-
-						row = new KeyboardRow();
-						row.add(BotLabels.CANCEL.getLabel());
-						keyboard.add(row);
-
-						// Set the rows to the keyboard
-						keyboardMarkup.setKeyboard(keyboard);
-
-						// Add the keyboard markup
-						messageToTelegram.setReplyMarkup(keyboardMarkup);
-
-						try {
-							execute(messageToTelegram);
-							sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
-							caseNumber++;
-						} 
-						catch (TelegramApiException e) {
-							logger.error(e.getLocalizedMessage(), e);
+					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){						
+						// Header Message
+						sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+						for(int i = 0; i < projectList.size(); i++){
+							sendMessage(projectController.printProjectList(projectList.get(i)), chatId);
 						}
-						caseNumber = 7;
 					}
 					// Log Out Message
 					else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
@@ -496,42 +466,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					ResponseEntity<String> projectResponse = projectController.createNewProject(newProject);
 					sendMessage(projectResponse.getBody(), telegramUser.getChatId());
 					caseNumber = 2;
-					break;
-				case 7:
-					// Show Users in Project
-					if(messageTextFromTelegram.equals(BotMessages.SHOW_USERS_IN_PROJECT_MESSAGE.getMessage())){
-						sendMessage("To continue provide the name of the project: ", telegramUser.getChatId());
-						caseNumber = 8;
-					}
-					// Show All Users
-					else if(messageTextFromTelegram.equals(BotMessages.SHOW_ALL_PROJECTS_MESSAGE.getMessage())){
-						for(int i = 0; i < projectList.size(); i++){
-							sendMessage(projectController.printProjectList(projectList.get(i)), chatId);
-							caseNumber = 1;
-						}
-					}
-					// Cancel
-					else if(messageTextFromTelegram.equals(BotMessages.CANCEL_MESSAGE.getMessage())){
-						sendMessage("Operation aborted", telegramUser.getChatId());
-						caseNumber = 1;
-					}
-					break;
-				// Show Users in Project
-				case 8:
-					String showProjectResponse = messageTextFromTelegram;
-					try{
-						for(int i = 0; i < telegramUserList.size(); i++){
-							for(int j = 0; j < telegramUserList.get(i).getSprintUpdates().size(); j++){
-								if(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject().getName().equals(showProjectResponse)){
-									sendMessage(projectController.printProjectList(telegramUserList.get(i).getSprintUpdates().get(j).getSprint().getProject()), telegramUser.getChatId());
-								}
-							}
-						}
-					}
-					catch(Exception e){
-						sendMessage(e.toString(), telegramUser.getChatId());
-					}
-					caseNumber = 1;
 					break;
 				// Log in by default
 				default:
