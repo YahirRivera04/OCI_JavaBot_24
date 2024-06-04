@@ -247,10 +247,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					// Delete Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage())){
-						// Send Message
-						sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Mesasge header
-						sendMessage(BotMessages.DELETE_TASK_INFORMATION_MESSAGE.getMessage(), telegramUser.getChatId());
+						sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Send to new case
 						caseNumber = 3;
 					}
@@ -294,7 +292,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3:
 					String taskName = messageTextFromTelegram;
-					sendMessage("Tawsk name " + taskName, chatId);
+					sendMessage("Task name " + taskName, chatId);
 					caseNumber = 2;
 				break;
 				case 4:
@@ -316,7 +314,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Description
 						String description = "";
-						for(int i = 1; i <= taskData[1].split(" ").length; i++){
+						for(int i = 0; i < taskData[1].split(" ").length; i++){
 							description += taskData[1].split(" ")[i] + " ";
 						}		
 						sendMessage(description, chatId); // BORRAR
@@ -329,7 +327,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Sprint
 						String sprintName = "";
-						for(int i = 2; i <= taskData[4].split(" ").length; i++){
+						for(int i = 0; i < taskData[4].split(" ").length; i++){
 							sprintName += taskData[4].split(" ")[i] + " ";
 						}
 						sendMessage(sprintName, chatId); // BORRAR
@@ -346,7 +344,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Set Task Status
 						String taskStatusName = "";
-						for(int i = 2; i <= taskData[5].split(" ").length; i++){
+						for(int i = 0; i < taskData[5].split(" ").length; i++){
 							taskStatusName += taskData[5].split(" ")[i] + " ";
 						}
 						sendMessage(taskStatusName, chatId); // BORRAR

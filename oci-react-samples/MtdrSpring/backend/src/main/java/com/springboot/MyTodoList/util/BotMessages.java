@@ -32,8 +32,7 @@ public enum BotMessages {
 	// Button Messages task
 	SHOW_TASK_COMMAND_MESSAGE("Show Task"),
 	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),
-	DELETE_TASK_COMMAND_MESSAGE("Delete Task"),
-	DELETE_TASK_INFORMATION_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
+	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
 	CREATE_TASK_COMMAND_MESSAGE("Create Task"),
 	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
 	CREATE_PROJECT_COMMAND_MESSAGE("Create Project"),
