@@ -510,11 +510,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								// Compare Chat id from Users in the Db
 								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
 								
-								// If the values are equal
-								if(i == telegramUserList.size()-1 && chatIdCompare != 0){
-									sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
-								}
-								else if(chatIdCompare == 0){
+								if(chatIdCompare == 0){
 									// You have successfully logged in!!
 									sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 									// Set Telegram User Information
@@ -525,7 +521,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 									sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 									break;
 								}
-							}		
+							}	
+							// If the values are equal
+							if(chatIdCompare != 0){
+								sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);	
+							}	
 						}
 						catch(TelegramApiException e){
 							// Log In fail
