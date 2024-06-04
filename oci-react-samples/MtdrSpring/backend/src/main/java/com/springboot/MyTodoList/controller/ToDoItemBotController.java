@@ -246,7 +246,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Edit Task", telegramUser.getChatId());
 					}
 					// Delete Task Command
-					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage())){
+					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage())){
 						// Mesasge header
 						sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
 						// Send to new case
@@ -292,7 +292,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3:
 					String taskName = messageTextFromTelegram;
-					
+
 					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getChatId(), taskName);
 					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
 
