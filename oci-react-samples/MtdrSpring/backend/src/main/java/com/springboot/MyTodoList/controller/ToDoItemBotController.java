@@ -449,13 +449,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						//sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
 						// Formatter for Date
-						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()));
+						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()).trim());
 						OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
 						sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
 						//newSprint.setStartDate(dateTimeStart);
 						
 
-						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()));
+						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()).trim());
 						OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
 						sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
 						//newSprint.setEndDate(dateTimeEnd);
