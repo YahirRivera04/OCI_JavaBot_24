@@ -4,6 +4,9 @@ package com.springboot.MyTodoList.model;
 import java.util.List;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "TASK")
 public class Task {
@@ -38,6 +41,7 @@ public class Task {
     TaskStatus taskStatusIdFk;
     
     @OneToMany(mappedBy = "taskIdFk", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     List<TaskUpdate> taskUpdatesId;
 
     public Task(){

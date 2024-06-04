@@ -292,7 +292,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3:
 					String taskName = messageTextFromTelegram;
-					sendMessage("Task name " + taskName, chatId);
+					
+					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getChatId(), taskName);
+					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
+
 					caseNumber = 2;
 				break;
 				case 4:
@@ -309,7 +312,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						for(int i = 1; i <  taskData[0].split(" ").length; i++){
 							name += taskData[0].split(" ")[i] + " ";
 						}	
-						sendMessage(name + taskData[0].split(" ").length, chatId); // BORRAR
+						// sendMessage(name, chatId); // BORRAR
 						newTask.setName(name);
 
 						// Description
@@ -317,7 +320,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						for(int i = 1; i < taskData[1].split(" ").length; i++){
 							description += taskData[1].split(" ")[i] + " ";
 						}		
-						sendMessage(description, chatId); // BORRAR
+						// sendMessage(description, chatId); // BORRAR
 						newTask.setDescription(description);
 
 						// Estimated Hours, Priority and Telegram User
@@ -331,8 +334,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							sprintName += taskData[4].split(" ")[i] + " ";
 						}
 						sprintName = sprintName.substring(0, sprintName.length() - 1);
-						sendMessage(sprintName, chatId); // BORRAR
-
+						// sendMessage(sprintName, chatId); // BORRAR
 						for(int i = 0; i < sprintList.size(); i++){
 							if(sprintList.get(i).getName().equals(sprintName)){
 								newTask.setSprint(sprintList.get(i));
@@ -349,8 +351,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							taskStatusName += taskData[5].split(" ")[i] + " ";
 						}
 						taskStatusName = taskStatusName.substring(0, taskStatusName.length() - 1);
-						sendMessage(taskStatusName, chatId); // BORRAR
-
+						// sendMessage(taskStatusName, chatId); // BORRAR
 						for(int i = 0; i < taskStatusList.size(); i++){
 							if(taskStatusList.get(i).getName().equals(taskStatusName)){
 								newTask.setTaskStatus(taskStatusList.get(i));
@@ -378,7 +379,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								break;
 							}
 						}
-
 
 						// sendMessage(taskController.printTask(newTask), telegramUser.getChatId()); // BORRAR
 						// sendMessage(taskUpdateController.printTaskUpdate(newTaskUpdate), telegramUser.getChatId());

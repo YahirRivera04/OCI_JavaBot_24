@@ -36,6 +36,48 @@ public class TaskController {
         }
     }
 
+    // --------------------- Get All Tasks By TelegramUserId ---------------------
+    @GetMapping(value = "/tasks/{TelegramUserId}")
+    public ResponseEntity<String> findTaskByTelegramUserId(Long telegramUserId){
+        String info = "";
+        try{
+            List<Task> taskList = taskService.findAllTaskByTelegramUserId(telegramUserId);
+            for(int i = 0; i < taskList.size(); i++){
+                info += taskList.get(i).toString() + "\n";
+            }
+            return ResponseEntity.ok(info);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // --------------------- Create Task ---------------------
+    @GetMapping(value = "/tasks/{Task}")
+    public ResponseEntity<String> createNewTask(Task newTask){
+        String info = "";
+        try{
+            info = taskService.createTask(newTask);
+            return ResponseEntity.ok(info);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // --------------------- Delete Task ---------------------
+    @GetMapping(value = "/tasks/{telegramUserId}/{name}")
+    public ResponseEntity<String> findTaskByTelegramUserId(Long telegramUserId, String name){
+        String info = "";
+        try{
+            info = taskService.deleteTask(telegramUserId, name);
+            return ResponseEntity.ok(info);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // --------------------- Get All Tasks By Telegram User Id ---------------------
     @GetMapping(value = "/tasks/{TelegramUserId}")
     public ResponseEntity<String> findTasksByTelegramUserId(@PathVariable Long telegramUserId){
@@ -67,6 +109,11 @@ public class TaskController {
     public ResponseEntity<String> createTask(Task newTask){
         return ResponseEntity.ok(taskService.createTask(newTask));
     }
+    // Delete Task
+    public ResponseEntity<String> deleteTask(Long telegramUserId, String name){
+        return ResponseEntity.ok(taskService.deleteTask(telegramUserId, name));
+    }
+
     // Print All Tasks
     public String printTask(Task task){
         String taskInfo = "Name " + task.getName() + 

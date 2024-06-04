@@ -45,4 +45,16 @@ public class TaskService {
         }
     }
     
+    // Delete Task
+    public String deleteTask(Long telegramUserId, String name){
+        try{
+            taskRepository.deleteTasksByTelegramUserIdAndTaskName(telegramUserId, name);
+            return "Task deleted successfully";
+        }
+        catch(Exception e){
+            return "Task fail to delete " + e.toString();
+        }
+        
+    }
+
 }
