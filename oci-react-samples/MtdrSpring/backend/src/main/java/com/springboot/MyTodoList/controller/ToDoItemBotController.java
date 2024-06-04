@@ -298,16 +298,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					// Show Project Command
 					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){
-						// Header message
-						sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
-
-						// mostrar dos botones (mostrar usuarios asignados a nombre de proyecto, mostrar todos)
 
 						// Create variables necessaries to interact with telegram					
 						SendMessage messageToTelegram = new SendMessage();
 						messageToTelegram.setChatId(telegramUser.getChatId());
 						// Message with information retrieved form the database
-						messageToTelegram.setText("");
+						messageToTelegram.setText(BotMessages.SHOW_PROJECT_MESSAGE.getMessage());
 
 						ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 						List<KeyboardRow> keyboard = new ArrayList<>();

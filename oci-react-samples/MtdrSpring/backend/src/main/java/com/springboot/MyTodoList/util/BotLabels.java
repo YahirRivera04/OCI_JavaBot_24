@@ -21,7 +21,7 @@ public enum BotLabels {
 	CREATE_TASK("Create Task"),
 
 	// Manager buttons
-	SHOW_PROJECT("View Project"),
+	SHOW_PROJECT("Show Project"),
 	SHOW_USERS_IN_PROJECT("Show Users in Project"),
 	SHOW_ALL_PROJECTS("Show all Projects"),
 
