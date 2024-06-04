@@ -442,23 +442,23 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String[] userResponser = messageTextFromTelegram.split("\n");
 						
 						// Set Name, Description to the project
-						//newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
-						sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
+						newSprint.setName(userResponser[0].substring(5, userResponser[0].length()));
+						//sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
 						
-						//newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
-						sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
+						newSprint.setDescription(userResponser[1].substring(12, userResponser[1].length()));
+						//sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
 						// Formatter for Date
 						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()));
 						OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
 						sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
-						newSprint.setStartDate(dateTimeStart);
+						//newSprint.setStartDate(dateTimeStart);
 						
 
 						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()));
 						OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
 						sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
-						newSprint.setEndDate(dateTimeEnd);
+						//newSprint.setEndDate(dateTimeEnd);
 
 						projectName = userResponser[4].substring(14, userResponser[4].length());
 						sendMessage(projectName, telegramUser.getChatId());
@@ -513,7 +513,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							int chatIdCompare = -1;
 							for(int i = 0; i < telegramUserList.size(); i++){
 								// Compare Chat id from Users in the Db
-								if(telegramUserList != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
+								if(telegramUserList.get(i).getChatId() != null) chatIdCompare = Long.compare(telegramUserList.get(i).getChatId(), chatId);
 								
 								if(chatIdCompare == 0){
 									// You have successfully logged in!!
