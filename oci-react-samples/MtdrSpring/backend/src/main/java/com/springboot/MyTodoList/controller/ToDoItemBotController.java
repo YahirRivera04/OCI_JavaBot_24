@@ -117,14 +117,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	public void onUpdateReceived(Update update) {
 
 		if (update.hasMessage() && update.getMessage().hasText()) {
-
+			// Get text from telegram message
 			String messageTextFromTelegram = update.getMessage().getText();
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
 			
 			switch (caseNumber) {
 				// When already logged
-				case 1:
+				case 1: // Set Buttons case
 					// After log in, menu for Dev and Manager	
 					if(messageTextFromTelegram.equals(BotCommands.CONTINUE_COMMAND.getCommand())){
 
@@ -224,7 +224,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					break;
 				// Next buttons menu to do some actions based on selected for Developers
-				case 2:
+				case 2: // Actions Buttons Menu
 					try{
 						// Set information form db to task related models 
 						projectList = projectController.findAllProjects().getBody();
@@ -340,8 +340,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					}
 					break;
-				// Delete Task
-				case 3:
+				case 3: // Delete Task
 					String taskName = messageTextFromTelegram.trim();
 					Long taskId = null;
 					for(int i = 0; i < taskList.size(); i++){
@@ -353,12 +352,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
 					caseNumber = 2;
 					break;
-				// Create Task
-				case 4:
+				case 4: // Create Task
 					// Create task case
 					Task newTask = new Task();
 					TaskUpdate newTaskUpdate = new TaskUpdate();
-					SprintUpdate newSprintUpdate = new SprintUpdate();
 
 					try{
 						String[] taskData = messageTextFromTelegram.split("\n");
@@ -410,33 +407,24 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 						}
 
-						// sendMessage(taskController.printTask(newTask), telegramUser.getChatId()); // BORRAR
-						// sendMessage(taskUpdateController.printTaskUpdate(newTaskUpdate), telegramUser.getChatId());
-						// sendMessage(sprintUpdateController.printSptintUpdate(newSprintUpdate), telegramUser.getChatId());
-
 						// Post Task to Data Base
 						ResponseEntity<String> taskResponse = taskController.createTask(newTask);
 						sendMessage(taskResponse.getBody(), telegramUser.getChatId());
 						
-						// // Post Task Update to Data Base
+						// Post Task Update to Data Base
 						taskUpdateController.createTaskUpdate(newTaskUpdate);
-						// ResponseEntity<String> taskUpdateResponse = taskUpdateController.createTaskUpdate(newTaskUpdate);
-						// sendMessage(taskUpdateResponse.getBody(), telegramUser.getChatId());
-						
-						// // Post Sprint Update to Data Base
-						sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
-						// ResponseEntity<String> sprintUpdateResponse = sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
-						// sendMessage(sprintUpdateResponse.getBody(), chatId);
+
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
 					caseNumber = 2;
 					break;
-				// Create Sprint
-				case 5:
+				case 5:	// Create Sprint
 					// New sprint instance
 					Sprint newSprint = new Sprint();
+					// New updateSprint instance 
+					SprintUpdate newSprintUpdate = new SprintUpdate();
 					// String for project name
 					String projectName = "";
 
@@ -446,22 +434,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Set Name, Description to the project
 						newSprint.setName(userResponser[0].substring(6, userResponser[0].length()).trim());
-						//sendMessage(userResponser[0].substring(6, userResponser[0].length()), telegramUser.getChatId());
 						newSprint.setDescription(userResponser[1].substring(13, userResponser[1].length()).trim());
-						//sendMessage(userResponser[1].substring(13, userResponser[1].length()), telegramUser.getChatId());
 
-						// Formatter for Date
+						// Formatter for Start Date
 						LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()).trim());
 						OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
-						//sendMessage("Start " + dateTimeStart, telegramUser.getChatId());
 						newSprint.setStartDate(dateTimeStart);
 						
-
+						// Formatter for End Date
 						LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()).trim());
 						OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
 						//sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
 						newSprint.setEndDate(dateTimeEnd);
 
+						// Set Project
 						projectName = userResponser[4].substring(14, userResponser[4].length()).trim();
 						sendMessage(projectName, telegramUser.getChatId());
 						for(int i = 0; i < projectList.size(); i++){
@@ -469,15 +455,36 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 								newSprint.setProject(projectList.get(i));
 							}
 						}
+
+						// Create Sprint Update
+						for(int i = 0; i < updateTypeList.size(); i++){
+							if(updateTypeList.get(i).getName().equals("Creation")){
+								Timestamp timeStamp = new Timestamp(System.currentTimeMillis()); 
+								newSprintUpdate.setTimeStamp(timeStamp);
+								newSprintUpdate.setUpdateType(updateTypeList.get(i));
+								newSprintUpdate.setSprint(newSprint);
+								newSprintUpdate.setTelegramUser(telegramUser);
+								break;
+							}
+						}
+						
+						// Create Sprint in Data Base
+						ResponseEntity<String> sprintResponse = sprintController.createSprint(newSprint);
+						sendMessage(sprintResponse.getBody(), telegramUser.getChatId());
+
+						// Create Sprint Update in Data Base
+						sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
+
+
+
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
-					
+					// Return to Button Case
 					caseNumber = 2;
 					break;
-				// Create Project
-				case 6:
+				case 6: // Create Project
 					// New project instance
 					Project newProject = new Project();
 					// Split the message into a array
@@ -488,16 +495,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					// Sedn data to data base
 					ResponseEntity<String> projectResponse = projectController.createNewProject(newProject);
 					sendMessage(projectResponse.getBody(), telegramUser.getChatId());
+					// Return to Button Case
 					caseNumber = 2;
 					break;
-				// Edit Task
-				case 7:
+				case 7: // Edit Task
+					// Retrieve data from user response
 					String[] editTaskData = messageTextFromTelegram.split("\n");
+					// New Task Instance
 					Task editTask = new Task();
+					// New Task Update Instance
 					TaskUpdate editTaskUpdate = new TaskUpdate();
+					// Auxiliar varibale
 					int taskNumber = -1;
 					
-					// Get Id
+					// Set Id
 					for(int i = 0; i < taskList.size(); i++){
 						if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(3, editTaskData[0].length()).trim())){
 							editTask.setID(taskList.get(i).getID());
@@ -570,14 +581,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 					}
 
-
-					// Print the results
-					sendMessage(taskController.printTask(editTask), telegramUser.getChatId());
-					sendMessage(taskUpdateController.printTaskUpdate(editTaskUpdate), telegramUser.getChatId());
-					
+					// Update Task to Data Base
+					ResponseEntity<String> taskUpdateResponse = taskController.createNewTask(editTask);
+					sendMessage(taskUpdateResponse.getBody(), chatId);
+					// Update Task Update to Data Base 
+					taskUpdateController.createTaskUpdate(editTaskUpdate);
+					// Return to Button Case
+					caseNumber = 2;
 					break;
 				// Log in by default
-				default:
+				default: // Authenication
 					// Set information form db to user related models 
 					userTypeList = userTypeController.findAllUserType().getBody();
 					teamTypeList = teamTypeController.findAllTeamType().getBody();
