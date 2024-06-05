@@ -99,7 +99,8 @@ public class TaskController {
 
     // Print All Tasks
     public String printTask(Task task){
-        String taskInfo = "Name " + task.getName() + 
+        String taskInfo = "Task Id " + task.getID() +
+                " \nName " + task.getName() + 
                 " \nDescription " + task.getDescription() + 
                 " \nEstimated Hours " + task.getEstimatedHours() + 
                 " \nPriority " + task.getPriority() + 

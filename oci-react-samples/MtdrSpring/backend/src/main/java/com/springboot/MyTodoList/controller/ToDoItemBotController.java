@@ -21,6 +21,7 @@ import com.springboot.MyTodoList.util.BotMessages;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 import io.swagger.models.Response;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
@@ -245,7 +246,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					// Edit Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
-						sendMessage("Edit Task", telegramUser.getChatId());
+						// Header Message
+						sendMessage(BotMessages.EDIT_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+						// Format Message
+						sendMessage(BotMessages.EDIT_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+						// Edit task case
+						caseNumber = 7;
 					}
 					// Delete Task Command
 					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage())){
@@ -466,6 +472,47 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					ResponseEntity<String> projectResponse = projectController.createNewProject(newProject);
 					sendMessage(projectResponse.getBody(), telegramUser.getChatId());
 					caseNumber = 2;
+					break;
+				// Edit Task
+				case 7:
+					String[] editTaskData = messageTextFromTelegram.split("\n");
+					Task editTask = new Task();
+					int taskNumber = -1;
+					for(int i = 0; i < taskList.size(); i++){
+						if(taskList.get(i).getID().toString().equals(editTaskData[0])){
+							editTask.setID(taskList.get(i).getID());
+							taskNumber = i;
+						}
+					}
+					// Set Name
+					editTask.setName(Optional.of(editTaskData[0].substring(6, editTaskData[0].length()).trim())
+					.filter(s -> !s.isEmpty())
+					.orElse(taskList.get(taskNumber).getName()));
+					sendMessage(editTask.getName(), telegramUser.getChatId());
+
+					// Set Description
+					editTask.setDescription(Optional.of(editTaskData[1].substring(13, editTaskData[1].length()).trim())
+					.filter(s -> !s.isEmpty())
+					.orElse(taskList.get(taskNumber).getDescription()));
+					sendMessage(editTask.getDescription(), telegramUser.getChatId());
+
+					// Estimated Hours
+					String estimatedHourData = editTaskData[2].substring(16, editTaskData[2].length()).trim();
+					if (estimatedHourData.isEmpty()) {
+						estimatedHourData = String.valueOf(taskList.get(taskNumber).getEstimatedHours());
+					}
+					editTask.setEstimatedHours(Float.parseFloat(estimatedHourData));
+					// Set Priority
+					String priorityData = editTaskData[3].substring(16, editTaskData[3].length()).trim();
+					if(priorityData.isEmpty()){
+						priorityData = String.valueOf(taskList.get(taskNumber).getPriority());
+					}
+					editTask.setPriority(Integer.parseInt(priorityData));
+					// Set Telegram User
+					editTask.setTelegramUser(telegramUser);
+					
+					
+					
 					break;
 				// Log in by default
 				default:
