@@ -342,10 +342,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				case 3: // Delete Task
 					String taskName = messageTextFromTelegram.trim();
+
+					sendMessage(taskName, chatId);
+
 					Long taskId = null;
 					for(int i = 0; i < taskList.size(); i++){
 						if(taskList.get(i).getName().equals(taskName)){
 							taskId = taskList.get(i).getID();
+							break;
 						}
 					}
 					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getID(), taskName, taskId);
