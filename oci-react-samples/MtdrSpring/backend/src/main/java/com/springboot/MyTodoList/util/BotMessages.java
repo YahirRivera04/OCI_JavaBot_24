@@ -27,7 +27,7 @@ public enum BotMessages {
 	// Button Messages task
 	EDIT_TASK_COMMAND_MESSAGE("Edit Task"),
 	EDIT_TASK_MESSAGE("EDIT TASK \nPlease follow the next format (leve in blank no updatable fields) \nId Field no updatable"),
-	EDIT_TASK_FORMAT("Id: \nName: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: "),
+	EDIT_TASK_FORMAT("Id: \nName: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: \nType of Update: "),
 
 	DELETE_TASK_MESSAGE("Delete Task"),
 	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
