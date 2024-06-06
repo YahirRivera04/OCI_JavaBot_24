@@ -341,23 +341,27 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					}
 					break;
 				case 3: // Delete Task
-					String taskName = messageTextFromTelegram.trim();
+					try {
+						String taskName = messageTextFromTelegram.trim();
+						Long taskId = null;
 
-					sendMessage(taskName, chatId);
-
-					Long taskId = null;
-					for(int i = 0; i < taskList.size(); i++){
-						if(taskList.get(i).getName().equals(taskName)){
-							taskId = taskList.get(i).getID();
-							break;
+						for(int i = 0; i < taskList.size(); i++){
+							if(taskList.get(i).getName().equals(taskName)){
+								taskId = taskList.get(i).getID();
+								break;
+							}
 						}
+						ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getID(), taskName, taskId);
+						sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
 					}
-					ResponseEntity<String> deleteTaskResponse = taskController.deleteTask(telegramUser.getID(), taskName, taskId);
-					sendMessage(deleteTaskResponse.getBody(), telegramUser.getChatId());
+					catch(Exception e){
+						sendMessage(e.toString(), telegramUser.getChatId());
+					}
+				
 					caseNumber = 2;
 					break;
 				case 4: // Create Task
-					// Create task case
+
 					Task newTask = new Task();
 					TaskUpdate newTaskUpdate = new TaskUpdate();
 
@@ -425,6 +429,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					caseNumber = 2;
 					break;
 				case 5:	// Create Sprint
+					
 					// New sprint instance
 					Sprint newSprint = new Sprint();
 					// New updateSprint instance 
@@ -479,8 +484,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						// Create Sprint Update in Data Base
 						sprintUpdateController.createNewSprintUpdate(newSprintUpdate);
 
-
-
 					}
 					catch(Exception e){
 						sendMessage(e.toString(), telegramUser.getChatId());
@@ -489,20 +492,28 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					caseNumber = 2;
 					break;
 				case 6: // Create Project
-					// New project instance
-					Project newProject = new Project();
-					// Split the message into a array
-					String[] newProjectResponse = messageTextFromTelegram.split("\n");
-					// Set values to the project
-					newProject.setName(newProjectResponse[0].substring(6, newProjectResponse[0].length()).trim());
-					newProject.setDescription(newProjectResponse[1].substring(13, newProjectResponse[1].length()).trim());
-					// Sedn data to data base
-					ResponseEntity<String> projectResponse = projectController.createNewProject(newProject);
-					sendMessage(projectResponse.getBody(), telegramUser.getChatId());
-					// Return to Button Case
+					try{
+						
+						// New project instance
+						Project newProject = new Project();
+						// Split the message into a array
+						String[] newProjectResponse = messageTextFromTelegram.split("\n");
+						// Set values to the project
+						newProject.setName(newProjectResponse[0].substring(6, newProjectResponse[0].length()).trim());
+						newProject.setDescription(newProjectResponse[1].substring(13, newProjectResponse[1].length()).trim());
+						// Sedn data to data base
+						ResponseEntity<String> projectResponse = projectController.createNewProject(newProject);
+						sendMessage(projectResponse.getBody(), telegramUser.getChatId());
+						// Return to Button Case
+					}
+					catch(Exception e){
+						sendMessage(e.toString(), telegramUser.getChatId());
+					}
 					caseNumber = 2;
 					break;
 				case 7: // Edit Task
+
+				try{
 					// Retrieve data from user response
 					String[] editTaskData = messageTextFromTelegram.split("\n");
 					// New Task Instance
@@ -590,6 +601,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage(taskUpdateResponse.getBody(), chatId);
 					// Update Task Update to Data Base 
 					taskUpdateController.createTaskUpdate(editTaskUpdate);
+				}
+				catch(Exception e){
+					sendMessage(e.toString(), telegramUser.getChatId());
+				}
 					// Return to Button Case
 					caseNumber = 2;
 					break;
