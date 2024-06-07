@@ -27,3 +27,10 @@ kubectl -n mtdrworkshop logs -f
 cat src/main/java/com/springboot/MyTodoList/controller/ToDoItemBotController.java
 
 nano src/main/java/com/springboot/MyTodoList/controller/ToDoItemBotController.java
+
+Falta:
+Log de Mensajes (todo)
+Log de Conversación (/start y fin /log out)
+
+Delete Project
+Delete Sprint

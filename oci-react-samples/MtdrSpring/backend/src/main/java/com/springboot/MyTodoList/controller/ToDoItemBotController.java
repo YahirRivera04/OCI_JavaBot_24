@@ -230,114 +230,115 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						projectList = projectController.findAllProjects().getBody();
 						sprintList = sprintController.findAllSprints().getBody();
 						taskList = taskController.findAllTaskByTelegramUserId(telegramUser.getID()).getBody();	
+					
+						// Developer Buttons
+						//Show Task Command
+						if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer")){
+							// Message header
+							sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Show all tasks that belongs to the user
+							for(int i = 0; i < taskList.size(); i++){
+								sendMessage(taskController.printTask(taskList.get(i)), telegramUser.getChatId());
+							}
+						}
+						// Edit Task Command
+						else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer")){
+							// Header Message
+							sendMessage(BotMessages.EDIT_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Format Message
+							sendMessage(BotMessages.EDIT_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+
+							// Sprint Info
+							sendMessage("\nSprint List", telegramUser.getChatId());
+							for(int i = 0; i < sprintList.size(); i++){
+								sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
+							}
+							// Task Status Info
+							sendMessage("\nTask Status List", telegramUser.getChatId());
+							String taskStatusInfo = "";
+							for(int i = 0; i < taskStatusList.size(); i++){
+								taskStatusInfo += taskStatusController.printTaskStatusList(taskStatusList.get(i));
+							}
+							sendMessage(taskStatusInfo, telegramUser.getChatId());
+
+							// Update Type
+							sendMessage("\nType of Update", telegramUser.getChatId());
+							String updateTypeInfo = "";
+							for(int i = 0; i < updateTypeList.size(); i++){
+								updateTypeInfo += updateTypeController.printUpdateTypeList(updateTypeList.get(i));
+							}
+							sendMessage(updateTypeInfo, telegramUser.getChatId());
+
+							// Edit task case
+							caseNumber = 7;
+						}
+						// Delete Task Command
+						else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer")){
+							// Mesasge header
+							sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Send to new case
+							caseNumber = 3;
+						}
+						// Create Task Command
+						else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer")){
+							// Option Message
+							sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Format message
+							sendMessage(BotMessages.CREATE_TASK_FORMAT.getMessage(), telegramUser.getChatId());
+							
+							// Sprint Info
+							sendMessage("\nSprint List", telegramUser.getChatId());
+							for(int i = 0; i < sprintList.size(); i++){
+								sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
+							}
+							// Task Status Info
+							sendMessage("\nTask Status List", telegramUser.getChatId());
+							String info = "";
+							for(int i = 0; i < taskStatusList.size(); i++){
+								info += taskStatusController.printTaskStatusList(taskStatusList.get(i));
+							}
+							sendMessage(info, telegramUser.getChatId());
+							caseNumber = 4;
+						}
+						// Manager Button
+						// Create Sprint Command
+						else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
+							// Home Message
+							sendMessage(BotMessages.CREATE_SPRINT_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Format Message
+							sendMessage(BotMessages.CREATE_SPRINT_FORMAT.getMessage(), telegramUser.getChatId());
+							// Project List
+							for(int i = 0; i < projectList.size(); i++){
+								sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
+							}
+							caseNumber = 5;
+						}
+						// Create Project Command
+						else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
+							// Home Message
+							sendMessage(BotMessages.CREATE_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Format Message
+							sendMessage(BotMessages.CREATE_PROJECT_FORMAT.getMessage(), telegramUser.getChatId());
+							caseNumber = 6;
+						}
+						// Show Project Command
+						else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){						
+							// Header Message
+							sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+							for(int i = 0; i < projectList.size(); i++){
+								sendMessage(projectController.printProjectList(projectList.get(i)), chatId);
+							}
+						}
+						// Log Out Message
+						else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
+							caseNumber = 0;
+							// Log Out Message
+							sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
+							sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
+						}
 					}
 					catch(Exception e){
 						sendMessage(e.getMessage() , telegramUser.getChatId());
-					}
-					// Developer Buttons
-					//Show Task Command
-					if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage())){
-						// Message header
-						sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(),telegramUser.getChatId());
-						// Show all tasks that belongs to the user
-						for(int i = 0; i < taskList.size(); i++){
-							sendMessage(taskController.printTask(taskList.get(i)), telegramUser.getChatId());
-						}
-					}
-					// Edit Task Command
-					else if(messageTextFromTelegram.equals(BotMessages.EDIT_TASK_COMMAND_MESSAGE.getMessage())){
-						// Header Message
-						sendMessage(BotMessages.EDIT_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
-						// Format Message
-						sendMessage(BotMessages.EDIT_TASK_FORMAT.getMessage(), telegramUser.getChatId());
-
-						// Sprint Info
-						sendMessage("\nSprint List", telegramUser.getChatId());
-						for(int i = 0; i < sprintList.size(); i++){
-							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
-						}
-						// Task Status Info
-						sendMessage("\nTask Status List", telegramUser.getChatId());
-						String taskStatusInfo = "";
-						for(int i = 0; i < taskStatusList.size(); i++){
-							taskStatusInfo += taskStatusController.printTaskStatusList(taskStatusList.get(i));
-						}
-						sendMessage(taskStatusInfo, telegramUser.getChatId());
-
-						// Update Type
-						sendMessage("\nType of Update", telegramUser.getChatId());
-						String updateTypeInfo = "";
-						for(int i = 0; i < updateTypeList.size(); i++){
-							updateTypeInfo += updateTypeController.printUpdateTypeList(updateTypeList.get(i));
-						}
-						sendMessage(updateTypeInfo, telegramUser.getChatId());
-
-						// Edit task case
-						caseNumber = 7;
-					}
-					// Delete Task Command
-					else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage())){
-						// Mesasge header
-						sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
-						// Send to new case
-						caseNumber = 3;
-					}
-					// Create Task Command
-					else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
-						// Option Message
-						sendMessage(BotMessages.CREATE_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
-						// Format message
-						sendMessage(BotMessages.CREATE_TASK_FORMAT.getMessage(), telegramUser.getChatId());
-						
-						// Sprint Info
-						sendMessage("\nSprint List", telegramUser.getChatId());
-						for(int i = 0; i < sprintList.size(); i++){
-							sendMessage(sprintController.printSprintList(sprintList.get(i)), telegramUser.getChatId());
-						}
-						// Task Status Info
-						sendMessage("\nTask Status List", telegramUser.getChatId());
-						String info = "";
-						for(int i = 0; i < taskStatusList.size(); i++){
-							info += taskStatusController.printTaskStatusList(taskStatusList.get(i));
-						}
-						sendMessage(info, telegramUser.getChatId());
-						caseNumber = 4;
-					}
-					// Manager Button
-					// Create Sprint Command
-					else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
-						// Home Message
-						sendMessage(BotMessages.CREATE_SPRINT_MESSAGE.getMessage(), telegramUser.getChatId());
-						// Format Message
-						sendMessage(BotMessages.CREATE_SPRINT_FORMAT.getMessage(), telegramUser.getChatId());
-						// Project List
-						for(int i = 0; i < projectList.size(); i++){
-							sendMessage(projectController.printProjectList(projectList.get(i)), telegramUser.getChatId());
-						}
-						caseNumber = 5;
-					}
-					// Create Project Command
-					else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage())){
-						// Home Message
-						sendMessage(BotMessages.CREATE_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
-						// Format Message
-						sendMessage(BotMessages.CREATE_PROJECT_FORMAT.getMessage(), telegramUser.getChatId());
-						caseNumber = 6;
-					}
-					// Show Project Command
-					else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){						
-						// Header Message
-						sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
-						for(int i = 0; i < projectList.size(); i++){
-							sendMessage(projectController.printProjectList(projectList.get(i)), chatId);
-						}
-					}
-					// Log Out Message
-					else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
-						caseNumber = 0;
-						// Log Out Message
-						sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
-						sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					}
 					break;
 				case 3: // Delete Task
