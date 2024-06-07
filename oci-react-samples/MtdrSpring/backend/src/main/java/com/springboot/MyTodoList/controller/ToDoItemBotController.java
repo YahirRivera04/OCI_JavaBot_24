@@ -89,6 +89,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<UpdateType> updateTypeList = List.of(new UpdateType());
 	// New List of Projects
 	List<Project> projectList = List.of(new Project());
+	// Telegram User
+	TelegramUser telegramUser = new TelegramUser();
 	
 	@Override
 	public void onUpdateReceived (Update update){
@@ -100,7 +102,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 	// First case menu
 	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId){
-		TelegramUser telegramUser = new TelegramUser();
 
 		try{
 			switch (messageTextFromTelegram) {
