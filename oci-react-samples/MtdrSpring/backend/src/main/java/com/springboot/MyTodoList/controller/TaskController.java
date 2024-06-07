@@ -78,40 +78,4 @@ public class TaskController {
         }
     }
 
-    // ##################### Bot Controller Metods ##################### //
-
-   // Get All Tasks
-    public ResponseEntity<List<Task>> findAllTasks(){
-        return ResponseEntity.ok(taskService.findAllTask());
-    }
-    // Get All Tasks By Telegram User Id
-    public ResponseEntity<List<Task>> findAllTaskByTelegramUserId(Long telegramUserId){
-        return ResponseEntity.ok(taskService.findAllTaskByTelegramUserId(telegramUserId));
-    }
-    // Post Task
-    public ResponseEntity<String> createTask(Task newTask){
-        return ResponseEntity.ok(taskService.createTask(newTask));
-    }
-    // Delete Task
-    public ResponseEntity<String> deleteTask(Long telegramUserId, String name, Long taskId){
-        return ResponseEntity.ok(taskService.deleteTask(telegramUserId, name, taskId));
-    }
-
-    // Print All Tasks
-    public String printTask(Task task){
-        String taskInfo = "Task Id " + task.getID() +
-                " \nName " + task.getName() + 
-                " \nDescription " + task.getDescription() + 
-                " \nEstimated Hours " + task.getEstimatedHours() + 
-                " \nPriority " + task.getPriority() + 
-                " \nTelegram User Name " + task.getTelegramUser().getName() + 
-                " \nSprint Name " + task.getSprint().getName() + 
-                " \nTask Status " + task.getTaskStatus().getName();
-
-        return taskInfo;
-    }
-
-    
-    
-
 }

@@ -37,26 +37,4 @@ public class SprintController {
     public ResponseEntity<String> createSprint(@PathVariable Sprint sprint){
         return ResponseEntity.ok(sprintService.createNewSprint(sprint));
     }
-
-    // ##################### Bot Controller Metods ##################### //
-
-    // Get All Sprints
-	public ResponseEntity<List<Sprint>> findAllSprints(){
-		return ResponseEntity.ok(sprintService.findAllSprints());
-	}
-
-    // Print Sprints
-	public String printSprintList(Sprint sprint){
-        String sprintInfo = /* "Id " + sprint.getID().toString() +*/
-                " \nName " + sprint.getName() + 
-                " \nDescription " + sprint.getDescription() + 
-				" \nStart Date " + sprint.getStartDate() + 
-				" \nEnd Date " + sprint.getEndDate() + 
-			/*  " \nProject Id " + sprint.getProject().getID() +*/
-				" \nAssigned Project " + sprint.getProject().getName()/*+
-				" \nProject Description " + sprint.getProject().getDescription()*/;
-        return sprintInfo;
-    }
-	
-
 }

@@ -13,7 +13,14 @@ import javax.transaction.Transactional;
 
 public interface TelegramUserRepository extends JpaRepository<TelegramUser, Long> {
 
-    // Set Chat Id by telegram user id
+    // Esists By Chat Id
+    Boolean existsByChatId (Long chatId);
+
+    // Get TelegramUser By Chat Id
+    TelegramUser findByTelegramName (String telegramName);
+
+
+    // Set Chat Id by Telegram User Id
     @Modifying
     @Query(value = "UPDATE TODOUSER.TELEGRAMUSER SET ChatId = ?2 WHERE TelegramUserId = ?1", nativeQuery = true)
     void setChatIdByTelegramUserId(Long telegramUserId, Long chatId);

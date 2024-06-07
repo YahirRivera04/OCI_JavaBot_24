@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping ("api/usertype")
 public class UserTypeController {
     @Autowired
     private UserTypeService userTypeService;
@@ -16,7 +17,7 @@ public class UserTypeController {
     // ##################### User Type Controller Metods ##################### //
 
     // --------------------- Get All User Type Method ---------------------
-    @GetMapping(value = "/usertype/")
+    @GetMapping(value = "/allusertype/")
     public ResponseEntity<String> findUserType(){
          String info = "";
         try{
@@ -31,28 +32,7 @@ public class UserTypeController {
         }
     }
     
-    // ##################### Bot Controller Metods ##################### //
-
-    // Get All User Types
-	public ResponseEntity<List<UserType>> findAllUserType(){
-		return ResponseEntity.ok(userTypeService.findAllUserType());
-	}
-
-    // Get All User Type
-    public List<UserType> getUserTypeList(){
-        List<UserType> userTypeList = List.of(new UserType());
-        userTypeList = findAllUserType().getBody();
-        return userTypeList;
-    }
-
-    // Print All User Type
-    public String printUserTypeList(UserType userType){
-        // Print all information form user type
-        String userInfo = "Id " + userType.getID().toString() + 
-        " \nName " + userType.getName() + 
-        " \nDescription " + userType.getDescription();
-        return userInfo;
-    }
+    
 
 
 }

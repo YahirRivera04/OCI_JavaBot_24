@@ -39,7 +39,7 @@ public class TelegramUserControllerTest {
 
         when(telegramUserService.findAllTelegramUsers()).thenReturn(telegramUserList);
 
-        ResponseEntity<String> response = telegramUserController.findTelegramUsers();
+        ResponseEntity<String> response = telegramUserController.findAllTelegramUsers();
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("TelegramUser[ID=1, Name=TelegramUser 1, Email=null, PhoneNumber=null, TelegramName=null, UserType=null, ChatId=null]\nTelegramUser[ID=2, Name=TelegramUser 2, Email=null, PhoneNumber=null, TelegramName=null, UserType=null, ChatId=null]\n", response.getBody());

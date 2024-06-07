@@ -32,20 +32,4 @@ public class UpdateTypeController {
         }
     }
     
-    // ##################### Bot Controller Metods ##################### //
-
-    // Get All User Types
-	public ResponseEntity<List<UpdateType>> findAllUpdateType(){
-		return ResponseEntity.ok(updateTypeService.findAllUpdateTypes());
-	}
-
-    // Print All User Type
-    public String printUpdateTypeList(UpdateType updateType){
-        // Print all information form user type
-        String updateTypeInfo =  /*"Id " + updateType.getID().toString() + */ 
-        " \nName " + updateType.getName();
-        // " \nDescription " + updateType.getDescription();
-        
-        return updateTypeInfo;
-    }   
 }

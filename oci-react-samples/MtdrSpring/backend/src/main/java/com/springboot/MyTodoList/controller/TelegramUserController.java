@@ -1,24 +1,39 @@
 package com.springboot.MyTodoList.controller;
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.service.TelegramUserService;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 
 @RestController
+@RequestMapping("/api/telegramuser")
 public class TelegramUserController {
     @Autowired
     private TelegramUserService telegramUserService;
 
-    // ##################### Telegram User Controller Metods ##################### //
+    // --------------------- Exists by Chat Id Method ---------------------
+    @GetMapping(value = "/existuser/{chatId}/{telegramName}")
+    public ResponseEntity<String> findByTelegramName(@PathVariable Long chatId, @PathVariable String telegramName){
+        String info = ""; 
+        try{
+            Boolean exist = telegramUserService.existsByChatId(chatId);
+            if(exist){
+                TelegramUser telegramUser = telegramUserService.findByTelegramName(telegramName);
+                info = "User " + telegramUser.getName() + "exist in system";
+            }
+            return new ResponseEntity<String>(info, HttpStatus.FOUND);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-    @GetMapping(value = "/telegramuser/")
-    public ResponseEntity<String> findTelegramUsers(){
+    // --------------------- Get All Method ---------------------
+    @GetMapping(value = "/alltelegramuser/")
+    public ResponseEntity<String> findAllTelegramUsers(){
         String info = ""; 
         try{
             List<TelegramUser> telegramUserList = telegramUserService.findAllTelegramUsers();
@@ -26,6 +41,24 @@ public class TelegramUserController {
                 info += telegramUserList.get(i).toString() + " \n";
             }
             return ResponseEntity.ok(info);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // --------------------- Get TelegramUser by ChatId Method ---------------------
+    @GetMapping(value = "/{telegarmName}")
+    public ResponseEntity<String> findByTelegramName(@PathVariable String telegramName){
+        try{
+            TelegramUser telegramUser = telegramUserService.findByTelegramName(telegramName);
+            
+            if(telegramUser != null){
+                return ResponseEntity.ok(telegramUserService.printTelegramUserList(telegramUser));
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,36 +76,5 @@ public class TelegramUserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-    // ##################### Bot Controller Metods ##################### //
-
-    // Get All Telegram Users
-    public ResponseEntity<List<TelegramUser>> findAllTelegramUsers(){
-        List<TelegramUser> telegramUserList = telegramUserService.findAllTelegramUsers();
-        return ResponseEntity.ok(telegramUserList);
-    }
-    
-    // Put Telegram User ChatId with Id
-    public ResponseEntity<String> updateChatId(Long id, Long chatId){
-        return ResponseEntity.ok(telegramUserService.updateChatId(id, chatId));
-    }
-
-    public String printTelegramUserList(TelegramUser telegramUser){
-        // Print all information form user type
-        String telegramUserInfo = "Id " + telegramUser.getID().toString() + 
-        " \nName " + telegramUser.getName() + 
-        " \nEmail " + telegramUser.getEmail() + 
-        " \nPhone Number " + telegramUser.getPhoneNumber() + 
-        " \nTelegram Name " + telegramUser.getTelegramName() + 
-        " \nChat Id " + telegramUser.getChatId() + 
-        " \nUser Type Id" + telegramUser.getUserType().getID() +
-        " \nUser Type Name " + telegramUser.getUserType().getName() + 
-        " \nUser Type Description " + telegramUser.getUserType().getDescription();
-
-
-        return telegramUserInfo;
-    }
-
 
 }

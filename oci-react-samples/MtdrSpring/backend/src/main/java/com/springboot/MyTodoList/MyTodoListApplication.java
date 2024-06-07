@@ -1,5 +1,4 @@
 package com.springboot.MyTodoList;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +10,18 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import com.springboot.MyTodoList.service.*;
 import com.springboot.MyTodoList.controller.ToDoItemBotController;
-import com.springboot.MyTodoList.controller.UpdateTypeController;
-import com.springboot.MyTodoList.controller.UserTeamController;
-import com.springboot.MyTodoList.controller.ProjectController;
-import com.springboot.MyTodoList.controller.SprintController;
-import com.springboot.MyTodoList.controller.SprintUpdateController;
-import com.springboot.MyTodoList.controller.TaskController;
-import com.springboot.MyTodoList.controller.TaskStatusController;
-import com.springboot.MyTodoList.controller.TaskUpdateController;
-import com.springboot.MyTodoList.controller.TeamController;
-import com.springboot.MyTodoList.controller.TeamTypeController;
-import com.springboot.MyTodoList.controller.TelegramUserController;
-import com.springboot.MyTodoList.controller.UserTypeController;
-
 import com.springboot.MyTodoList.util.BotMessages;
-
-import com.springboot.MyTodoList.service.BotMenuService;
-import com.springboot.MyTodoList.service.BotOptionService;
-import com.springboot.MyTodoList.service.ConversationService;
-import com.springboot.MyTodoList.service.MessageService;
 
 @SpringBootApplication
 public class MyTodoListApplication implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyTodoListApplication.class);
-
+	// Not Used
 	@Autowired
 	private BotMenuService botMenuService;
-
+	// Not Used
 	@Autowired
 	private BotOptionService botOptionService;
 
@@ -50,41 +32,24 @@ public class MyTodoListApplication implements CommandLineRunner {
 	private MessageService messageService;
 
 	@Autowired
-	private ProjectController projectController;
+	private TelegramUserService telegramUserService;
 
 	@Autowired
-	private SprintController sprintController;
+	private TaskService taskService;
 
 	@Autowired
-	private SprintUpdateController sprintUpdateController;
+	private SprintService sprintService;
 
 	@Autowired
-	private TaskController taskController;
+	private TaskStatusService taskStatusService;
 
 	@Autowired
-	private TaskStatusController taskStatusController;
+	private UpdateTypeService updateTypeService;
 
 	@Autowired
-	private TaskUpdateController taskUpdateController;
+	private ProjectService projectService;
 
-	@Autowired
-	private TeamController teamController;
-
-	@Autowired
-	private TeamTypeController teamTypeController;
-
-	@Autowired
-	private TelegramUserController telegramUserController;
-
-	@Autowired
-	private UpdateTypeController updateTypeController;
-
-	@Autowired
-	private UserTeamController userTeamController;
-
-	@Autowired
-	private UserTypeController userTypeController;
-
+	
 	@Value("${telegram.bot.token}")
 	private String telegramBotToken;
 
@@ -99,12 +64,12 @@ public class MyTodoListApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		try {
 			TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, telegramUserController,
-			taskController, userTypeController, taskStatusController, projectController, sprintController, updateTypeController, 
-			teamTypeController, teamController, userTeamController, taskUpdateController, sprintUpdateController));
+			telegramBotsApi.registerBot(new ToDoItemBotController(telegramBotToken, botName, telegramUserService, taskService, 
+			sprintService, taskStatusService, updateTypeService, projectService));
 			logger.info(BotMessages.BOT_REGISTERED_STARTED.getMessage());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 }
