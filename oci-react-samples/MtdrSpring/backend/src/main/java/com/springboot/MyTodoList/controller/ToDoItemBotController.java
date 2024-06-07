@@ -104,13 +104,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 		try{
 			switch (messageTextFromTelegram) {
-				case "/Start": // BotCommands.START_COMMAND
+				case "/start": // BotCommands.START_COMMAND
 					telegramUser = handleStartCommand(chatId);
 					break;
-				case "/Continue": // BotCommands.CONTINUE_COMMAND
+				case "/continue": // BotCommands.CONTINUE_COMMAND
 					handleContinueCommand(telegramUser, chatId, messageTextFromTelegram);
 					break;
-				case "/LogOut":
+				case "Log Out":
 					sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					break;
@@ -300,6 +300,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				catch (TelegramApiException e) {
 					logger.error(e.getLocalizedMessage(), e);
 				}
+			}
+			else{
+				sendMessage(telegramUser.getUserType().getName(), chatId);
+				sendMessage(messageTextFromTelegram, chatId);
 			}
 		}
 		catch(TelegramApiException e){
