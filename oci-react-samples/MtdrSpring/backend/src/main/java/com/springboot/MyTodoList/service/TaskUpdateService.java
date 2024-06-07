@@ -27,4 +27,14 @@ public class TaskUpdateService {
         }
     }
 
+
+    public String printTaskUpdate(TaskUpdate taskUpdate){
+        String info = "Id: " + taskUpdate.getID() + 
+        " \nTime Stamp: " + taskUpdate.getTimeStamp() +
+        " \nUpdate Type: " + taskUpdate.getUpdateType().getName() +
+        " \nTask Name: " + taskUpdate.getTask().getName() +
+        " \nTelegram User Name: " + taskUpdate.getTelegramUser().getName();
+
+        return info;
+    }
 }
