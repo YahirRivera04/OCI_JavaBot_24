@@ -330,7 +330,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							}
 						}
 						// Log Out Message
-						else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage())){
+						else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer") ||  telegramUser.getUserType().getName().equals("Manager")){
 							caseNumber = 0;
 							// Log Out Message
 							sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
