@@ -1,6 +1,4 @@
 package com.springboot.MyTodoList.model;
-
-
 import java.sql.Timestamp;
 
 import javax.persistence.*;

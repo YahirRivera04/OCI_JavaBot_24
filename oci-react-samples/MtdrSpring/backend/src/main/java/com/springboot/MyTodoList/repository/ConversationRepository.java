@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 @Transactional
 @EnableTransactionManagement
 
-public interface ConversationRepository extends JpaRepository<Conversation,Integer> {
+public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
 
 }

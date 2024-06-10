@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import com.springboot.MyTodoList.model.Conversation;
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
 import com.springboot.MyTodoList.model.SprintUpdate;
@@ -23,6 +24,7 @@ import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.UpdateType;
 import com.springboot.MyTodoList.model.UserTeam;
 import com.springboot.MyTodoList.model.UserType;
+import com.springboot.MyTodoList.service.ConversationService;
 import com.springboot.MyTodoList.service.ProjectService;
 import com.springboot.MyTodoList.service.SprintService;
 import com.springboot.MyTodoList.service.SprintUpdateService;
@@ -64,11 +66,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private ProjectService projectService;
 	private TaskUpdateService taskUpdateService;
 	private SprintUpdateService sprintUpdateService;
+	private ConversationService conversationService;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, TelegramUserService telegramUserService, 
 	TaskService taskService, SprintService sprintService, TaskStatusService taskStatusService,UpdateTypeService updateTypeService, 
-	ProjectService projectService, TaskUpdateService taskUpdateService, SprintUpdateService sprintUpdateService) {
+	ProjectService projectService, TaskUpdateService taskUpdateService, SprintUpdateService sprintUpdateService, ConversationService conversationService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -80,6 +83,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.projectService = projectService;
 		this.taskUpdateService = taskUpdateService;
 		this.sprintUpdateService = sprintUpdateService;
+		this.conversationService = conversationService;
 		this.botName = botName;
 	}
 
@@ -97,6 +101,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	TelegramUser telegramUser = new TelegramUser();
 	// Auxiliar variable
 	int caseNumber = -1;
+	// Conversation Object
+	Conversation conversation = new Conversation();
 
 	
 	@Override
@@ -104,6 +110,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		if(update.hasMessage() && update.getMessage().hasText()){
 			String messageTextFromTelegram = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
+			conversation = conversationService.pushConversationStart();
 			handleIncomingMessage(messageTextFromTelegram, chatId, caseNumber);
 		}
 	}
@@ -120,10 +127,20 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					handleContinueCommand(telegramUser, chatId, messageTextFromTelegram);
 					break;
 				case 2: // Dev Options
-					handelDevOptions(telegramUser, messageTextFromTelegram);
+					if(telegramUser.getUserType().getName().equals("Developer")){
+						handelDevOptions(telegramUser, messageTextFromTelegram);
+					}
+					else{
+						caseNumber = 3;
+					}
 					break;
 				case 3: // Manager Options
-					handelManagerOptions(telegramUser, messageTextFromTelegram);
+					if(telegramUser.getUserType().getName().equals("Manager")){
+						handelManagerOptions(telegramUser, messageTextFromTelegram);
+					}
+					else{
+						caseNumber = 2;
+					}
 					break;
 				case 4: // Edit Task
 					editTask(messageTextFromTelegram, telegramUser);
@@ -143,6 +160,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 9: // Log Out
 					sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
+					conversationService.pushConversationEnd(conversation);
 					caseNumber = -1;
 					break;
 				default: // /start
@@ -174,9 +192,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					if(chatIdCompare == 0){
 						telegramUser = users;
 						// Log In Success
-						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
 						// Continue Message
-						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 						break;
 					}
 				}
@@ -212,9 +230,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				// Post Chat Id on db 
 				telegramUserService.updateChatId(telegramUser.getID(), telegramUser.getChatId());
 				// Log In Success
-				sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
+				sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), telegramUser.getChatId());
 				// Continue Message
-				sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+				sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), telegramUser.getChatId());
 				caseNumber = 1;
 				return telegramUser;
 			}
@@ -226,7 +244,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		} 
 		catch (TelegramApiException e){
-			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
+			sendMessage(messageTextFromTelegram + " " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 			return new TelegramUser();
 		}
@@ -775,8 +793,5 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		}
 		
 	}
-
-
-
 
 }

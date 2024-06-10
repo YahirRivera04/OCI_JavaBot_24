@@ -1,9 +1,9 @@
 package com.springboot.MyTodoList.model;
-
-
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 import java.util.List;
+
+
 @Entity
 @Table(name = "CONVERSATION")
 public class Conversation {
@@ -14,10 +14,10 @@ public class Conversation {
     Long conversationId;
     
     @Column(name = "STARTTIME")
-    OffsetDateTime startTime;
+    Timestamp startTime;
     
     @Column(name = "ENDTIME")
-    OffsetDateTime endTime;
+    Timestamp endTime;
     
     @OneToMany(mappedBy = "conversationIdFk", cascade = CascadeType.ALL)
     List<Message> messageId;
@@ -25,7 +25,7 @@ public class Conversation {
     public Conversation(){
 
     }
-    public Conversation(Long ID, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public Conversation(Long ID, Timestamp startTime, Timestamp endTime) {
         this.conversationId = ID;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -39,16 +39,20 @@ public class Conversation {
         this.conversationId = ID;
     }
 
-    public OffsetDateTime startTime() {
+    public Timestamp startTime() {
         return startTime;
     }
 
-    public void startTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public OffsetDateTime endTime() {
+    public Timestamp endTime() {
         return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
     
     public List<Message> getMessages(){
