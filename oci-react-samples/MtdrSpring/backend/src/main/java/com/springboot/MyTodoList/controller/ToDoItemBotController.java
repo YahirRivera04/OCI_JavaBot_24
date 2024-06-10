@@ -142,6 +142,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 9: // Log Out
 					sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
+					caseNumber = -1;
 					break;
 				default: // /start
 					telegramUser = handleStartCommand(chatId);

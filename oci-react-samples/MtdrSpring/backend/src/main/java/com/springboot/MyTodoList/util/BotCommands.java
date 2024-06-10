@@ -3,7 +3,7 @@ package com.springboot.MyTodoList.util;
 public enum BotCommands {
 
 	// Todo list commands (default)
-	START_COMMAND("/Start"),
+	START_COMMAND("/start"),
 	LOG_OUT_COMMAND("Log Out"),
 
 	// Start commands
