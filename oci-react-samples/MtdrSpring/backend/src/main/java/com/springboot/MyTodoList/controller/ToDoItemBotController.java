@@ -111,9 +111,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId,int caseNumber){
 
 		try{
+			sendMessage("Number " + caseNumber, chatId);
 			switch (caseNumber) {
 				case 0: // /login:TelegramUser
-				telegramUser = handleLoginCommand(messageTextFromTelegram, chatId);
+					telegramUser = handleLoginCommand(messageTextFromTelegram, chatId);
 					break;
 				case 1: // /continue
 					handleContinueCommand(telegramUser, chatId, messageTextFromTelegram);
@@ -155,11 +156,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 	// Start
 	private TelegramUser handleStartCommand(Long chatId) throws TelegramApiException{
-		// Needed Variables and Objects
-		TelegramUser telegramUser = new TelegramUser();
-		int chatIdCompare = -1;
-
 		try{
+
+			// Needed Variables and Objects
+			TelegramUser telegramUser = new TelegramUser();
+			int chatIdCompare = -1;
+			
 			// Welcome Message
 			sendMessage(BotMessages.WELCOME_MESSAGE.getMessage(), chatId);
 			// If the user is found in bb by ChatId
@@ -190,6 +192,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		}
 		catch(TelegramApiException e){
 			// Logger debug info
+			sendMessage("Erro " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 			return new TelegramUser();
 		}
@@ -223,6 +226,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		} 
 		catch (TelegramApiException e){
+			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 			return new TelegramUser();
 		}
@@ -314,21 +318,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				// Add the keyboard markup
 				messageToTelegram.setReplyMarkup(keyboardMarkup);
-				caseNumber = 3;
 				try {
 					execute(messageToTelegram);
 					sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
+					caseNumber = 3;
 				} 
 				catch (TelegramApiException e) {
 					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
-			else{
-				sendMessage(telegramUser.getUserType().getName(), chatId);
-				sendMessage(messageTextFromTelegram, chatId);
-			}
 		}
 		catch(TelegramApiException e){
+			sendMessage(messageTextFromTelegram + " " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 		}
 		
