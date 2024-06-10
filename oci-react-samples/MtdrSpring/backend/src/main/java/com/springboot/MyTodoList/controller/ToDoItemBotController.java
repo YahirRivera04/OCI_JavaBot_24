@@ -91,44 +91,50 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<Project> projectList = List.of(new Project());
 	// Telegram User
 	TelegramUser telegramUser = new TelegramUser();
+	// Auxiliar variable
+	int caseNumber = -1;
+
 	
 	@Override
 	public void onUpdateReceived (Update update){
 		if(update.hasMessage() && update.getMessage().hasText()){
 			String messageTextFromTelegram = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
-            handleIncomingMessage(messageTextFromTelegram, chatId);
+			handleIncomingMessage(messageTextFromTelegram, chatId, caseNumber);
 		}
 	}
 	// First case menu
-	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId){
+	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId,int caseNumber){
 
 		try{
-			switch (messageTextFromTelegram) {
-				case "/start": // BotCommands.START_COMMAND
-					telegramUser = handleStartCommand(chatId);
+			switch (caseNumber) {
+				case 0: // /login:TelegramUser
+				telegramUser = handleLoginCommand(messageTextFromTelegram, chatId);
 					break;
-				case "/continue": // BotCommands.CONTINUE_COMMAND
+				case 1: // /continue
 					handleContinueCommand(telegramUser, chatId, messageTextFromTelegram);
 					break;
-				case "Log Out":
+				case 2: // Dev Options
+					handelDevOptions(telegramUser, messageTextFromTelegram);
+				break;
+				case 3: // Manager Options
+					handelManagerOptions(telegramUser, messageTextFromTelegram);
+				break;
+				case 4: // Edit Task
+					editTask(messageTextFromTelegram, telegramUser);
+				break;
+				case 5: // Delete Task
+					deleteTask(messageTextFromTelegram, telegramUser);
+				break;
+				case 6: // Create Task
+					createTask(messageTextFromTelegram, telegramUser);
+				break;
+				case 7: // Log Out
 					sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					break;
-				case "Edit Task": // BotCommands.EDIT_TASK
-					// Edit task function
-					editTask(messageTextFromTelegram, telegramUser);
-					break;
-				case "Delete Task":
-					deleteTask(messageTextFromTelegram, telegramUser);
-					break;
-				case "Create Task":
-					createTask(messageTextFromTelegram, telegramUser);
-					break;
-				default: // BotCommands.LOGIN_COMMAND
-					if (messageTextFromTelegram.startsWith(BotCommands.LOGIN_COMMAND.getCommand())) {
-						telegramUser = handleLoginCommand(messageTextFromTelegram, chatId);
-					}
+				default: // /start
+				telegramUser = handleStartCommand(chatId);
 					break;
 			}
 		}
@@ -158,6 +164,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						// Continue Message
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+						caseNumber = 1;
 						break;
 					}
 				}
@@ -166,6 +173,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			else {
 				// Log in Fail
 				sendMessage(BotMessages.LOG_IN_MESSAGE.getMessage(), chatId);
+				caseNumber = 0;
 				return new TelegramUser();
 			}
 		}
@@ -192,11 +200,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 				// Continue Message
 				sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
+				caseNumber = 1;
 				return telegramUser;
 			}
 			else {
 				// Log In Fail
 				sendMessage(BotMessages.LOG_IN_FAIL.getMessage(), chatId);
+				caseNumber = 0;
 				return new TelegramUser();
 			}
 		} 
@@ -250,11 +260,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				// Add the keyboard markup
 				messageToTelegram.setReplyMarkup(keyboardMarkup);
-
+				caseNumber = 2;
 				try {
 					execute(messageToTelegram);
 					sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
-					handelDevOptions(telegramUser, messageTextFromTelegram);
 				} 
 				catch (TelegramApiException e) {
 					logger.error(e.getLocalizedMessage(), e);
@@ -292,11 +301,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 				// Add the keyboard markup
 				messageToTelegram.setReplyMarkup(keyboardMarkup);
-
+				caseNumber = 3;
 				try {
 					execute(messageToTelegram);
 					sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
-					handelmanagerOptions(telegramUser, messageTextFromTelegram);
 				} 
 				catch (TelegramApiException e) {
 					logger.error(e.getLocalizedMessage(), e);
@@ -355,13 +363,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					updateTypeInfo += updateTypeService.printUpdateTypeList(updateType);
 				}
 				sendMessage(updateTypeInfo, telegramUser.getChatId());
-
+				// Set case to Edit task
+				caseNumber = 4;
 			}
 			// Delete Task Command
 			else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage())){
 				// Mesasge header
 				sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
-				// Llamar a Función cn3
+				// Set Case to Delete Task
+				caseNumber = 5;
 			}
 			// Create Task Command
 			else if(messageTextFromTelegram.equals(BotMessages.CREATE_TASK_COMMAND_MESSAGE.getMessage())){
@@ -383,8 +393,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					taskStatusInfo += taskStatusService.printTaskStatusList(taskStatus);
 				}
 				sendMessage(taskStatusInfo, telegramUser.getChatId());
-
-				// Llamar a fución
+				// Set case to Create Task
+				caseNumber = 6;
 			}
 		
 		}
@@ -394,7 +404,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 	// Manager Buttons
-	private void handelmanagerOptions(TelegramUser telegramUser, String messageTextFromTelegram) throws TelegramApiException{
+	private void handelManagerOptions(TelegramUser telegramUser, String messageTextFromTelegram) throws TelegramApiException{
 		// try{
 
 		// }
