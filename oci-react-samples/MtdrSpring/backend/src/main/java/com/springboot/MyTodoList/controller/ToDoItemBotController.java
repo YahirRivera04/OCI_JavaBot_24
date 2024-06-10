@@ -165,20 +165,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// Welcome Message
 			sendMessage(BotMessages.WELCOME_MESSAGE.getMessage(), chatId);
 			// If the user is found in bb by ChatId
-			if(telegramUserService.existsByChatId(chatId)){
-				
-				sendMessage("User found", chatId); // BORRAR
-				
+			if(telegramUserService.existsByChatId(chatId)){				
 				// Get All Telegram Users and retrieve the actual user
 				for(TelegramUser users : telegramUserService.findAllTelegramUsers()){
-					
-					sendMessage("User " + users.getName(), chatId); // BORRAR
-
 					// Compare between Chat Id
-					if(users != null) chatIdCompare = Long.compare(users.getChatId(), chatId);
-
-					sendMessage("Chat id compare result " + chatIdCompare, chatId); // BORRAR
-
+					if(users.getChatId() != null) chatIdCompare = Long.compare(users.getChatId(), chatId);
 					// Set User
 					if(chatIdCompare == 0){
 						telegramUser = users;
