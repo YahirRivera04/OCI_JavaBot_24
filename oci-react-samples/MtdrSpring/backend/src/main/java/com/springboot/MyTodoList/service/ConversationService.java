@@ -34,7 +34,7 @@ public class ConversationService {
         if(conversation != null){
             Timestamp endTime = new Timestamp(System.currentTimeMillis());
             conversation.setEndTime(endTime);
-            conversationRepository.save(conversation);
+            conversationRepository.updateConversation(conversation.getID(), conversation.getEndTime());
         }
     }
 

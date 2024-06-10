@@ -111,14 +111,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
 			conversation = conversationService.pushConversationStart();
-			handleIncomingMessage(messageTextFromTelegram, chatId, caseNumber);
+			handleIncomingMessage(messageTextFromTelegram, chatId, caseNumber, conversation);
 		}
 	}
 	// First case menu
-	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId,int caseNumber){
+	private void handleIncomingMessage(String messageTextFromTelegram, Long chatId,int caseNumber, Conversation conversation){
 
 		try{
-			sendMessage("Number " + caseNumber, chatId);
+			// sendMessage("Number " + caseNumber, chatId);
 			switch (caseNumber) {
 				case 0: // /login:TelegramUser
 					telegramUser = handleLoginCommand(messageTextFromTelegram, chatId);

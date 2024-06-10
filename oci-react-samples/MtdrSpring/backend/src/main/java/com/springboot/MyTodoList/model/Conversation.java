@@ -39,7 +39,7 @@ public class Conversation {
         this.conversationId = ID;
     }
 
-    public Timestamp startTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
@@ -47,7 +47,7 @@ public class Conversation {
         this.startTime = startTime;
     }
 
-    public Timestamp endTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
