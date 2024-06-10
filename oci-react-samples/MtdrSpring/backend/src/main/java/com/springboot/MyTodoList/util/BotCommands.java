@@ -4,7 +4,7 @@ public enum BotCommands {
 
 	// Todo list commands (default)
 	START_COMMAND("/Start"),
-	LOG_OUT_COMMAND("/LogOut"),
+	LOG_OUT_COMMAND("Log Out"),
 
 	// Start commands
 	LOGIN_COMMAND("/Login:"),
