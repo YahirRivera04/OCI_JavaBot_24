@@ -613,8 +613,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			sendMessage(newTask.getDescription(), telegramUser.getChatId());
 
 			// Estimated Hours, Priority and Telegram User
-			newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length()).trim()));
-			newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length()).trim()));
+			newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length()-1).trim()));
+			newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length()-1).trim()));
 			newTask.setTelegramUser(telegramUser);
 			sendMessage(newTask.getEstimatedHours() + " " + newTask.getPriority() + " " + newTask.getTelegramUser().getName(), telegramUser.getChatId());
 
