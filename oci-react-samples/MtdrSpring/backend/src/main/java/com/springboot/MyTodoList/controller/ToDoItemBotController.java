@@ -604,18 +604,24 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			TaskUpdate newTaskUpdate = new TaskUpdate();
 			String[] taskData = messageTextFromTelegram.split("\n");
 			
-			// Set Name
+			// Set Name:
 			newTask.setName(taskData[0].substring(6, taskData[0].length()).trim());
+			sendMessage(newTask.getName(), telegramUser.getChatId());
+			
 			// Description
 			newTask.setDescription(taskData[1].substring(13, taskData[1].length()).trim());
+			sendMessage(newTask.getDescription(), telegramUser.getChatId());
 
 			// Estimated Hours, Priority and Telegram User
 			newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length()).trim()));
 			newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length()).trim()));
 			newTask.setTelegramUser(telegramUser);
-			
+			sendMessage(newTask.getEstimatedHours() + " " + newTask.getPriority() + " " + newTask.getTelegramUser().getName(), telegramUser.getChatId());
+
 			// Set Sprint
 			String sprintName = taskData[4].substring(13, taskData[4].length()).trim();
+			sendMessage("Sprint name " + sprintName, telegramUser.getChatId());
+
 			for(int i = 0; i < sprintList.size(); i++){
 				if(sprintList.get(i).getName().equals(sprintName)){
 					newTask.setSprint(sprintList.get(i));
@@ -625,9 +631,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					newTask.setSprint(new Sprint());
 				}
 			}
+			sendMessage("Sprint name from object " + newTask.getSprint().getName(), telegramUser.getChatId());
+
 
 			// Set Task Status
 			String taskStatusName = taskData[5].substring(13, taskData[5].length()).trim();
+			sendMessage("Task Status " + taskStatusName, telegramUser.getChatId());
+
 			for(int i = 0; i < taskStatusList.size(); i++){
 				if(taskStatusList.get(i).getName().equals(taskStatusName)){
 					newTask.setTaskStatus(taskStatusList.get(i));
@@ -637,6 +647,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					newTask.setTaskStatus(new TaskStatus());
 				}
 			}
+
+			sendMessage("Task Status from object " + newTask.getTaskStatus().getName(), telegramUser.getChatId());
+
 
 			// Set Update Type for TASK UPDATE TABLE && Sprint Update for SPRINT UPDATE TABLE
 			for(int i = 0; i < updateTypeList.size(); i++){
@@ -650,18 +663,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				}
 			}
-
 			// Post Task to Data Base
 			String taskResponse = taskService.createTask(newTask);
 			sendMessage(taskResponse, telegramUser.getChatId());
 			
 			// Post Task Update to Data Base
-			taskUpdateService.createNewTaskUpdate(newTaskUpdate);
+			String response = taskUpdateService.createNewTaskUpdate(newTaskUpdate);
+			sendMessage(response, telegramUser.getChatId());
 			// Case Number Dev Options
 			caseNumber = 2;
 		}
 		catch(Exception e){
-			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
+			sendMessage("Error: " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
