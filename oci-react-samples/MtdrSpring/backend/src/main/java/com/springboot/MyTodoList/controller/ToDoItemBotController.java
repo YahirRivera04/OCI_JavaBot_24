@@ -166,10 +166,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			sendMessage(BotMessages.WELCOME_MESSAGE.getMessage(), chatId);
 			// If the user is found in bb by ChatId
 			if(telegramUserService.existsByChatId(chatId)){
+				
+				sendMessage("User found", chatId); // BORRAR
+				
 				// Get All Telegram Users and retrieve the actual user
 				for(TelegramUser users : telegramUserService.findAllTelegramUsers()){
+					
+					sendMessage("User " + users.getName(), chatId); // BORRAR
+
 					// Compare between Chat Id
 					if(users != null) chatIdCompare = Long.compare(users.getChatId(), chatId);
+
+					sendMessage("Chat id compare result " + chatIdCompare, chatId); // BORRAR
+
 					// Set User
 					if(chatIdCompare == 0){
 						telegramUser = users;
@@ -177,10 +186,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						sendMessage(BotMessages.LOG_IN_SUCCESS.getMessage(), chatId);
 						// Continue Message
 						sendMessage(BotMessages.CONTINUE_MESSAGE.getMessage(), chatId);
-						caseNumber = 1;
 						break;
 					}
 				}
+				caseNumber = 1;
 				return telegramUser;
 			}
 			else {
@@ -192,7 +201,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		}
 		catch(TelegramApiException e){
 			// Logger debug info
-			sendMessage("Erro " + e.getMessage(), chatId);
+			sendMessage("Error " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 			return new TelegramUser();
 		}
