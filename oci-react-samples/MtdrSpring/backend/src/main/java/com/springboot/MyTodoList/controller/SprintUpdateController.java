@@ -22,20 +22,4 @@ public class SprintUpdateController {
         return ResponseEntity.ok(sprintUpdateService.createNewSprintUpdate(sprintUpdate));
     }
 
-    // ##################### Bot Controller Metods ##################### //
-
-    public ResponseEntity<String> createNewSprintUpdate(SprintUpdate sprintUpdate){
-        return ResponseEntity.ok(sprintUpdateService.createNewSprintUpdate(sprintUpdate));
-    }
-
-    // Print Sprint Update Info
-    public String printSptintUpdate(SprintUpdate sprintUpdate){
-        String sprintUpdateInfo = "Time Stamp: " + sprintUpdate.getTimeStamp() + 
-        " \nUpdate Type Id: " + sprintUpdate.getUpdateType().getID() +
-        " \nSprint Id: " + sprintUpdate.getSprint().getID() +
-        " \nUser Id: " + sprintUpdate.getTelegramUser().getID();
-        
-        return sprintUpdateInfo;
-    }
-
 }

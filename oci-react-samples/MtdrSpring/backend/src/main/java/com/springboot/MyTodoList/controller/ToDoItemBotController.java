@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
+import com.springboot.MyTodoList.model.SprintUpdate;
 import com.springboot.MyTodoList.model.Task;
 import com.springboot.MyTodoList.model.TaskStatus;
 import com.springboot.MyTodoList.model.TaskUpdate;
@@ -24,6 +25,7 @@ import com.springboot.MyTodoList.model.UserTeam;
 import com.springboot.MyTodoList.model.UserType;
 import com.springboot.MyTodoList.service.ProjectService;
 import com.springboot.MyTodoList.service.SprintService;
+import com.springboot.MyTodoList.service.SprintUpdateService;
 import com.springboot.MyTodoList.service.TaskService;
 import com.springboot.MyTodoList.service.TaskStatusService;
 import com.springboot.MyTodoList.service.TaskUpdateService;
@@ -61,11 +63,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private UpdateTypeService updateTypeService;
 	private ProjectService projectService;
 	private TaskUpdateService taskUpdateService;
+	private SprintUpdateService sprintUpdateService;
 	private String botName;
 
 	public ToDoItemBotController(String botToken, String botName, TelegramUserService telegramUserService, 
 	TaskService taskService, SprintService sprintService, TaskStatusService taskStatusService,UpdateTypeService updateTypeService, 
-	ProjectService projectService, TaskUpdateService taskUpdateService) {
+	ProjectService projectService, TaskUpdateService taskUpdateService, SprintUpdateService sprintUpdateService) {
 		super(botToken);
 		logger.info("Bot Token: " + botToken);
 		logger.info("Bot name: " + botName);
@@ -76,6 +79,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		this.updateTypeService = updateTypeService;
 		this.projectService = projectService;
 		this.taskUpdateService = taskUpdateService;
+		this.sprintUpdateService = sprintUpdateService;
 		this.botName = botName;
 	}
 
@@ -129,7 +133,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				case 6: // Create Task
 					createTask(messageTextFromTelegram, telegramUser);
 				break;
-				case 7: // Log Out
+				case 7: // Create Sprint
+					createSprint(messageTextFromTelegram, telegramUser);
+				break;
+				case 8: // Create Project
+					createProject(messageTextFromTelegram, telegramUser);
+				break;
+				case 9: // Log Out
 					sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 					sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
 					break;
@@ -405,12 +415,44 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 	// Manager Buttons
 	private void handelManagerOptions(TelegramUser telegramUser, String messageTextFromTelegram) throws TelegramApiException{
-		// try{
+		try{
+			// Load Task Information
+			getDataBaseInfo(telegramUser);
 
-		// }
-		// catch (TelegramApiException e){
-		// 	logger.error(e.getLocalizedMessage(), e);
-		// }
+			// Create Sprint Command
+			if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage())){
+				// Home Message
+				sendMessage(BotMessages.CREATE_SPRINT_MESSAGE.getMessage(), telegramUser.getChatId());
+				// Format Message
+				sendMessage(BotMessages.CREATE_SPRINT_FORMAT.getMessage(), telegramUser.getChatId());
+				// Project List
+				for(Project project : projectList){
+					sendMessage(projectService.printProjectList(project), telegramUser.getChatId());
+				}
+				// Case Number
+				caseNumber = 7;
+			}
+			// Create Project Command
+			else if(messageTextFromTelegram.equals(BotMessages.CREATE_PROJECT_COMMAND_MESSAGE.getMessage())){
+				// Home Message
+				sendMessage(BotMessages.CREATE_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+				// Format Message
+				sendMessage(BotMessages.CREATE_PROJECT_FORMAT.getMessage(), telegramUser.getChatId());
+				// Case Number
+				caseNumber = 8;
+			}
+			// Show Project Command
+			else if(messageTextFromTelegram.equals(BotMessages.SHOW_PROJECT_COMMAND_MESSAGE.getMessage())){						
+				// Header Message
+				sendMessage(BotMessages.SHOW_PROJECT_MESSAGE.getMessage(), telegramUser.getChatId());
+				for(Project project : projectList){
+					sendMessage(projectService.printProjectList(project),telegramUser.getChatId());
+				}
+			}
+		}
+		catch (TelegramApiException e){
+			logger.error(e.getLocalizedMessage(), e);
+		}
 	}
 
 	// Edit Task
@@ -505,6 +547,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			sendMessage(taskUpdateResponse, telegramUser.getChatId());
 			// Update Task Update to Data Base 
 			taskUpdateService.createNewTaskUpdate(editTaskUpdate);
+			// Case Number Dev Options
+			caseNumber = 2;
 		}
 		catch(TelegramApiException e){
 			logger.error(e.getLocalizedMessage(), e);
@@ -512,7 +556,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 	// Delete Task 
-	private void deleteTask(String messageTextFromTelegram, TelegramUser telegramUser){
+	private void deleteTask(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
 		try {
 			String taskName = messageTextFromTelegram.trim();
 			Long taskId = null;
@@ -525,6 +569,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 			String deleteTaskResponse = taskService.deleteTask(telegramUser.getID(), taskName, taskId);
 			sendMessage(deleteTaskResponse, telegramUser.getChatId());
+			// Case Number Dev Options
+			caseNumber = 2;
 		}
 		catch(Exception e){
 			logger.error(e.getLocalizedMessage(), e);
@@ -532,7 +578,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	}
 
 	// Create Task
-	private void createTask(String messageTextFromTelegram, TelegramUser telegramUser){
+	private void createTask(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
 		Task newTask = new Task();
 		TaskUpdate newTaskUpdate = new TaskUpdate();
 
@@ -592,13 +638,104 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			
 			// Post Task Update to Data Base
 			taskUpdateService.createNewTaskUpdate(newTaskUpdate);
-
+			// Case Number Dev Options
+			caseNumber = 2;
 		}
 		catch(Exception e){
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
 	
+	// Create Sprint
+	private void createSprint(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
+		try{
+			// New sprint instance
+			Sprint newSprint = new Sprint();
+			// New updateSprint instance 
+			SprintUpdate newSprintUpdate = new SprintUpdate();
+			// String for project name
+			String projectName = "";
+
+			try{
+				// Split the message into a array
+				String[] userResponser = messageTextFromTelegram.split("\n");
+				
+				// Set Name, Description to the project
+				newSprint.setName(userResponser[0].substring(6, userResponser[0].length()).trim());
+				newSprint.setDescription(userResponser[1].substring(13, userResponser[1].length()).trim());
+
+				// Formatter for Start Date
+				LocalDate dateStart = LocalDate.parse(userResponser[2].substring(26, userResponser[2].length()).trim());
+				OffsetDateTime dateTimeStart =  dateStart.atStartOfDay().atOffset(ZoneOffset.UTC);
+				newSprint.setStartDate(dateTimeStart);
+				
+				// Formatter for End Date
+				LocalDate dateEnd = LocalDate.parse(userResponser[3].substring(24, userResponser[3].length()).trim());
+				OffsetDateTime dateTimeEnd = dateEnd.atStartOfDay().atOffset(ZoneOffset.UTC);
+				//sendMessage("End " + dateTimeEnd, telegramUser.getChatId());
+				newSprint.setEndDate(dateTimeEnd);
+
+				// Set Project
+				projectName = userResponser[4].substring(14, userResponser[4].length()).trim();
+				sendMessage(projectName, telegramUser.getChatId());
+				for(int i = 0; i < projectList.size(); i++){
+					if(projectList.get(i).getName().equals(projectName)){
+						newSprint.setProject(projectList.get(i));
+					}
+				}
+
+				// Create Sprint Update
+				for(int i = 0; i < updateTypeList.size(); i++){
+					if(updateTypeList.get(i).getName().equals("Creation")){
+						Timestamp timeStamp = new Timestamp(System.currentTimeMillis()); 
+						newSprintUpdate.setTimeStamp(timeStamp);
+						newSprintUpdate.setUpdateType(updateTypeList.get(i));
+						newSprintUpdate.setSprint(newSprint);
+						newSprintUpdate.setTelegramUser(telegramUser);
+						break;
+					}
+				}
+				
+				// Create Sprint in Data Base
+				String sprintResponse = sprintService.createNewSprint(newSprint);
+				sendMessage(sprintResponse, telegramUser.getChatId());
+
+				// Create Sprint Update in Data Base
+				sprintUpdateService.createNewSprintUpdate(newSprintUpdate);
+				// Return to Button Case
+				caseNumber = 2;
+			}
+			catch(Exception e){
+				sendMessage(e.toString(), telegramUser.getChatId());
+			}
+			
+		}
+		catch (TelegramApiException e){
+			logger.error(e.getLocalizedMessage(), e);
+		}
+	}
+
+	// Create Project
+	private void createProject(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
+		try{
+			// New project instance
+			Project newProject = new Project();
+			// Split the message into a array
+			String[] newProjectResponse = messageTextFromTelegram.split("\n");
+			// Set values to the project
+			newProject.setName(newProjectResponse[0].substring(6, newProjectResponse[0].length()).trim());
+			newProject.setDescription(newProjectResponse[1].substring(13, newProjectResponse[1].length()).trim());
+			// Sedn data to data base
+			String projectResponse = projectService.createNewProject(newProject);
+			sendMessage(projectResponse, telegramUser.getChatId());
+			// Return to Button Case
+			caseNumber = 2;
+		}
+		catch (TelegramApiException e){
+			logger.error(e.getLocalizedMessage(), e);
+		}
+	}
+
 	@Override
 	public String getBotUsername() {		
 		return botName;

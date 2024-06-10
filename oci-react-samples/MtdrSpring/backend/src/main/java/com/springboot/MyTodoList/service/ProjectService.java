@@ -35,4 +35,13 @@ public class ProjectService {
             return "Project " + newProject.getName() + "fail in creation. \nERROR: " + e;   
         }
     }
+
+    // Print Projects
+    public String printProjectList(Project project){
+        String projectInfo = "Id " + project.getID().toString() +
+                " \nName " + project.getName() + 
+                " \nDescription " + project.getDescription();
+
+        return projectInfo;
+    }
 }

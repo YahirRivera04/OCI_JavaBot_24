@@ -36,25 +36,4 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.createNewProject(project));
     }
 
-    // ##################### Bot Controller Metods ##################### //
-
-    // Get All projects
-	public ResponseEntity<List<Project>> findAllProjects(){
-		return ResponseEntity.ok(projectService.findAllProjects());
-	}
-
-	// Create new project 
-    public ResponseEntity<String> createProject(@PathVariable Project project){
-        return ResponseEntity.ok(projectService.createNewProject(project));
-    }
-
-    // Print Projects
-    public String printProjectList(Project project){
-        String projectInfo = "Id " + project.getID().toString() +
-                " \nName " + project.getName() + 
-                " \nDescription " + project.getDescription();
-
-        return projectInfo;
-    }
-
 }

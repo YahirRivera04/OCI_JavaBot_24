@@ -27,5 +27,15 @@ public class SprintUpdateService {
             return "Sprint Update with timestamp " + newSprintUpdate.getTimeStamp() + " fail. \nERROR: " + e;   
         }
     }
+  
+    // Print Sprint Update Info
+    public String printSptintUpdate(SprintUpdate sprintUpdate){
+        String sprintUpdateInfo = "Time Stamp: " + sprintUpdate.getTimeStamp() + 
+        " \nUpdate Type Id: " + sprintUpdate.getUpdateType().getID() +
+        " \nSprint Id: " + sprintUpdate.getSprint().getID() +
+        " \nUser Id: " + sprintUpdate.getTelegramUser().getID();
+        
+        return sprintUpdateInfo;
+    }
 
 }
