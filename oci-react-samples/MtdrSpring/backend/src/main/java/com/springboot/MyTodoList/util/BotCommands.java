@@ -7,7 +7,7 @@ public enum BotCommands {
 	LOG_OUT_COMMAND("Log Out"),
 
 	// Start commands
-	LOGIN_COMMAND("/Login:"),
+	LOGIN_COMMAND("/login:"),
 	CONTINUE_COMMAND("/continue"),
 
 	// Developer buttons
