@@ -630,7 +630,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	private void deleteTask(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
 		try {
 			// Local update task obect to log
-			TaskUpdate newTaskUpdate = new TaskUpdate(); 
+			TaskUpdate deleteTaskUpdate = new TaskUpdate(); 
 			// Local task object
 			Task task = new Task();
 			// Message from user
@@ -649,17 +649,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				if(updateTypeList.get(i).getName().equals("Deletion")){
 					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 					// Task Update
-					newTaskUpdate.setTimeStamp(timeStamp);
-					newTaskUpdate.setUpdateType(updateTypeList.get(i));
-					newTaskUpdate.setTask(task);
-					newTaskUpdate.setTelegramUser(telegramUser);
+					deleteTaskUpdate.setTimeStamp(timeStamp);
+					deleteTaskUpdate.setUpdateType(updateTypeList.get(i));
+					deleteTaskUpdate.setTask(task);
+					deleteTaskUpdate.setTelegramUser(telegramUser);
 					break;
 				}
 			}
 
-
+			// Method to delete from db
 			String deleteTaskResponse = taskService.deleteTask(telegramUser.getID(), taskName, task.getID());
 			sendMessage(deleteTaskResponse, telegramUser.getChatId());
+			// Log to TASKUPDATE table
+			taskUpdateService.createNewTaskUpdate(deleteTaskUpdate);
 			// Case Number Dev Options
 			caseNumber = 2;
 		}

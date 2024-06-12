@@ -6,10 +6,6 @@ import java.sql.Timestamp;
 import com.springboot.MyTodoList.model.Conversation;
 import com.springboot.MyTodoList.repository.ConversationRepository;
 
-// Marks the class as a Spring service component, 
-// allowing it to be automatically detected and instantiated by Spring container
-// during component scanning.
-
 @Service
 public class ConversationService {
     @Autowired
