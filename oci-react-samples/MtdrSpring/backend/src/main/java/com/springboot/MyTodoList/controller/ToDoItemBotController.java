@@ -197,6 +197,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		}
 		catch(TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
 			// Logger debug info
 			sendMessage("Error " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
@@ -232,6 +234,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		} 
 		catch (TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger message
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 			return new TelegramUser();
@@ -289,6 +294,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage("To continue, please select any option from the buttons.", telegramUser.getChatId());
 				} 
 				catch (TelegramApiException e) {
+					// If fails, exit the user
+					caseNumber = -1;
 					logger.error(e.getLocalizedMessage(), e);
 				}		
 			
@@ -330,11 +337,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					caseNumber = 3;
 				} 
 				catch (TelegramApiException e) {
+					// If fails, exit the user
+					caseNumber = -1;
 					logger.error(e.getLocalizedMessage(), e);
 				}
 			}
 		}
 		catch(TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger Inforamtion
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), chatId);
 			logger.error(e.getLocalizedMessage(), e);
 		}
@@ -423,6 +435,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		}
 		catch (TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
@@ -469,6 +483,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 		}
 		catch (TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
 			logger.error(e.getLocalizedMessage(), e);
 		}
 	}
@@ -569,6 +585,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			caseNumber = 2;
 		}
 		catch(TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger info
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
@@ -592,6 +611,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			caseNumber = 2;
 		}
 		catch(Exception e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger info
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
@@ -606,21 +628,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			
 			// Set Name:
 			newTask.setName(taskData[0].substring(6, taskData[0].length()).trim());
-			sendMessage(newTask.getName(), telegramUser.getChatId());
+			//sendMessage(newTask.getName(), telegramUser.getChatId());
 			
 			// Description
 			newTask.setDescription(taskData[1].substring(13, taskData[1].length()).trim());
-			sendMessage(newTask.getDescription(), telegramUser.getChatId());
+			//sendMessage(newTask.getDescription(), telegramUser.getChatId());
 
 			// Estimated Hours, Priority and Telegram User
 			newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length())));
 			newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length())));
 			newTask.setTelegramUser(telegramUser);
-			sendMessage(newTask.getEstimatedHours() + " " + newTask.getPriority() + " " + newTask.getTelegramUser().getName(), telegramUser.getChatId());
+			//sendMessage(newTask.getEstimatedHours() + " " + newTask.getPriority() + " " + newTask.getTelegramUser().getName(), telegramUser.getChatId());
 
 			// Set Sprint
 			String sprintName = taskData[4].substring(13, taskData[4].length()).trim();
-			sendMessage("Sprint name " + sprintName, telegramUser.getChatId());
+			//sendMessage("Sprint name " + sprintName, telegramUser.getChatId());
 
 			for(int i = 0; i < sprintList.size(); i++){
 				if(sprintList.get(i).getName().equals(sprintName)){
@@ -631,12 +653,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					newTask.setSprint(new Sprint());
 				}
 			}
-			sendMessage("Sprint name from object " + newTask.getSprint().getName(), telegramUser.getChatId());
+			//sendMessage("Sprint name from object " + newTask.getSprint().getName(), telegramUser.getChatId());
 
 
 			// Set Task Status
 			String taskStatusName = taskData[5].substring(13, taskData[5].length()).trim();
-			sendMessage("Task Status " + taskStatusName, telegramUser.getChatId());
+			//sendMessage("Task Status " + taskStatusName, telegramUser.getChatId());
 
 			for(int i = 0; i < taskStatusList.size(); i++){
 				if(taskStatusList.get(i).getName().equals(taskStatusName)){
@@ -648,7 +670,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 
-			sendMessage("Task Status from object " + newTask.getTaskStatus().getName(), telegramUser.getChatId());
+			//sendMessage("Task Status from object " + newTask.getTaskStatus().getName(), telegramUser.getChatId());
 
 
 			// Set Update Type for TASK UPDATE TABLE && Sprint Update for SPRINT UPDATE TABLE
@@ -669,11 +691,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			
 			// Post Task Update to Data Base
 			String response = taskUpdateService.createNewTaskUpdate(newTaskUpdate);
-			sendMessage(response, telegramUser.getChatId());
+			//sendMessage(response, telegramUser.getChatId());
 			// Case Number Dev Options
 			caseNumber = 2;
 		}
 		catch(Exception e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger info
 			sendMessage("Error: " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
@@ -738,6 +763,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			caseNumber = 3;			
 		}
 		catch (TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger info
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
@@ -760,6 +788,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			caseNumber = 3;
 		}
 		catch (TelegramApiException e){
+			// If fails, exit the user
+			caseNumber = -1;
+			// Logger info
 			sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 			logger.error(e.getLocalizedMessage(), e);
 		}
