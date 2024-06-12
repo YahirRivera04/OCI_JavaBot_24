@@ -391,13 +391,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 				sendMessage(taskStatusInfo, telegramUser.getChatId());
 
-				// Update Type
-				sendMessage("\nType of Update", telegramUser.getChatId());
-				String updateTypeInfo = "";
-				for(UpdateType updateType : updateTypeList){
-					updateTypeInfo += updateTypeService.printUpdateTypeList(updateType);
-				}
-				sendMessage(updateTypeInfo, telegramUser.getChatId());
+				// // Update Type
+				// sendMessage("\nType of Update", telegramUser.getChatId());
+				// String updateTypeInfo = "";
+				// for(UpdateType updateType : updateTypeList){
+				// 	updateTypeInfo += updateTypeService.printUpdateTypeList(updateType);
+				// }
+				// sendMessage(updateTypeInfo, telegramUser.getChatId());
 				// Set case to Edit task
 				caseNumber = 4;
 			}
@@ -506,55 +506,74 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			TaskUpdate editTaskUpdate = new TaskUpdate();
 			// Auxiliar varibale
 			int taskNumber = -1;
+			// Type of update
+			String updateTypeName = "";
 
 			// Set Id
-
 			for(int i = 0; i < taskList.size(); i++){
 				if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(botComandData[0].length()).trim())){
 					editTask.setID(taskList.get(i).getID());
 					taskNumber = i;
 				}
 			}
-			sendMessage("Id " + editTask.getID(), telegramUser.getChatId());
-
-			// for(int i = 0; i < taskList.size(); i++){
-			// 	if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(3, editTaskData[0].length()).trim())){
-			// 		editTask.setID(taskList.get(i).getID());
-			// 		taskNumber = i;
-			// 	}
-			// }
 
 			// Set Name
-			editTask.setName(Optional.of(editTaskData[1].substring(6, editTaskData[1].length()).trim())
+			String name = editTaskData[1].substring(botComandData[1].length(), editTaskData[1].length()).trim();
+			if (!name.isEmpty()){
+				updateTypeName = "Name change";
+			}
+
+			editTask.setName(Optional.of(name)
 			.filter(s -> !s.isEmpty())
 			.orElse(taskList.get(taskNumber).getName()));
 
+			sendMessage(editTask.getName(), telegramUser.getChatId());// BORRAR
+
 			// Set Description
-			editTask.setDescription(Optional.of(editTaskData[2].substring(13, editTaskData[2].length()).trim())
+			String description = editTaskData[2].substring(botComandData[2].length(), editTaskData[2].length()).trim();
+			if(!description.isEmpty()){
+				updateTypeName = "Description change";
+			}
+			editTask.setDescription(Optional.of(description)
 			.filter(s -> !s.isEmpty())
 			.orElse(taskList.get(taskNumber).getDescription()));
 
+			sendMessage(editTask.getDescription(), telegramUser.getChatId()); // BORRAR
+
 			// Estimated Hours
-			String estimatedHourData = editTaskData[3].substring(16, editTaskData[3].length()).trim();
+			String estimatedHourData = editTaskData[3].substring(botComandData[3].length(), editTaskData[3].length()).trim();
 			if (estimatedHourData.isEmpty()) {
 				estimatedHourData = String.valueOf(taskList.get(taskNumber).getEstimatedHours());
 			}
+			else{
+				updateTypeName = "Estimated hours change";
+			}
 			editTask.setEstimatedHours(Float.parseFloat(estimatedHourData));
+			sendMessage("Estim " + editTask.getEstimatedHours(), telegramUser.getChatId()); // BORRAR
+
 
 			// Set Priority
-			String priorityData = editTaskData[4].substring(16, editTaskData[4].length()).trim();
+			String priorityData = editTaskData[4].substring(botComandData[4].length(), editTaskData[4].length()).trim();
 			if(priorityData.isEmpty()){
 				priorityData = String.valueOf(taskList.get(taskNumber).getPriority());
 			}
+			else{
+				updateTypeName = "Priority change";
+			}
 			editTask.setPriority(Integer.parseInt(priorityData));
+			sendMessage("Prior " + editTask.getPriority(), telegramUser.getChatId()); // BORRAR
+
 			
 			// Set Telegram User
 			editTask.setTelegramUser(telegramUser);
 
 			// Set Sprint Id by name
-			String sprintName = editTaskData[5].substring(13, editTaskData[5].length()).trim();
+			String sprintName = editTaskData[5].substring(botComandData[5].length(), editTaskData[5].length()).trim();
 			if(sprintName.isEmpty()){
 				sprintName = String.valueOf(taskList.get(taskNumber).getSprint().getName());
+			}
+			else{
+				updateTypeName = "Sprint change";
 			}
 			for(int i = 0; i < sprintList.size(); i++){
 				if(sprintList.get(i).getName().equals(sprintName)){
@@ -562,11 +581,16 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				}
 			}
+			sendMessage(editTask.getSprint().getName(), telegramUser.getChatId()); // BORRAR
+
 
 			// Set Task Status
-			String taskStatusName = editTaskData[6].substring(12, editTaskData[6].length()).trim();
+			String taskStatusName = editTaskData[6].substring(botComandData[6].length(), editTaskData[6].length()).trim();
 			if(taskStatusName.isEmpty()){
 				taskStatusName = String.valueOf(taskList.get(taskNumber).getTaskStatus().getName());
+			}
+			else{
+				updateTypeName = "Status change";
 			}
 			for(int i = 0; i < taskStatusList.size(); i++){
 				if(taskStatusList.get(i).getName().equals(taskStatusName)){
@@ -574,9 +598,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				}
 			}
+			sendMessage(editTask.getTaskStatus().getName(), telegramUser.getChatId()); // BORRAR
+
 
 			// Set Task Update with Update Type
-			String updateTypeName = editTaskData[7].substring(15, editTaskData[7].length()).trim();
+			//String updateTypeName = editTaskData[7].substring(botComandData[7].length(), editTaskData[7].length()).trim();
 			for(int i = 0; i < updateTypeList.size(); i++){
 				if(updateTypeList.get(i).getName().equals(updateTypeName)){
 					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -590,10 +616,11 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			}
 
 			// Update Task to Data Base
-			String taskUpdateResponse = taskService.createTask(editTask);
-			sendMessage(taskUpdateResponse, telegramUser.getChatId());
+			String taskResponse = taskService.createTask(editTask);
+			sendMessage(taskResponse, telegramUser.getChatId());
 			// Update Task Update to Data Base 
-			taskUpdateService.createNewTaskUpdate(editTaskUpdate);
+			String taskUpdateResponse  = taskUpdateService.createNewTaskUpdate(editTaskUpdate);
+			sendMessage(taskUpdateResponse, telegramUser.getChatId());
 			// Case Number Dev Options
 			caseNumber = 2;
 		}

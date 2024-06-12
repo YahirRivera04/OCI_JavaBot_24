@@ -263,13 +263,14 @@ CREATE TABLE $U.BOTOPTION (
 
 #######################################################| Presets |#######################################################
 
-INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Creation', 'A task or sprint is created.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Deletion', 'A task or sprint is deleted.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Name change', 'A task or status has its name updated.');
-INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');
-INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Description change', 'A task or sprint is updated to reflect a change in its description.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Estimated hours change', 'A task is updated to reflect a change in the estimated hours it will take.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Priority change', 'A task is updated to reflect a change in priority.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Sprint change', 'A task is updated to reflect a change in sprint.');
+INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Status change', 'A task is updated with a status change.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('Start date change', 'A sprint is updated to reflect a change in its start date.');
 INSERT INTO $U.UPDATETYPE (Name, Description) VALUES ('End date change', 'A sprint is updated to reflect a change in its end date.');
 
