@@ -118,6 +118,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						handelDevOptions(telegramUserList.get(chatId), messageTextFromTelegram);
 					}
 					else{
+						// Manager Options
 						caseNumber = 3;
 					}
 					break;
@@ -126,6 +127,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						handelManagerOptions(telegramUserList.get(chatId), messageTextFromTelegram);
 					}
 					else{
+						// Dev Options
 						caseNumber = 2;
 					}
 					break;
@@ -494,6 +496,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 		try{
 			// Get Data from Database
 			getDataBaseInfo(telegramUser);
+			// Bot Commands content
+			String[] botComandData = BotMessages.EDIT_TASK_FORMAT.getMessage().split("\n");
 			// Retrieve data from user response
 			String[] editTaskData = messageTextFromTelegram.split("\n");
 			// New Task Instance
@@ -504,12 +508,21 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			int taskNumber = -1;
 
 			// Set Id
+
 			for(int i = 0; i < taskList.size(); i++){
-				if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(3, editTaskData[0].length()).trim())){
+				if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(botComandData[0].length()).trim())){
 					editTask.setID(taskList.get(i).getID());
 					taskNumber = i;
 				}
 			}
+			sendMessage("Id " + editTask.getID(), telegramUser.getChatId());
+
+			// for(int i = 0; i < taskList.size(); i++){
+			// 	if(taskList.get(i).getID().toString().equals(editTaskData[0].substring(3, editTaskData[0].length()).trim())){
+			// 		editTask.setID(taskList.get(i).getID());
+			// 		taskNumber = i;
+			// 	}
+			// }
 
 			// Set Name
 			editTask.setName(Optional.of(editTaskData[1].substring(6, editTaskData[1].length()).trim())
