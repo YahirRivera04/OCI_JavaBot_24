@@ -578,18 +578,19 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// Set Task Status
 			String taskStatusName = editTaskData[6].substring(botComandData[6].length(), editTaskData[6].length()).trim();
 			if(taskStatusName.isEmpty()){
-				taskStatusName = taskList.get(taskNumber).getTaskStatus().getName();
-				sendMessage(taskStatusName, telegramUser.getChatId()); // BORRAR
+				editTask.setTaskStatus(taskList.get(taskNumber).getTaskStatus());
+				sendMessage(editTask.getTaskStatus().getName(), telegramUser.getChatId()); // BORRAR
 			}
 			else{
 				updateTypeName = "Status change";
-			}
-			for(int i = 0; i < taskStatusList.size(); i++){
-				if(taskStatusList.get(i).getName().equals(taskStatusName)){
-					editTask.setTaskStatus(taskStatusList.get(i));
-					break;
+				for(int i = 0; i < taskStatusList.size(); i++){
+					if(taskStatusList.get(i).getName().equals(taskStatusName)){
+						editTask.setTaskStatus(taskStatusList.get(i));
+						break;
+					}
 				}
 			}
+			
 			sendMessage(editTask.getTaskStatus().getName(), telegramUser.getChatId()); // BORRAR
 
 
