@@ -522,12 +522,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			if (!name.isEmpty()){
 				updateTypeName = "Name change";
 			}
-
 			editTask.setName(Optional.of(name)
 			.filter(s -> !s.isEmpty())
 			.orElse(taskList.get(taskNumber).getName()));
-
-			sendMessage(editTask.getName(), telegramUser.getChatId());// BORRAR
 
 			// Set Description
 			String description = editTaskData[2].substring(botComandData[2].length(), editTaskData[2].length()).trim();
@@ -538,8 +535,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			.filter(s -> !s.isEmpty())
 			.orElse(taskList.get(taskNumber).getDescription()));
 
-			sendMessage(editTask.getDescription(), telegramUser.getChatId()); // BORRAR
-
 			// Estimated Hours
 			String estimatedHourData = editTaskData[3].substring(botComandData[3].length(), editTaskData[3].length()).trim();
 			if (estimatedHourData.isEmpty()) {
@@ -549,7 +544,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				updateTypeName = "Estimated hours change";
 			}
 			editTask.setEstimatedHours(Float.parseFloat(estimatedHourData));
-			sendMessage("Estim " + editTask.getEstimatedHours(), telegramUser.getChatId()); // BORRAR
 
 
 			// Set Priority
@@ -561,7 +555,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				updateTypeName = "Priority change";
 			}
 			editTask.setPriority(Integer.parseInt(priorityData));
-			sendMessage("Prior " + editTask.getPriority(), telegramUser.getChatId()); // BORRAR
 
 			
 			// Set Telegram User
@@ -581,13 +574,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					break;
 				}
 			}
-			sendMessage(editTask.getSprint().getName(), telegramUser.getChatId()); // BORRAR
-
 
 			// Set Task Status
 			String taskStatusName = editTaskData[6].substring(botComandData[6].length(), editTaskData[6].length()).trim();
 			if(taskStatusName.isEmpty()){
-				taskStatusName = String.valueOf(taskList.get(taskNumber).getTaskStatus().getName());
+				taskStatusName = taskList.get(taskNumber).getTaskStatus().getName();
+				sendMessage(taskStatusName, telegramUser.getChatId()); // BORRAR
 			}
 			else{
 				updateTypeName = "Status change";
@@ -602,7 +594,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 
 			// Set Task Update with Update Type
-			//String updateTypeName = editTaskData[7].substring(botComandData[7].length(), editTaskData[7].length()).trim();
 			for(int i = 0; i < updateTypeList.size(); i++){
 				if(updateTypeList.get(i).getName().equals(updateTypeName)){
 					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -619,8 +610,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String taskResponse = taskService.createTask(editTask);
 			sendMessage(taskResponse, telegramUser.getChatId());
 			// Update Task Update to Data Base 
-			String taskUpdateResponse  = taskUpdateService.createNewTaskUpdate(editTaskUpdate);
-			sendMessage(taskUpdateResponse, telegramUser.getChatId());
+			/*String taskUpdateResponse  = */taskUpdateService.createNewTaskUpdate(editTaskUpdate);
+			//sendMessage(taskUpdateResponse, telegramUser.getChatId());
+			
 			// Case Number Dev Options
 			caseNumber = 2;
 		}
@@ -636,16 +628,36 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	// Delete Task 
 	private void deleteTask(String messageTextFromTelegram, TelegramUser telegramUser) throws TelegramApiException{
 		try {
+			// Local update task obect to log
+			TaskUpdate newTaskUpdate = new TaskUpdate(); 
+			// Local task object
+			Task task = new Task();
+			// Message from user
 			String taskName = messageTextFromTelegram.trim();
-			Long taskId = null;
 
-			for(int i = 0; i < taskList.size(); i++){
-				if(taskList.get(i).getName().equals(taskName)){
-					taskId = taskList.get(i).getID();
+			// Identify the task in the List
+			for(Task slectedTask : taskList){
+				if(slectedTask.getName().equals(taskName)){
+					task = slectedTask;
 					break;
 				}
 			}
-			String deleteTaskResponse = taskService.deleteTask(telegramUser.getID(), taskName, taskId);
+
+			// Set Update Type
+			for(int i = 0; i < updateTypeList.size(); i++){
+				if(updateTypeList.get(i).getName().equals("Deletion")){
+					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+					// Task Update
+					newTaskUpdate.setTimeStamp(timeStamp);
+					newTaskUpdate.setUpdateType(updateTypeList.get(i));
+					newTaskUpdate.setTask(task);
+					newTaskUpdate.setTelegramUser(telegramUser);
+					break;
+				}
+			}
+
+
+			String deleteTaskResponse = taskService.deleteTask(telegramUser.getID(), taskName, task.getID());
 			sendMessage(deleteTaskResponse, telegramUser.getChatId());
 			// Case Number Dev Options
 			caseNumber = 2;
@@ -668,17 +680,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			
 			// Set Name:
 			newTask.setName(taskData[0].substring(6, taskData[0].length()).trim());
-			//sendMessage(newTask.getName(), telegramUser.getChatId());
 			
 			// Description
 			newTask.setDescription(taskData[1].substring(13, taskData[1].length()).trim());
-			//sendMessage(newTask.getDescription(), telegramUser.getChatId());
 
 			// Estimated Hours, Priority and Telegram User
 			newTask.setEstimatedHours(Float.parseFloat(taskData[2].substring(16, taskData[2].length())));
 			newTask.setPriority(Integer.parseInt(taskData[3].substring(16, taskData[2].length())));
 			newTask.setTelegramUser(telegramUser);
-			//sendMessage(newTask.getEstimatedHours() + " " + newTask.getPriority() + " " + newTask.getTelegramUser().getName(), telegramUser.getChatId());
 
 			// Set Sprint
 			String sprintName = taskData[4].substring(13, taskData[4].length()).trim();
@@ -693,8 +702,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					newTask.setSprint(new Sprint());
 				}
 			}
-			//sendMessage("Sprint name from object " + newTask.getSprint().getName(), telegramUser.getChatId());
-
 
 			// Set Task Status
 			String taskStatusName = taskData[5].substring(13, taskData[5].length()).trim();
@@ -710,10 +717,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 			}
 
-			//sendMessage("Task Status from object " + newTask.getTaskStatus().getName(), telegramUser.getChatId());
-
-
-			// Set Update Type for TASK UPDATE TABLE && Sprint Update for SPRINT UPDATE TABLE
+			// Set Update Type
 			for(int i = 0; i < updateTypeList.size(); i++){
 				if(updateTypeList.get(i).getName().equals("Creation")){
 					Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -728,10 +732,9 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			// Post Task to Data Base
 			String taskResponse = taskService.createTask(newTask);
 			sendMessage(taskResponse, telegramUser.getChatId());
-			
 			// Post Task Update to Data Base
-			String response = taskUpdateService.createNewTaskUpdate(newTaskUpdate);
-			//sendMessage(response, telegramUser.getChatId());
+			taskUpdateService.createNewTaskUpdate(newTaskUpdate);
+			
 			// Case Number Dev Options
 			caseNumber = 2;
 		}
