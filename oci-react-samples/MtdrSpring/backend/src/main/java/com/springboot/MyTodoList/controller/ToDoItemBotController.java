@@ -98,8 +98,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<Sprint> sprintList = List.of(new Sprint());
 	// New List of Update Type
 	List<UpdateType> updateTypeList = List.of(new UpdateType());
-	// New List of Tasks
+	// New List of Tasks by Id
 	List<Task> taskList = List.of(new Task());
+	// New List of all Tasks
+	List<Task> allTaskList = List.of(new Task());
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -185,6 +187,10 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							// Second Row
 							row = new KeyboardRow();
 							row.add(BotLabels.SHOW_PROJECT.getLabel());
+							row.add(BotLabels.SHOW_TASK.getLabel());
+							keyboard.add(row);
+
+							row = new KeyboardRow();
 							row.add(BotLabels.LOGOUT.getLabel());
 							keyboard.add(row);
 							
@@ -295,6 +301,15 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							caseNumber = 4;
 						}
 						// Manager Button
+						// Show All Tasks
+						else if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
+							// Show tasks header message
+							sendMessage("Here are all your team tasks", telegramUser.getChatId());
+							for(Task allTask : allTaskList){
+								taskService.printTask(allTask);
+
+							}
+						}
 						// Create Sprint Command
 						else if(messageTextFromTelegram.equals(BotMessages.CREATE_SPRINT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
 							// Home Message
@@ -771,6 +786,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			projectList = projectService.findAllProjects();
 			sprintList = sprintService.findAllSprints();
 			taskList = taskService.findAllTaskByTelegramUserId(telegramUser.getID());	
+			allTaskList = taskService.findAllTask();
 		}
 	}
 
