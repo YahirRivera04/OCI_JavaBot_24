@@ -310,8 +310,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						else if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
 							// Show tasks header message
 							sendMessage("Here are all your team tasks", telegramUser.getChatId());
-							for(Task allTask : taskList){
-								taskService.printTask(allTask);
+							for(Task allTask : allTaskList){
+								sendMessage(taskService.printTask(allTask), telegramUser.getChatId());
 							}
 						}
 						// Create Sprint Command
@@ -805,6 +805,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			projectList = projectService.findAllProjects();
 			sprintList = sprintService.findAllSprints();
 			taskList = taskService.findAllTaskByTelegramUserId(telegramUser.getID());	
+			allTaskList = taskService.findAllTask();
 		}
 	}
 
