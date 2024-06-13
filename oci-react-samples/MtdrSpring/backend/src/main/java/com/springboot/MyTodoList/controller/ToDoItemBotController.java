@@ -32,6 +32,7 @@ import com.springboot.MyTodoList.service.UpdateTypeService;
 import com.springboot.MyTodoList.model.TelegramUser;
 import com.springboot.MyTodoList.model.UpdateType;
 import com.springboot.MyTodoList.model.UserTeam;
+import com.springboot.MyTodoList.model.Conversation;
 // Task Needs
 import com.springboot.MyTodoList.model.Project;
 import com.springboot.MyTodoList.model.Sprint;
@@ -102,6 +103,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 	List<Task> taskList = List.of(new Task());
 	// New List of all Tasks
 	List<Task> allTaskList = List.of(new Task());
+	// Conversation Object
+	Conversation conversation = new Conversation();
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -111,6 +114,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			String messageTextFromTelegram = update.getMessage().getText();
 			// Get the Telegram Chat Id from Telegram
 			Long chatId = update.getMessage().getChatId();
+
+			conversation = conversationService.pushConversationStart();
 			
 			switch (caseNumber) {
 				// When already logged
@@ -305,7 +310,7 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						else if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
 							// Show tasks header message
 							sendMessage("Here are all your team tasks", telegramUser.getChatId());
-							for(Task allTask : allTaskList){
+							for(Task allTask : taskList){
 								taskService.printTask(allTask);
 							}
 						}
@@ -339,10 +344,25 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						// Log Out Message
 						else if(messageTextFromTelegram.equals(BotMessages.LOG_OUT_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer") ||  telegramUser.getUserType().getName().equals("Manager")){
+							// Restart
 							caseNumber = 0;
 							// Log Out Message
 							sendMessage(BotMessages.LOG_OUT_MESSAGE.getMessage(), telegramUser.getChatId());
 							sendMessage("Use " + BotCommands.START_COMMAND.getCommand() + " to log in", telegramUser.getChatId());
+							// Conversation end
+							conversationService.pushConversationEnd(conversation);
+							// Errase preload info
+							teamTypeList.clear();
+							teamList.clear();
+							userTeamList.clear();
+							userTypeList.clear();
+							telegramUserList.clear();
+							taskStatusList.clear();
+							projectList.clear();
+							sprintList.clear();
+							updateTypeList.clear();
+							taskList.clear();
+							allTaskList.clear();
 						}
 					}
 					catch(Exception e){
@@ -785,7 +805,6 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 			projectList = projectService.findAllProjects();
 			sprintList = sprintService.findAllSprints();
 			taskList = taskService.findAllTaskByTelegramUserId(telegramUser.getID());	
-			allTaskList = taskService.findAllTask();
 		}
 	}
 
