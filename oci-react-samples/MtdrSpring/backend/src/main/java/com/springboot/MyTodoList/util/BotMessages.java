@@ -30,7 +30,9 @@ public enum BotMessages {
 	EDIT_TASK_FORMAT("Id: \nName: \nDescription: \nEstimated Hours: \nPriority (1-3): \nSprint Name: \nTask Status: "),
 
 	DELETE_TASK_MESSAGE("Delete Task"),
-	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease send the name of the task to be deleated"),
+	DELETE_TASK_COMMAND_MESSAGE("DELETE TASK \nPlease follow the next format"),
+	DELETE_TASK_FORMAT("Id: \nName:"),
+
 
 	CREATE_SPRINT_COMMAND_MESSAGE("Create Sprint"),
 	CREATE_SPRINT_MESSAGE("CREATE SPRINT \nPlease follow the next format:"),
