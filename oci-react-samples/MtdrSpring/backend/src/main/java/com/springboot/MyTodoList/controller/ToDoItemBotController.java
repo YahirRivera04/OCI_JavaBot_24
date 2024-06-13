@@ -260,6 +260,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						}
 						// Delete Task Command
 						else if(messageTextFromTelegram.equals(BotMessages.DELETE_TASK_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Developer")){
+							// Tasks
+							sendMessage(BotMessages.SHOW_TASK_MESSAGE.getMessage(), telegramUser.getChatId());
+							// Show all tasks that belongs to the user
+							for(int i = 0; i < taskList.size(); i++){
+								sendMessage(taskService.printTask(taskList.get(i)), telegramUser.getChatId());
+							}
 							// Mesasge header
 							sendMessage(BotMessages.DELETE_TASK_COMMAND_MESSAGE.getMessage(), telegramUser.getChatId());
 							// Format Message
