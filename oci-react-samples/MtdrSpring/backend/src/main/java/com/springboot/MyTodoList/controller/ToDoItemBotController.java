@@ -347,8 +347,8 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					String[] taskData = messageTextFromTelegram.split("\n");
 					
 					// Fill variables
-					Long id = Long.valueOf(taskData[0].substring(botFormatData[0].length(),taskData[0].length()));
-					String taskName = taskData[1].substring(botFormatData[1].length(),taskData[1].length());
+					Long id = Long.valueOf(taskData[0].substring(botFormatData[0].length(),taskData[0].length()).trim());
+					String taskName = taskData[1].substring(botFormatData[1].length(),taskData[1].length()).trim();
 
 					int chatIdCompare = -1;
 
@@ -389,18 +389,18 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 				}
 				catch(Exception e){
 					// If fails, exit the user
-					caseNumber = -1;
+					caseNumber = 3;
 					// Logger info
 					sendMessage(messageTextFromTelegram + " " + e.getMessage(), telegramUser.getChatId());
 					logger.error(e.getLocalizedMessage(), e);
 				}
 					break;
 				case 4: // Create Task
-
-					Task newTask = new Task();
-					TaskUpdate newTaskUpdate = new TaskUpdate();
-
 					try{
+						
+						Task newTask = new Task();
+						TaskUpdate newTaskUpdate = new TaskUpdate();
+
 						String[] taskData = messageTextFromTelegram.split("\n");
 						
 						// Set Name
@@ -456,12 +456,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						
 						// Post Task Update to Data Base
 						taskUpdateService.createNewTaskUpdate(newTaskUpdate);
-
+						caseNumber = 2;
 					}
 					catch(Exception e){
+						caseNumber = 4;
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
-					caseNumber = 2;
 					break;
 				case 5:	// Create Sprint
 					
@@ -518,13 +518,14 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 
 						// Create Sprint Update in Data Base
 						sprintUpdateService.createNewSprintUpdate(newSprintUpdate);
-
+						// Return to Button Case
+						caseNumber = 2;
 					}
 					catch(Exception e){
+						caseNumber = 5;
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
-					// Return to Button Case
-					caseNumber = 2;
+					
 					break;
 				case 6: // Create Project
 					try{
@@ -540,11 +541,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 						String projectResponse = projectService.createNewProject(newProject);
 						sendMessage(projectResponse, telegramUser.getChatId());
 						// Return to Button Case
+						caseNumber = 2;
 					}
 					catch(Exception e){
+						caseNumber = 6;
 						sendMessage(e.toString(), telegramUser.getChatId());
 					}
-					caseNumber = 2;
+					
 					break;
 				case 7: // Edit Task
 
@@ -636,12 +639,13 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 					sendMessage(taskUpdateResponse, chatId);
 					// Update Task Update to Data Base 
 					taskUpdateService.createNewTaskUpdate(editTaskUpdate);
-				}
-				catch(Exception e){
-					sendMessage(e.toString(), telegramUser.getChatId());
-				}
 					// Return to Button Case
 					caseNumber = 2;
+				}
+				catch(Exception e){
+					caseNumber = 7;
+					sendMessage(e.toString(), telegramUser.getChatId());
+				}
 					break;
 				// Log in by default
 				default: // Authenication
