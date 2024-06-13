@@ -301,13 +301,12 @@ public class ToDoItemBotController extends TelegramLongPollingBot {
 							caseNumber = 4;
 						}
 						// Manager Button
-						// Show All Tasks
-						else if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
+						// Show All Tasks Command
+						else if(messageTextFromTelegram.equals(BotMessages.SHOW_TASK_COMMAND_MESSAGE.getMessage()) && telegramUser.getUserType().getName().equals("Manager")){
 							// Show tasks header message
 							sendMessage("Here are all your team tasks", telegramUser.getChatId());
 							for(Task allTask : allTaskList){
 								taskService.printTask(allTask);
-
 							}
 						}
 						// Create Sprint Command
